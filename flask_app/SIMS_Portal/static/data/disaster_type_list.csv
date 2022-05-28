@@ -1,0 +1,25 @@
+id,emergency_type_go_id,emergency_type_name
+1,66,Biological
+2,57,Chemical
+3,7,Civil Unrest
+4,14,Cold Wave
+5,6,Complex Emergency
+6,4,Cyclone
+7,20,Drought
+8,2,Earthquake
+9,1,Epidemic
+10,15,Fire
+11,12,Flood
+12,21,Food Insecurity
+13,19,Heat Wave
+14,62,Insect Infestation
+15,24,Landslide
+16,13,Other
+17,27,Pluvial/Flash Flood
+18,5,Population Movement
+19,67,Radiological
+20,23,Storm Surge
+21,54,Transport Accident
+22,68,Transport Emergency
+23,11,Tsunami
+24,8,Volcanic Eruption

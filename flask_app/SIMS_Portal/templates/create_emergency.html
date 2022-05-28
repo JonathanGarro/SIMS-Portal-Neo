@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class="row">
+	{# Left Column #}
+	<div class="col-md-8">
+		<h3 class="mb-3 text-danger">Log New Emergency Response Record</h3>
+		<form action="" method="POST" class="mx-auto p-4 bg-light text-light rounded-3" novalidate>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group pb-4">
+					{{ form.emergency_name.label(class="form-control-label pb-2 text-danger") }}
+					{% if form.emergency_name.errors %}
+						{{ form.emergency_name(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.emergency_name.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+					{% else %}
+						{{ form.emergency_name(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group pb-4">
+					{{ form.emergency_location_id.label(class="form-control-label pb-2 text-danger") }}
+					{% if form.emergency_location_id.errors %}
+						{{ form.emergency_location_id(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.emergency_location_id.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+					{% else %}
+						{{ form.emergency_location_id(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	<div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group pb-4">
+					{{ form.emergency_type_id.label(class="form-control-label pb-2 text-danger") }}
+					{% if form.emergency_type_id.errors %}
+						{{ form.emergency_type_id(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.emergency_type_id.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+					{% else %}
+						{{ form.emergency_type_id(class="form-control form-control-lg") }}
+					{% endif %}	
+				</div>
+			</div>
+			<div class="col">
+				{{ form.emergency_glide.label(class="form-control-label pb-2 text-danger") }}
+				{% if form.emergency_glide.errors %}
+					{{ form.emergency_glide(class="form-control form-control-lg is-invalid") }}
+						<div class="invalid-feedback">
+							{% for error in form.emergency_glide.errors %}
+								<span>{{ error }}</span>
+							{% endfor %}
+						</div>
+				{% else %}
+					{{ form.emergency_glide(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+		</div>
+	</div>
+		<div class="form-group pb-4">
+			{{ form.emergency_go_id.label(class="form-control-label pb-2 text-danger") }}
+			{% if form.emergency_go_id.errors %}
+				{{ form.emergency_go_id(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.emergency_go_id.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+			{% else %}
+				{{ form.emergency_go_id(class="form-control form-control-lg") }}
+			{% endif %}
+		</div>
+		<div class="form-group pb-4">
+			{{ form.activation_details.label(class="form-control-label pb-2 text-danger") }}
+			{% if form.activation_details.errors %}
+				{{ form.activation_details(class="form-control form-control-lg is-invalid") }}
+					<div class="invalid-feedback">
+						{% for error in form.activation_details.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+			{% else %}
+				{{ form.activation_details(class="form-control form-control-lg") }}
+			{% endif %}
+		</div>
+	{{ form.submit(class="btn btn-outline-danger") }}
+	
+	</form>
+</div>
+
+	<div class="col">
+		<h4> Latest GO Events</h4>
+		<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Name</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<th scope="row">1324</th>
+			<th>Mozambique Floods</th>
+		</tr>
+		<tr>
+			<th scope="row">1238</th>
+			<th>Myanmar Population Movement</th>
+		</tr>
+		<tr>
+			<th scope="row">1389</th>
+			<th>Paraguay Drought</th>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+	</div>
+</div>
+{% endblock content %}

@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class="row mb-5">
+		<div class="col col-md-4 rounded rounded-3">
+			<div class="card border-0 p-4 bg-light">
+			
+			<div class="row">
+			<img src="{{ profile_picture }}" class="" style="object-fit:none;object-position:center;width:100%;padding-bottom:30px;">
+			</div>
+			<div class="row">
+				<h3 class="text-danger">{{ current_user.firstname }} {{ current_user.lastname }}</h3>
+			</div>
+			<div class="row">
+				<h5 class="text-secondary mt-4">Role</h5>
+				<h4>{{ current_user.job_title }}</h4>
+			</div>
+			<div class="row">
+				<h5 class="text-secondary mt-4">National Society</h5>
+				<h4>TBD</h4>
+			</div>
+				<div class="list-group mt-5">
+				  <a href="#" class="list-group-item list-group-item-secondary">Update Profile</a>
+				  <a href="#" class="list-group-item list-group-item-action text-secondary">Assign to Disaster</a>
+				  <a href="#" class="list-group-item list-group-item-action text-secondary">Add to Portfolio</a>
+				  <a href="#" class="list-group-item list-group-item-action text-danger">Delete Member</a>
+				</div>
+			</div>
+		</div>
+		<div class="col mx-4">
+			<form action="" method="POST" enctype="multipart/form-data" class="mx-auto p-4 bg-light text-light rounded-3" novalidate>
+				{{ form.hidden_tag() }}
+				<div class="row">
+					<h4 class="text-danger pb-3">Required Fields</h4>
+					  <div class="col-md-6">
+						<div class="form-group pb-4">
+							{{ form.firstname.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.firstname.errors %}
+								{{ form.firstname(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.firstname.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.firstname(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					  </div>
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.lastname.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.lastname.errors %}
+								{{ form.lastname(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.lastname.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.lastname(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<h4 class="text-secondary py-3">Optional Fields</h4>
+					<div class="col-md-6">
+						<div class="form-group pb-4">
+							{{ form.job_title.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.job_title.errors %}
+								{{ form.job_title(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.job_title.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.job_title(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group pb-4">
+							
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group pb-4">
+						{{ form.picture.label(class="form-control-label pb-2 text-danger") }}<br>
+						{{ form.picture(class="form-control-file") }}
+						{% if form.picture.errors %}
+							{% for error in form.picture.errors %}
+								<span class='text-danger'>{{error}}</span><br>
+							{% endfor %}
+						{% endif %}
+					</div>
+				</div>
+
+				{{ form.submit(class="btn btn-outline-danger") }}
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock content %}
