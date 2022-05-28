@@ -66,6 +66,40 @@
 					</div>
 				</div>
 				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group pb-4">
+							{{ form.email.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.email.errors %}
+								{{ form.email(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.email.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.email(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.ns_id.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.ns_id.errors %}
+								{{ form.ns_id(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.ns_id.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.ns_id(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="row">
 					<h4 class="text-secondary py-3">Optional Fields</h4>
 					<div class="col-md-6">
 						<div class="form-group pb-4">

@@ -35,7 +35,7 @@ class UpdateAccountForm(FlaskForm):
 	picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
 	email = StringField('Email', validators=[DataRequired(), Email()])
 	job_title = StringField('Job Title')
-	ns_id = IntegerField('National Society')
+	ns_id = QuerySelectField('National Society Country', query_factory=lambda:NationalSociety.query.all(), get_label='country_name', allow_blank=True)
 	bio = TextAreaField('Short Bio')
 	birthday = DateField('Birthday')
 	molnix_id = IntegerField('Molnix ID')

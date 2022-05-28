@@ -59,13 +59,15 @@ def login():
 def logout():
 	logout_user()
 	flash("You have been logged out.", "success")
-	return redirect(url_for('index'))
+	return redirect(url_for('login'))
 
 @app.route('/profile')
 @login_required
 def profile():
+	ns_association = User.query.join(NationalSociety, User.ns_id==NationalSociety.ns_go_id).filter(User.id==current_user.id).first()
+	print(f"the query sent to the database is: {ns_association}")
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
-	return render_template('profile.html', title='Profile', profile_picture=profile_picture)
+	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association)
 
 def save_picture(form_picture):
 	random_hex = secrets.token_hex(8)
