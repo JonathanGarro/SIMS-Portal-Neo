@@ -109,7 +109,7 @@
 										{% endfor %}
 									</div>
 							{% else %}
-								{{ form.start_date(class="form-control form-control-lg") }}
+								{{ form.start_date(class="form-control form-control-lg datepicker", type="date") }}
 							{% endif %}
 						</div>
 					</div>
@@ -124,7 +124,7 @@
 										{% endfor %}
 										</div>
 							{% else %}
-								{{ form.end_date(class="form-control form-control-lg") }}
+								{{ form.end_date(class="form-control form-control-lg datepicker", type="date") }}
 							{% endif %}
 					</div>
 					

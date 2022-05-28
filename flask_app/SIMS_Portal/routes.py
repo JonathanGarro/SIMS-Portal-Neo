@@ -120,7 +120,7 @@ def update_profile():
 def new_assignment():
 	form = NewAssignmentForm()
 	if form.validate_on_submit():
-		assignment = Assignment(role=form.role.data, start_date=form.start_date.data, end_date=form.end_date.data, user_id=form.user_id.data, emergency_id=form.emergency_id.data, remote=form.remote.data, assignment_details=form.assignment_details.data)
+		assignment = Assignment(user_id=form.user_id.data.id, emergency_id=form.emergency_id.data.id,start_date=form.start_date.data, end_date=form.end_date.data, role=form.role.data, assignment_details=form.assignment_details.data, remote=form.remote.data)
 		print(assignment)
 		db.session.add(assignment)
 		db.session.commit()
