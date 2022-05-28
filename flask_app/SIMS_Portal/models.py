@@ -12,6 +12,7 @@ def load_user(user_id):
 
 class NationalSociety(db.Model):
 	__tablename__ = 'nationalsociety'
+	
 	id = db.Column(db.Integer, primary_key=True)
 	
 	ns_name = db.Column(db.String(120), nullable=False)
@@ -28,6 +29,7 @@ class NationalSociety(db.Model):
 
 class User(db.Model, UserMixin):
 	__tablename__ = 'user'
+	
 	id = db.Column(db.Integer, primary_key=True)
 	
 	firstname = db.Column(db.String(40), nullable=False)
@@ -61,6 +63,7 @@ class User(db.Model, UserMixin):
 
 class Assignment(db.Model):
 	__tablename__ = 'assignment'
+	
 	id = db.Column(db.Integer, primary_key=True)
 	
 	role = db.Column(db.String(100))
@@ -80,6 +83,7 @@ class Assignment(db.Model):
 
 class Emergency(db.Model):
 	__tablename__ = 'emergency'
+	
 	id = db.Column(db.Integer, primary_key=True)
 	
 	emergency_name = db.Column(db.String(100), nullable=False)
@@ -102,6 +106,7 @@ class Emergency(db.Model):
 
 class EmergencyType(db.Model):
 	__tablename__ = 'emergencytype'
+	
 	id = db.Column(db.Integer, primary_key=True)
 	
 	emergency_type_go_id = db.Column(db.Integer)
@@ -114,6 +119,7 @@ class EmergencyType(db.Model):
 
 class Portfolio(db.Model):
 	__tablename__ = 'portfolio'
+	
 	id = db.Column(db.Integer, primary_key=True)
 	
 	title = db.Column(db.String(200), nullable=False)
