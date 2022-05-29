@@ -64,7 +64,12 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-	ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==current_user.id).with_entities(NationalSociety.ns_name).one()[0]
+	try:
+		ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==current_user.id).with_entities(NationalSociety.ns_name).first()[0]	
+	except:
+		ns_association = 'None' 
+	
+	# ns_association = 'American Red Cross'
 	print(f"User ID is {current_user.id}")
 	print(f"the query sent to the database is: {ns_association}")
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
@@ -87,6 +92,10 @@ def save_picture(form_picture):
 @login_required
 def update_profile():
 	form = UpdateAccountForm()
+	try:
+		ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==current_user.id).with_entities(NationalSociety.ns_name).first()[0]	
+	except:
+		ns_association = 'None'
 	if form.validate_on_submit():
 		if form.picture.data:
 			picture_file = save_picture(form.picture.data)
@@ -95,7 +104,7 @@ def update_profile():
 		current_user.lastname = form.lastname.data
 		current_user.email = form.email.data
 		current_user.job_title = form.job_title.data
-		# current_user.ns_id = form.ns_id.data
+		current_user.ns_id = form.ns_id.data.ns_go_id
 		# current_user.bio = form.bio.data
 		# current_user.birthday = form.birthday.data
 		# current_user.molnix_id = form.molnix_id.data
@@ -116,7 +125,7 @@ def update_profile():
 		# form.roles.data = current_user.roles
 		# form.languages.data = current_user.languages
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
-	return render_template('profile_edit.html', title='Profile', profile_picture=profile_picture, form=form)
+	return render_template('profile_edit.html', title='Profile', profile_picture=profile_picture, form=form,ns_association=ns_association)
 	
 @app.route('/assignment/new', methods=['GET', 'POST'])
 @login_required

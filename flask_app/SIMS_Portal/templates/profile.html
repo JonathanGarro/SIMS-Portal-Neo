@@ -1,6 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container">
+	<div class="" id="hideMe">
+		{% with messages = get_flashed_messages(with_categories=true) %}
+   			{% if messages %}
+	   			{% for category, message in messages %}
+		   			<div class="alert alert-{{ category }}">
+			   			{{ message }} 
+		   			</div>
+	   			{% endfor %}
+   			{% endif %}
+		{% endwith %}
+	</div>
 	<div class="row mb-5">
 		<div class="col col-md-4 rounded rounded-3">
 			<div class="card border-0 p-4 bg-light">
