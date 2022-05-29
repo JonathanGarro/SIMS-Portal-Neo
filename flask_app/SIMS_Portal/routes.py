@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from flask import request, render_template, url_for, flash, redirect
 from SIMS_Portal import app, db, bcrypt
-from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio
+from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType
 from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
@@ -154,22 +154,24 @@ def new_assignment():
 @login_required
 def view_emergency(id):
 	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
-	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info)
+	# emergency_type = db.session.query(Emergency, EmergencyType).join(EmergencyType, EmergencyType.emergency_type_go_id == Emergency.emergency_type_id).first()
+	
+	emergency_type = db.engine.execute("SELECT * FROM emergency JOIN emergencytype ON emergencytype.id = emergency.emergency_type_id WHERE emergency.id = :id", {'id': id})
+	emergency_type_name = [row.emergency_type_name for row in emergency_type]
+	print(emergency_type_name)
+	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0])
 
 @app.route('/emergency/new', methods=['GET', 'POST'])
 @login_required
 def new_emergency():
 	form = NewEmergencyForm()
 	if form.validate_on_submit():
-		emergency = Emergency(emergency_name=form.emergency_name.data, emergency_location_id=form.emergency_location_id.data.ns_go_id, emergency_type_id=form.emergency_type_id.data.emergency_type_go_id, emergency_glide=form.emergency_glide.data, emergency_go_id=form.emergency_go_id.data, activation_details=form.activation_details.data)
+		emergency = Emergency(emergency_name=form.emergency_name.data, emergency_location_id=form.emergency_location_id.data.ns_go_id, emergency_type_id=form.emergency_type_id.data.id, emergency_glide=form.emergency_glide.data, emergency_go_id=form.emergency_go_id.data, activation_details=form.activation_details.data)
 		db.session.add(emergency)
 		db.session.commit()
 		flash('New emergency successfully created.', 'success')
 		return redirect(url_for('dashboard'))
 	return render_template('create_emergency.html', title='Create New Emergency', form=form)
-
-
-
 
 
 

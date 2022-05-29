@@ -61,8 +61,8 @@ class NewAssignmentForm(FlaskForm):
 	
 class NewEmergencyForm(FlaskForm):
 	emergency_name = StringField('Emergency Name', validators=[DataRequired(), Length(min=5, max=100)])
-	emergency_location_id = QuerySelectField('Affected Country (Primary)', query_factory=lambda:NationalSociety.query.all(), get_label='country_name', allow_blank=True)
-	emergency_type_id = QuerySelectField('Emergency Type', query_factory=lambda:EmergencyType.query.all(), get_label='emergency_type_name', allow_blank=True)
+	emergency_location_id = QuerySelectField('Affected Country (Primary)', query_factory=lambda:NationalSociety.query.all(), get_label='country_name', allow_blank=True, validators=[DataRequired()])
+	emergency_type_id = QuerySelectField('Emergency Type', query_factory=lambda:EmergencyType.query.all(), get_label='emergency_type_name', allow_blank=True, validators=[DataRequired()])
 	emergency_glide = StringField('GLIDE Number')
 	emergency_go_id = IntegerField('GO ID Number')
 	activation_details = TextAreaField('SIMS Activation Details')
