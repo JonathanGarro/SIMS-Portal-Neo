@@ -46,7 +46,7 @@ class User(db.Model, UserMixin):
 	languages = db.Column(db.String(1000))
 	image_file = db.Column(db.String(20), nullable=False, default='default.png')
 	
-	ns_id = db.Column(db.Integer, ForeignKey('nationalsociety.id'))
+	ns_id = db.Column(db.Integer, ForeignKey('nationalsociety.ns_go_id'))
 	
 	assignments = db.relationship('Assignment', backref='assigned_member')
 	products = db.relationship('Portfolio', backref='creator', lazy=True)

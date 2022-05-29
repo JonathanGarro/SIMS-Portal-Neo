@@ -64,7 +64,8 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-	ns_association = User.query.join(NationalSociety, User.ns_id==NationalSociety.ns_go_id).filter(User.id==current_user.id).first()
+	ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==current_user.id).with_entities(NationalSociety.ns_name).one()[0]
+	print(f"User ID is {current_user.id}")
 	print(f"the query sent to the database is: {ns_association}")
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
 	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association)
@@ -92,7 +93,7 @@ def update_profile():
 			current_user.image_file = picture_file
 		current_user.firstname = form.firstname.data
 		current_user.lastname = form.lastname.data
-		# current_user.email = form.email.data
+		current_user.email = form.email.data
 		current_user.job_title = form.job_title.data
 		# current_user.ns_id = form.ns_id.data
 		# current_user.bio = form.bio.data
@@ -102,11 +103,11 @@ def update_profile():
 		# current_user.languages = form.languages.data
 		db.session.commit()
 		flash('Your account has been updated!', 'success')
-		return redirect(url_for('update_profile'))
+		return redirect(url_for('profile'))
 	elif request.method == 'GET':
 		form.firstname.data = current_user.firstname
 		form.lastname.data = current_user.lastname
-		# form.email.data = current_user.email
+		form.email.data = current_user.email
 		form.job_title.data = current_user.job_title
 		# form.ns_id.data = current_user.ns_id
 		# form.bio.data = current_user.bio
