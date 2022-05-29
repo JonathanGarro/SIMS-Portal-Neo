@@ -124,6 +124,26 @@
 					</div>
 				</div>
 				<div class="row">
+
+						<div class="form-group pb-4">
+							{{ form.bio.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.bio.errors %}
+								{{ form.bio(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.bio.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.bio(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+
+					
+				</div>
+
+				<div class="row">
 					<div class="form-group pb-4">
 						{{ form.picture.label(class="form-control-label pb-2 text-danger") }}<br>
 						{{ form.picture(class="form-control-file") }}

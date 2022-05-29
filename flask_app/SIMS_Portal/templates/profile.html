@@ -16,7 +16,7 @@
 		<div class="col col-md-4 rounded rounded-3">
 			<div class="card border-0 p-4 bg-light">
 				<div class="row">
-					<img src="{{ profile_picture }}" class="" style="object-fit:none;object-position:center;width:100%;padding-bottom:30px;">
+					<img src="{{ profile_picture }}" class="img-fluid mb-4" >
 				</div>
 				<div class="row">
 					<h3 class="text-danger">{{ current_user.firstname }} {{ current_user.lastname }}</h3>
@@ -38,31 +38,44 @@
 			</div>
 		</div>
 		<div class="col mx-4">
-			<h4 class="mb-3">Operations Supported</h4>
-			<table class="table">
-			  <thead class="">
-				<tr>
-				  <th>Event</th>
-				  <th>Role</th>
-				  <th>Start Date</th>
+			<div class='mb-5'>
+				<h4 class="mb-3 text-danger">About {{ user_info.firstname }}</h4>
+				{{ user_info.bio }}
+			</div>
+			<div class='mb-5'>
+				<h4 class="mb-3 text-danger">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h4>
+				{% if deployment_history_count == 0 %}
+					No deployments yet.
+				{% else %}
+				<table class="table">
+			  	<thead class="">
+					<tr>
+				  	<th>Event</th>
+				  	<th>Role</th>
+				  	<th>Start Date</th>
+				
+					</tr>
+			  	</thead>
+			  	<tbody>
+				  	{% for assignment in assignment_history %}
+				  	<tr>
+						<td class="fw-bold"><a href="#" class="link-danger">{{assignment.Emergency.emergency_name}}</a></td>
+						<td>{{assignment.Assignment.role}}</td>
+						<td>{{assignment.Assignment.start_date}}</td>  
+				  	</tr>
+				  	{% endfor %}
+			  	</tbody>
+				</table>
+				{% endif %}
+			</div>
+			<div class='mb-5'>
+				<h4 class="mb-3 text-danger">Portfolio Highlights</h4>
+				PLACEHOLDER
+			</div>
+			<div class='mb-3'>
+			<h4 class="mb-3 text-danger">Achievements</h4>
 			
-				</tr>
-			  </thead>
-			  <tbody>
-				  {#
-				  {% for assignment in assignments %}
-				  <tr>
-					<td class="fw-bold"><a href="/view/emergency/{{assignment.emergency_id}}" class="link-danger">{{assignment.emergency_name}}</a></td>
-					<td>{{assignment.role}}</td>
-					<td>{{assignment.start_date}}</td>  
-				  </tr>
-				  {% endfor %}
-				  #}
-			  </tbody>
-			</table>
-			<h4 class="mt-5 mb-3">Portfolio Highlights</h4>
-			PLACEHOLDER
-			<h4 class="mt-5 mb-3">Achievements</h4>
+			</div>
 
 		</div>
 		

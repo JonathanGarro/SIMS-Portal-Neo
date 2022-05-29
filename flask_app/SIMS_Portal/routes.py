@@ -64,16 +64,22 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
+	user_info = User.query.filter(User.id==current_user.id).first()
 	try:
 		ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==current_user.id).with_entities(NationalSociety.ns_name).first()[0]	
 	except:
 		ns_association = 'None' 
 	
-	# ns_association = 'American Red Cross'
-	print(f"User ID is {current_user.id}")
-	print(f"the query sent to the database is: {ns_association}")
+	try:
+		assignment_history = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id== User.id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(User.id==current_user.id).all()
+	except:
+		pass
+	deployment_history_count = len(assignment_history)
+	print(deployment_history_count)
+	
+	print(user_info)
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
-	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association)
+	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count)
 
 def save_picture(form_picture):
 	random_hex = secrets.token_hex(8)
@@ -104,8 +110,11 @@ def update_profile():
 		current_user.lastname = form.lastname.data
 		current_user.email = form.email.data
 		current_user.job_title = form.job_title.data
-		current_user.ns_id = form.ns_id.data.ns_go_id
-		# current_user.bio = form.bio.data
+		try:
+			current_user.ns_id = form.ns_id.data.ns_go_id
+		except:
+			pass
+		current_user.bio = form.bio.data
 		# current_user.birthday = form.birthday.data
 		# current_user.molnix_id = form.molnix_id.data
 		# current_user.roles = form.roles.data
@@ -118,8 +127,9 @@ def update_profile():
 		form.lastname.data = current_user.lastname
 		form.email.data = current_user.email
 		form.job_title.data = current_user.job_title
+		form.ns_id.data = current_user.ns_id
 		# form.ns_id.data = current_user.ns_id
-		# form.bio.data = current_user.bio
+		form.bio.data = current_user.bio
 		# form.birthday.data = current_user.birthday
 		# form.molnix_id.data = current_user.molnix_id
 		# form.roles.data = current_user.roles
@@ -145,9 +155,10 @@ def new_assignment():
 def new_emergency():
 	form = NewEmergencyForm()
 	if form.validate_on_submit():
-		emergency = Emergency(emergency_name=form.emergency_name.data, emergency_location_id=form.emergency_location_id.data, emergency_type_id=form.emergency_type_id.data, emergency_glide=form.emergency_glide.data, emergency_go_id=form.emergency_go_id.data, activation_details=form.activation_details.data)
+		emergency = Emergency(emergency_name=form.emergency_name.data, emergency_location_id=form.emergency_location_id.data.ns_go_id, emergency_type_id=form.emergency_type_id.data.emergency_type_go_id, emergency_glide=form.emergency_glide.data, emergency_go_id=form.emergency_go_id.data, activation_details=form.activation_details.data)
 		db.session.add(emergency)
 		db.session.commit()
+		flash('New emergency successfully created.', 'success')
 		return redirect(url_for('dashboard'))
 	return render_template('create_emergency.html', title='Create New Emergency', form=form)
 
