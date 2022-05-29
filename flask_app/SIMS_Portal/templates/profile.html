@@ -59,7 +59,7 @@
 			  	<tbody>
 				  	{% for assignment in assignment_history %}
 				  	<tr>
-						<td class="fw-bold"><a href="#" class="link-danger">{{assignment.Emergency.emergency_name}}</a></td>
+						<td class="fw-bold"><a href="/emergency/{{assignment.Emergency.id}}" class="link-danger">{{assignment.Emergency.emergency_name}}</a></td>
 						<td>{{assignment.Assignment.role}}</td>
 						<td>{{assignment.Assignment.start_date}}</td>  
 				  	</tr>

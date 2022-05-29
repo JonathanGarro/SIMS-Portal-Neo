@@ -150,6 +150,12 @@ def new_assignment():
 		return redirect(url_for('dashboard'))
 	return render_template('create_assignment.html', title='New Assignment', form=form)
 
+@app.route('/emergency/<int:id>', methods=['GET', 'POST'])
+@login_required
+def view_emergency(id):
+	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
+	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info)
+
 @app.route('/emergency/new', methods=['GET', 'POST'])
 @login_required
 def new_emergency():

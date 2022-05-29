@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col col-md-4">
+			<div class="card border-0 p-4 bg-light">
+				<h2 class="text-danger mb-1">{{ emergency_info.emergency_name}}</h2>
+				<h4 class="text-secondary mb-4">EMERGENCY TYPE HERE</h4>
+				<div class="list-group">
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Log New Assignment</a>
+					  <a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
+					  <a href="https://go.ifrc.org/emergencies/{{ emergency_info.emergency_go_id }}" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
+					  <a href="#" class="list-group-item list-group-item-action text-secondary">Edit Emergency</a>
+					  <a href="#" class="list-group-item list-group-item-action text-danger">Delete Emergency</a>
+				</div>
+			</div>
+			<div class="card border-0 p-4 bg-light">
+				<h5 class="text-secondary py-3">Response Tools</h5>
+				<div class="row justify-content-center">
+					<div class="col" align="center"><img src="/static/assets/img/slack.png" height="50px"></div>
+					<div class="col" align="center"><img src="/static/assets/img/dropbox.png" height="50px"></div>
+					<div class="col" align="center"><img src="/static/assets/img/trello.png" height="50px"></div>
+				</div>
+			</div>
+		</div>
+	
+		<div class="col mx-4">
+			<h3 class="text-danger py-4">Response Overview</h3>
+			<h5>Activation Details</h5>
+			<p class="pb-3">{{emergency_info.activation_details}}</p>
+
+		</div>
+	</div>
+	
+</div>
+{% endblock content %}
