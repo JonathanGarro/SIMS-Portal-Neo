@@ -126,7 +126,7 @@ class Portfolio(db.Model):
 	type = db.Column(db.String(100), nullable=False)
 	description = db.Column(db.Text)
 	final_file_location = db.Column(db.String(100), nullable=False)
-	asset_file_location = db.Column(db.String(100), nullable=False)
+	asset_file_location = db.Column(db.String(100))
 	
 	creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	emergency_id = db.Column(db.Integer, ForeignKey('emergency.id'))
@@ -135,5 +135,5 @@ class Portfolio(db.Model):
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
 
 	def __repr__(self):
-		return f"Portfolio('{self.title}','{self.type}','{self.description}','{self.file_location}','{self.creator_id}')"
+		return f"Portfolio('{self.title}','{self.type}','{self.description}','{self.final_file_location}','{self.creator_id}')"
 

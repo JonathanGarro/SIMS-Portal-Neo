@@ -5,7 +5,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Integ
 from wtforms_sqlalchemy.fields import QuerySelectField
 from flask_sqlalchemy import SQLAlchemy
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from SIMS_Portal.models import User, Emergency, NationalSociety, EmergencyType
+from SIMS_Portal.models import User, Emergency, NationalSociety, EmergencyType, Portfolio
 
 def get_users():
 	return User.query.all()
@@ -68,6 +68,14 @@ class NewEmergencyForm(FlaskForm):
 	activation_details = TextAreaField('SIMS Activation Details')
 	submit = SubmitField('Create Emergency')
 
+class PortfolioUploadForm(FlaskForm):
+	title = StringField('Product Title', validators=[DataRequired()])
+	emergency_id = QuerySelectField('Emergency', query_factory=lambda:Emergency.query.all(), get_label='emergency_name', allow_blank=True)
+	creator_id = QuerySelectField('Creator', query_factory=lambda:User.query.filter_by(status='Active'), get_label='fullname', allow_blank=True)
+	description = TextAreaField('Description')
+	type = SelectField('File Type', choices=['', 'Map', 'Infographic', 'Dashboard', 'Mobile Data Collection', 'Assessment', 'Report / Analysis', 'Other'])
+	file = FileField('Attach File', validators=[FileAllowed(['jpg', 'png', 'pdf', 'xls', 'xlsm', 'xltx', 'txt', 'doc', 'docxs' 'csv', 'shp', 'ai', 'id'])])
+	submit = SubmitField('Upload SIMS Product')
 
 
 

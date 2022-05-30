@@ -4,7 +4,7 @@ from PIL import Image
 from flask import request, render_template, url_for, flash, redirect
 from SIMS_Portal import app, db, bcrypt
 from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType
-from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm
+from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm, PortfolioUploadForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
 
@@ -71,28 +71,37 @@ def profile():
 		ns_association = 'None' 
 	
 	try:
-		assignment_history = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id== User.id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(User.id==current_user.id).all()
+		assignment_history = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id==User.id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(User.id==current_user.id).all()
 	except:
 		pass
 	deployment_history_count = len(assignment_history)
-	print(deployment_history_count)
-	
-	print(user_info)
-	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
-	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count)
 
-def save_picture(form_picture):
-	random_hex = secrets.token_hex(8)
-	filename, file_ext = os.path.splitext(form_picture.filename)
-	picture_filename = random_hex + file_ext
-	picture_path = os.path.join(app.root_path, 'static/assets/img/avatars', picture_filename)
+	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==User.id).filter(User.id==current_user.id).all()
+	print(user_portfolio)
 	
-	output_size = (400, 400)
-	resized_image = Image.open(form_picture)
-	resized_image.thumbnail(output_size)
-	resized_image.save(picture_path)
+	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
+	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio)
 	
-	return picture_filename
+@app.route('/profile/view/<int:id>')
+def view_profile(id):
+	id = id
+	print(id)
+	user_info = User.query.filter(User.id==id).first()
+	try:
+		ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==id).with_entities(NationalSociety.ns_name).first()[0]	
+	except:
+		ns_association = 'None' 
+	try:
+		assignment_history = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id==User.id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(User.id==id).all()
+	except:
+		pass
+	deployment_history_count = len(assignment_history)
+
+	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==id).filter(User.id==id).all()
+	print(user_portfolio)
+	
+	profile_picture = url_for('static', filename='assets/img/avatars/' + user_info.image_file)
+	return render_template('profile_member.html', title='Member Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio)
 
 @app.route('/profile_edit', methods=['GET', 'POST'])
 @login_required
@@ -158,7 +167,6 @@ def view_emergency(id):
 	
 	emergency_type = db.engine.execute("SELECT * FROM emergency JOIN emergencytype ON emergencytype.id = emergency.emergency_type_id WHERE emergency.id = :id", {'id': id})
 	emergency_type_name = [row.emergency_type_name for row in emergency_type]
-	print(emergency_type_name)
 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0])
 
 @app.route('/emergency/new', methods=['GET', 'POST'])
@@ -173,14 +181,43 @@ def new_emergency():
 		return redirect(url_for('dashboard'))
 	return render_template('create_emergency.html', title='Create New Emergency', form=form)
 
+@app.route('/portfolio/new', methods=['GET', 'POST'])
+@login_required
+def new_portfolio():
+	form = PortfolioUploadForm()
+	if form.validate_on_submit():
+		if form.file.data:
+			file = save_portfolio(form.file.data)
+		product = Portfolio(
+			final_file_location = file, title=form.title.data, creator_id=form.creator_id.data.id, description=form.description.data, type=form.type.data, emergency_id=form.emergency_id.data.id
+		)
+		db.session.add(product)
+		db.session.commit()
+		flash('New product successfully uploaded.', 'success')
+		return redirect(url_for('dashboard'))
+	return render_template('create_portfolio.html', title='Upload New SIMS Product', form=form)
 
 
+def save_picture(form_picture):
+	random_hex = secrets.token_hex(8)
+	filename, file_ext = os.path.splitext(form_picture.filename)
+	picture_filename = random_hex + file_ext
+	picture_path = os.path.join(app.root_path, 'static/assets/img/avatars', picture_filename)
+	
+	output_size = (400, 400)
+	resized_image = Image.open(form_picture)
+	resized_image.thumbnail(output_size)
+	resized_image.save(picture_path)
+	
+	return picture_filename
 
-
-
-
-
-
-
+def save_portfolio(form_file):
+	random_hex = secrets.token_hex(8)
+	filename, file_ext = os.path.splitext(form_file.filename)
+	file_filename = random_hex + file_ext
+	file_path = os.path.join(app.root_path, 'static/assets/portfolio', file_filename)
+	form_file.save(file_path)
+	
+	return file_filename
 
 

@@ -37,34 +37,3 @@
 </script>
 </body>
 </html>
-
-{% extends "layout.html" %}
-{% block content %}
-	<script>	
-		  // Initialize the platform object:
-		  var platform = new H.service.Platform({
-			'apikey': 'r4iwZ9epdfqu8B0S5YOrP4cQM9lOb8FOd7WiJTycEC4'
-		  });
-		  
-		   const lat = 22.719568;
-		   const long = 75.857727;
-		
-		// Obtain the default map types from the platform object
-		  var maptypes = platform.createDefaultLayers();
-	
-		  // Instantiate (and display) a map object:
-		  var map = new H.Map(
-			document.getElementById('mapContainer'),
-			maptypes.vector.normal.map,
-			{
-			  zoom: 10,
-			  center: { lat: lat, lng: long }  
-			});
-			
-		var marker = new H.map.Marker({ lat: lat, lng: long });
-			
-		// Add the marker to the map:
-		map.addObject(marker);
-			
-	</script>
-{% endblock content %}

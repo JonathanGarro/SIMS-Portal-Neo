@@ -1,3 +1,3 @@
 window.setTimeout(function() {
-	$(".alert").fadeTo(500, 0) 
+	$("#alert").fadeTo(500, 0) 
 }, 6000);
