@@ -127,6 +127,7 @@ class Portfolio(db.Model):
 	description = db.Column(db.Text)
 	final_file_location = db.Column(db.String(100), nullable=False)
 	asset_file_location = db.Column(db.String(100))
+	external = db.Column(db.Boolean, default=False)
 	
 	creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	emergency_id = db.Column(db.Integer, ForeignKey('emergency.id'))

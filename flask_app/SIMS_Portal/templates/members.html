@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<h2 class="mt-5">Active Members  </h2>
+	<p class="text-secondary"><a href="/register" class="text-danger">Learn more</a> about SIMS membership</p>
+	<div class="row row-cols-5 row-cols-md-5 g-4 mt-4">
+		{% for member in members %}
+			  <div class="col d-flex align-items-stretch">
+				<div class="card">
+				  <img src="/static/assets/img/avatars/{{member.image_file}}" class="card-img-top" alt="...">
+				  <div class="card-body d-flex flex-column">
+					<h4 class="card-title mt-auto mb-4">{{member.firstname}} {{member.lastname}}</h4>
+					<h6 class="fw-bold text-danger">{{member.ns_name}}</h6>
+					{% if member.job_title %}
+						<h6>{{member.job_title}}</h6>
+					{% else %}
+						<h6> &nbsp </h6>
+					{% endif %}
+					<a href='/profile/view/{{member.user_id}}' class="btn btn-outline-danger mt-5">Profile</a>
+				  </div>
+				</div>
+			  </div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock content %}

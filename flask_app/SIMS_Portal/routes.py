@@ -12,6 +12,12 @@ from flask_login import login_user, logout_user, current_user, login_required
 def index(): 
 	return render_template('index.html')
 
+@app.route('/members')
+def members():
+	members = db.engine.execute("SELECT user.id AS user_id, user.ns_id AS user_ns_id, user.firstname, user.lastname, nationalsociety.ns_go_id, user.image_file, user.job_title, nationalsociety.ns_name FROM user  JOIN nationalsociety ON nationalsociety.ns_go_id = user.ns_id WHERE status = 'Active'")
+
+	return render_template('members.html', members=members)
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -84,8 +90,6 @@ def profile():
 	
 @app.route('/profile/view/<int:id>')
 def view_profile(id):
-	id = id
-	print(id)
 	user_info = User.query.filter(User.id==id).first()
 	try:
 		ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==id).with_entities(NationalSociety.ns_name).first()[0]	
