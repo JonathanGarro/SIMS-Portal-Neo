@@ -7,6 +7,7 @@ from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Por
 from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm, PortfolioUploadForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
+from datetime import datetime
 
 @app.route('/') 
 def index(): 
@@ -21,8 +22,13 @@ def members():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-	# user = User.query.filter_by()
-	return render_template('dashboard.html')
+	todays_date = datetime.today()
+	
+	count_active_assignments = db.engine.execute("SELECT COUNT(role) as AssignmentCount FROM assignment WHERE end_date > :todays_date", {'todays_date': todays_date}).first()
+	print(count_active_assignments)
+	active_assignments = db.engine.execute("SELECT * FROM assignment JOIN user ON user.id = assignment.user_id JOIN emergency ON emergency.id = assignment.emergency_id WHERE end_date > :todays_date", {'todays_date': todays_date})
+	
+	return render_template('dashboard.html', active_assignments=active_assignments, count_active_assignments=count_active_assignments)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

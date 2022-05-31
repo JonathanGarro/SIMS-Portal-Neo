@@ -19,7 +19,7 @@
 					<img src="{{ profile_picture }}" class="img-fluid mb-4" >
 				</div>
 				<div class="row">
-					<h3 class="text-danger">{{ current_user.firstname }} {{ current_user.lastname }}</h3>
+					<h2 class="text-danger">{{ current_user.firstname }} {{ current_user.lastname }}</h2>
 				</div>
 				<div class="row">
 					<h5 class="text-secondary mt-4">Role</h5>
@@ -44,11 +44,35 @@
 					Hi {{ current_user.firstname }}, your account is still pending approval by a SIMS administrator. 
 				</div>
 				{% endif %}
-				<h4 class="mb-3 text-danger">About {{ user_info.firstname }}</h4>
-				{{ user_info.bio }}
+				
+				{#
+				<div class="mb-3">
+					<ul class="nav justify-content-end">
+				  	<li class="nav-item">
+						<a class="nav-link text-danger" href="#">About</a>
+				  	</li>
+				  	<li class="nav-item">
+						<a class="nav-link text-danger" href="#">Operations</a>
+				  	</li>
+				  	<li class="nav-item">
+						<a class="nav-link text-danger" href="#">Portfolio</a>
+				  	</li>
+					<li class="nav-item">
+						<a class="nav-link text-danger" href="#">Achievements</a>
+					</li>
+					</ul>
+				</div>
+				#}
+				
+				<h3 class="mb-3 text-danger">About {{ user_info.firstname }}</h3>
+				{{ user_info.bio }}<br><br>
+				<h5 class="mb-3 text-danger">Skills</h5>
+				<button type="button" class="btn btn-danger">Illustrator</button>
+				<button type="button" class="btn btn-danger">InDesign</button>
+				<button type="button" class="btn btn-danger">Python</button>
 			</div>
 			<div class='mb-5'>
-				<h4 class="mb-3 text-danger">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h4>
+				<h3 class="mb-3 text-danger">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h3>
 				{% if deployment_history_count == 0 %}
 					No deployments yet.
 				{% else %}
@@ -74,7 +98,7 @@
 				{% endif %}
 			</div>
 			<div class='mb-5'>
-				<h4 class="mb-3 text-danger">Portfolio Highlights</h4>
+				<h3 class="mb-3 text-danger">Portfolio Highlights</h3>
 				<div class="row row-cols-3 row-cols-md-3 g-4 mt-4">
 				{% for product in user_portfolio %}
 					<div class="col d-flex align-items-stretch">
@@ -82,8 +106,7 @@
 					  	<img src="/static/assets/portfolio/{{product.Portfolio.final_file_location}}" class="card-img-top" alt="...">
 					  	<div class="card-body d-flex flex-column">
 							<h5 class="card-title mt-auto">{{product.Portfolio.title}}</h5>
-							<p class="card-text">{{product.Portfolio.description}}</p>
-							<a href="#" class="btn btn-danger">View</a>
+							<a href="#" class="btn btn-outline-danger mt-5">View</a>
 					  	</div>
 						</div>
 					</div>
@@ -91,7 +114,7 @@
 				</div>
 			</div>
 			<div class='mb-3'>
-			<h4 class="mb-3 text-danger">Achievements</h4>
+			<h3 class="mb-3 text-danger">Achievements</h3>
 			
 			</div>
 
