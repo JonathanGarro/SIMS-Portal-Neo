@@ -10,6 +10,16 @@ from sqlalchemy import Column, ForeignKey, Integer, Table
 def load_user(user_id):
 	return User.query.get(int(user_id))
 
+user_skill = db.Table('user_skill', 
+	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+	db.Column('skill_id', db.Integer, db.ForeignKey('skill.id'))
+)
+
+user_language = db.Table('user_language', 
+	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+	db.Column('skill_id', db.Integer, db.ForeignKey('language.id'))
+)
+
 class NationalSociety(db.Model):
 	__tablename__ = 'nationalsociety'
 	
@@ -45,11 +55,18 @@ class User(db.Model, UserMixin):
 	roles = db.Column(db.String(1000))
 	languages = db.Column(db.String(1000))
 	image_file = db.Column(db.String(20), nullable=False, default='default.png')
+	twitter = db.Column(db.String(120))
+	slack_id = db.Column(db.String(120))
+	github = db.Column(db.String(120))
+	messaging_number_country_code = db.Column(db.Integer)
+	messaging_number = db.Column(db.Integer)
 	
 	ns_id = db.Column(db.Integer, ForeignKey('nationalsociety.ns_go_id'))
 	
 	assignments = db.relationship('Assignment', backref='assigned_member')
 	products = db.relationship('Portfolio', backref='creator', lazy=True)
+	skills = db.relationship('Skill', secondary='user_skill', backref='members_with_skill')
+	languages = db.relationship('Language', secondary='user_language', backref='members_with_language')
 	
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
@@ -137,4 +154,50 @@ class Portfolio(db.Model):
 
 	def __repr__(self):
 		return f"Portfolio('{self.title}','{self.type}','{self.description}','{self.final_file_location}','{self.creator_id}')"
+
+class Alert(db.Model):
+	__tablename__ = 'alert'
+	
+	id = db.Column(db.Integer, primary_key=True)
+	
+	event_name = db.Column(db.String)
+	event_go_id = db.Column(db.Integer)
+	event_date = db.Column(db.DateTime)
+	role_profile = db.Column(db.String)
+	alert_date = db.Column(db.DateTime)
+	alert_id = db.Column(db.Integer)
+	alert_status = db.Column(db.String)
+	location = db.Column(db.String)
+	
+	created_at = db.Column(db.DateTime, server_default=func.now())
+	updated_at = db.Column(db.DateTime, onupdate=func.now())
+	
+	def __repr__(self):
+		return f"Alert('{self.event_name}','{self.event_go_id}','{self.event_date}','{self.event_profile}','{self.alert_date}','{self.alert_id}','{self.alert_status}','{self.location}')"
+
+class Skill(db.Model):
+	__tablename__ = 'skill'
+	
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String)
+
+class Language(db.Model):
+	__tablename__ = 'language'
+	
+	id = db.Column(db.Integer, primary_key=True)
+	
+	name = db.Column(db.String)
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
