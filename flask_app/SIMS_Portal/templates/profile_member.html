@@ -42,7 +42,11 @@
 		<div class="col mx-4">
 			<div class='mb-5'>
 				<h4 class="mb-3 text-danger">About {{ user_info.firstname }}</h4>
-				{{ user_info.bio }}
+				{{ user_info.bio }}<br><br>
+				<h5 class="mb-3 text-danger">Skills</h5>
+				{% for skill in skills_list %}
+					<button type="button" class="btn btn-danger">{{skill.name}}</button>
+				{% endfor %}
 			</div>
 			<div class='mb-5'>
 				<h4 class="mb-3 text-danger">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h4>

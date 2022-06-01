@@ -104,12 +104,10 @@ def view_profile(id):
 	except:
 		pass
 	deployment_history_count = len(assignment_history)
-
 	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==id).filter(User.id==id).all()
-	print(user_portfolio)
-	
+	skills_list = db.engine.execute("SELECT * FROM user JOIN user_skill ON user.id = user_skill.user_id JOIN skill ON skill.id = user_skill.skill_id WHERE user.id=:member_id", {'member_id': id})
 	profile_picture = url_for('static', filename='assets/img/avatars/' + user_info.image_file)
-	return render_template('profile_member.html', title='Member Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio)
+	return render_template('profile_member.html', title='Member Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list)
 
 @app.route('/profile_edit', methods=['GET', 'POST'])
 @login_required
