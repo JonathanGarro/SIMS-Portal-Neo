@@ -5,7 +5,7 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Integ
 from wtforms_sqlalchemy.fields import QuerySelectField
 from flask_sqlalchemy import SQLAlchemy
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from SIMS_Portal.models import User, Emergency, NationalSociety, EmergencyType, Portfolio, Skill
+from SIMS_Portal.models import User, Emergency, NationalSociety, EmergencyType, Portfolio, Skill, Language
 
 def get_users():
 	return User.query.all()
@@ -42,7 +42,7 @@ class UpdateAccountForm(FlaskForm):
 	twitter = StringField('Twitter Handle')
 	github = StringField('Github Username')
 	roles = StringField('SIMS Roles')
-	languages = StringField('Languages')
+	languages = SelectMultipleField('Languages', choices=lambda:[language.name for language in Language.query.all()])
 	skills = SelectMultipleField('Skills', choices=lambda:[skill.name for skill in Skill.query.all()])
 	submit = SubmitField('Update Profile')
 	

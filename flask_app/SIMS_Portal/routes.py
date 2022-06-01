@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from flask import request, render_template, url_for, flash, redirect
 from SIMS_Portal import app, db, bcrypt
-from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill
+from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language
 from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm, PortfolioUploadForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
@@ -87,10 +87,10 @@ def profile():
 		pass
 	deployment_history_count = len(assignment_history)
 	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==User.id).filter(User.id==current_user.id).all()
-	print(user_portfolio)
 	skills_list = db.engine.execute("SELECT * FROM user JOIN user_skill ON user.id = user_skill.user_id JOIN skill ON skill.id = user_skill.skill_id WHERE user.id=:current_user", {'current_user': current_user.id})
+	languages_list = db.engine.execute("SELECT * FROM user JOIN user_language ON user.id = user_language.user_id JOIN language ON language.id = user_language.language_id WHERE user.id=:current_user", {'current_user': current_user.id})
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
-	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list)
+	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list)
 	
 @app.route('/profile/view/<int:id>')
 def view_profile(id):
@@ -136,7 +136,8 @@ def update_profile():
 		for skill in form.skills.data:
 			current_user.skills.append(Skill.query.filter(Skill.name==skill).one())
 		# current_user.roles = form.roles.data
-		# current_user.languages = form.languages.data
+		for language in form.languages.data:
+			current_user.languages.append(Language.query.filter(Language.name==language).one())
 		db.session.commit()
 		flash('Your account has been updated!', 'success')
 		return redirect(url_for('profile'))

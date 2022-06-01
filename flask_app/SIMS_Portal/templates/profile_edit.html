@@ -178,20 +178,34 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group pb-4">
-							<div class="form-group pb-4">
-								{{ form.skills.label(class="form-control-label pb-2 text-danger") }}
-								
-								{% if form.skills.errors %}
-									{{ form.skills(class="form-control form-control-lg is-invalid") }}
-										<div class="invalid-feedback">
-											{% for error in form.skills.errors %}
-												<span>{{ error }}</span>
-											{% endfor %}
-										</div>
-								{% else %}
-									{{ form.skills(class="form-control form-control-lg") }}
-								{% endif %}
-							</div>
+							{{ form.skills.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.skills.errors %}
+								{{ form.skills(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.skills.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.skills(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.languages.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.languages.errors %}
+								{{ form.languages(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.languages.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.languages(class="form-control form-control-lg") }}
+							{% endif %}
 						</div>
 					</div>
 				</div>
