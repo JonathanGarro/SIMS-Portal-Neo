@@ -32,7 +32,7 @@
 				<div class="list-group mt-5">
 			  		<a href="{{ url_for('update_profile') }}" class="list-group-item list-group-item-action text-secondary">Update Profile</a>
 			  		<a href="#" class="list-group-item list-group-item-action text-secondary">Assign to Disaster</a>
-			  		<a href="#" class="list-group-item list-group-item-action text-secondary">Add to Portfolio</a>
+			  		<a href="{{ url_for('new_portfolio') }}" class="list-group-item list-group-item-action text-secondary">Add to Portfolio</a>
 			  		<a href="#" class="list-group-item list-group-item-action text-danger">Delete Member</a>
 				</div>
 			</div>
@@ -67,9 +67,9 @@
 				<h3 class="mb-3 text-danger">About {{ user_info.firstname }}</h3>
 				{{ user_info.bio }}<br><br>
 				<h5 class="mb-3 text-danger">Skills</h5>
-				<button type="button" class="btn btn-danger">Illustrator</button>
-				<button type="button" class="btn btn-danger">InDesign</button>
-				<button type="button" class="btn btn-danger">Python</button>
+				{% for skill in skills_list %}
+					<button type="button" class="btn btn-danger">{{skill.name}}</button>
+				{% endfor %}
 			</div>
 			<div class='mb-5'>
 				<h3 class="mb-3 text-danger">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h3>

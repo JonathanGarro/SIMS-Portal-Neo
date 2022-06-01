@@ -25,7 +25,6 @@ def dashboard():
 	todays_date = datetime.today()
 	
 	count_active_assignments = db.engine.execute("SELECT COUNT(role) as AssignmentCount FROM assignment WHERE end_date > :todays_date", {'todays_date': todays_date}).first()
-	print(count_active_assignments)
 	active_assignments = db.engine.execute("SELECT * FROM assignment JOIN user ON user.id = assignment.user_id JOIN emergency ON emergency.id = assignment.emergency_id WHERE end_date > :todays_date", {'todays_date': todays_date})
 	
 	return render_template('dashboard.html', active_assignments=active_assignments, count_active_assignments=count_active_assignments)
@@ -87,12 +86,11 @@ def profile():
 	except:
 		pass
 	deployment_history_count = len(assignment_history)
-
 	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==User.id).filter(User.id==current_user.id).all()
 	print(user_portfolio)
-	
+	skills_list = db.engine.execute("SELECT * FROM user JOIN user_skill ON user.id = user_skill.user_id JOIN skill ON skill.id = user_skill.skill_id WHERE user.id=:current_user", {'current_user': current_user.id})
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
-	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio)
+	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list)
 	
 @app.route('/profile/view/<int:id>')
 def view_profile(id):
@@ -204,7 +202,7 @@ def new_portfolio():
 		db.session.add(product)
 		db.session.commit()
 		flash('New product successfully uploaded.', 'success')
-		return redirect(url_for('dashboard'))
+		return redirect(url_for('profile'))
 	return render_template('create_portfolio.html', title='Upload New SIMS Product', form=form)
 
 
