@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from flask import request, render_template, url_for, flash, redirect
 from SIMS_Portal import app, db, bcrypt
-from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType
+from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill
 from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm, PortfolioUploadForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
@@ -131,7 +131,10 @@ def update_profile():
 			pass
 		current_user.bio = form.bio.data
 		# current_user.birthday = form.birthday.data
-		# current_user.molnix_id = form.molnix_id.data
+		current_user.twitter = form.twitter.data
+		current_user.github = form.github.data
+		for skill in form.skills.data:
+			current_user.skills.append(Skill.query.filter(Skill.name==skill).one())
 		# current_user.roles = form.roles.data
 		# current_user.languages = form.languages.data
 		db.session.commit()
@@ -145,8 +148,9 @@ def update_profile():
 		form.ns_id.data = current_user.ns_id
 		# form.ns_id.data = current_user.ns_id
 		form.bio.data = current_user.bio
+		form.github.data = current_user.github
 		# form.birthday.data = current_user.birthday
-		# form.molnix_id.data = current_user.molnix_id
+		form.twitter.data = current_user.twitter
 		# form.roles.data = current_user.roles
 		# form.languages.data = current_user.languages
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)

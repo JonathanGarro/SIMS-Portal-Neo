@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, DateField, DateTimeField, TextAreaField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, DateField, DateTimeField, TextAreaField, SelectField, SelectMultipleField
 from wtforms_sqlalchemy.fields import QuerySelectField
 from flask_sqlalchemy import SQLAlchemy
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from SIMS_Portal.models import User, Emergency, NationalSociety, EmergencyType, Portfolio
+from SIMS_Portal.models import User, Emergency, NationalSociety, EmergencyType, Portfolio, Skill
 
 def get_users():
 	return User.query.all()
@@ -39,9 +39,12 @@ class UpdateAccountForm(FlaskForm):
 	bio = TextAreaField('Short Bio')
 	birthday = DateField('Birthday')
 	molnix_id = IntegerField('Molnix ID')
+	twitter = StringField('Twitter Handle')
+	github = StringField('Github Username')
 	roles = StringField('SIMS Roles')
 	languages = StringField('Languages')
-	submit = SubmitField('Update')
+	skills = SelectMultipleField('Skills', choices=lambda:[skill.name for skill in Skill.query.all()])
+	submit = SubmitField('Update Profile')
 	
 	def validate_email(self, email):
 		if email.data != current_user.email:
@@ -77,17 +80,6 @@ class PortfolioUploadForm(FlaskForm):
 	file = FileField('Attach File', validators=[FileAllowed(['jpg', 'png', 'pdf', 'xls', 'xlsm', 'xltx', 'txt', 'doc', 'docxs' 'csv', 'shp', 'ai', 'zip'])])
 	external = BooleanField('Share Publicly')
 	submit = SubmitField('Upload SIMS Product')
-
-
-
-
-
-
-
-
-
-
-
 
 
 

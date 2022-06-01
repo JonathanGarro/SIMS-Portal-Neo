@@ -29,6 +29,14 @@
 					<h5 class="text-secondary mt-4">National Society</h5>
 					<h4>{{ ns_association }}</h4>
 				</div>
+				<div class="row">
+					<div>
+					<h5 class="text-secondary mt-4">Skills</h5>
+					{% for skill in skills_list %}
+						<button type="button" class="btn btn-danger btn-sm mb-2">{{skill.name}}</button>
+					{% endfor %}
+					</div>
+				</div>
 				<div class="list-group mt-5">
 			  		<a href="{{ url_for('update_profile') }}" class="list-group-item list-group-item-action text-secondary">Update Profile</a>
 			  		<a href="#" class="list-group-item list-group-item-action text-secondary">Assign to Disaster</a>
@@ -65,11 +73,7 @@
 				#}
 				
 				<h3 class="mb-3 text-danger">About {{ user_info.firstname }}</h3>
-				{{ user_info.bio }}<br><br>
-				<h5 class="mb-3 text-danger">Skills</h5>
-				{% for skill in skills_list %}
-					<button type="button" class="btn btn-danger">{{skill.name}}</button>
-				{% endfor %}
+				{{ user_info.bio }}
 			</div>
 			<div class='mb-5'>
 				<h3 class="mb-3 text-danger">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h3>

@@ -6,7 +6,7 @@
 			<div class="card border-0 p-4 bg-light">
 			
 			<div class="row">
-			<img src="{{ profile_picture }}" class="" style="object-fit:none;object-position:center;width:100%;padding-bottom:30px;">
+			<img src="{{ profile_picture }}" class="img-fluid mb-4">
 			</div>
 			<div class="row">
 				<h3 class="text-danger">{{ current_user.firstname }} {{ current_user.lastname }}</h3>
@@ -118,8 +118,40 @@
 						</div>
 					</div>
 					<div class="col">
+
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
 						<div class="form-group pb-4">
+							{{ form.twitter.label(class="form-control-label pb-2 text-danger") }}
 							
+							{% if form.twitter.errors %}
+								{{ form.twitter(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.twitter.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.twitter(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.github.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.github.errors %}
+								{{ form.github(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.github.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.github(class="form-control form-control-lg") }}
+							{% endif %}
 						</div>
 					</div>
 				</div>
@@ -141,6 +173,27 @@
 						</div>
 
 					
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group pb-4">
+							<div class="form-group pb-4">
+								{{ form.skills.label(class="form-control-label pb-2 text-danger") }}
+								
+								{% if form.skills.errors %}
+									{{ form.skills(class="form-control form-control-lg is-invalid") }}
+										<div class="invalid-feedback">
+											{% for error in form.skills.errors %}
+												<span>{{ error }}</span>
+											{% endfor %}
+										</div>
+								{% else %}
+									{{ form.skills(class="form-control form-control-lg") }}
+								{% endif %}
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<div class="row">
