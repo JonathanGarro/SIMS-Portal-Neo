@@ -17,7 +17,7 @@ user_skill = db.Table('user_skill',
 
 user_language = db.Table('user_language', 
 	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-	db.Column('skill_id', db.Integer, db.ForeignKey('language.id'))
+	db.Column('language_id', db.Integer, db.ForeignKey('language.id'))
 )
 
 class Skill(db.Model):
