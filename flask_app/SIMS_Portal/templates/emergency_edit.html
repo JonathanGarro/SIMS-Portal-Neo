@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col col-md-4">
+			<div class="card border-0 p-4 bg-light">
+				<h2 class="text-danger mb-1">EMERGENCY NAME</h2>
+				<h4 class="text-secondary mb-4">EMERGENCY TYPE</h4>
+				<div class="list-group">
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Log New Assignment</a>
+					  <a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
+					  <a href="#" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
+					  <a href="#" class="list-group-item list-group-item-action text-secondary">Edit Emergency</a>
+					  <a href="#" class="list-group-item list-group-item-action text-danger">Delete Emergency</a>
+				</div>
+			</div>
+			<div class="card border-0 p-4 bg-light">
+				<h5 class="text-secondary py-3">Response Tools</h5>
+				<div class="row justify-content-center">
+					<div class="col" align="center"><img src="/static/assets/img/icons/slack.png" height="50px"></div>
+					<div class="col" align="center"><img src="/static/assets/img/icons/dropbox.png" height="50px"></div>
+					<div class="col" align="center"><img src="/static/assets/img/icons/trello.png" height="50px"></div>
+				</div>
+			</div>
+		</div>
+	
+		<div class="col mx-4">
+			<form action="" method="POST" enctype="multipart/form-data" class="mx-auto p-4 bg-light text-light rounded-3" novalidate>
+				{{ form.hidden_tag() }}
+				<div class="row">
+					<h4 class="text-danger pb-3">Required Fields</h4>
+					  <div class="col-md-6">
+						<div class="form-group pb-4">
+							{{ form.emergency_name.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.emergency_name.errors %}
+								{{ form.emergency_name(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.emergency_name.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.emergency_name(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					  </div>
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.emergency_location_id.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.emergency_location_id.errors %}
+								{{ form.emergency_location_id(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.emergency_location_id.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.emergency_location_id(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group pb-4">
+							{{ form.emergency_type_id.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.emergency_type_id.errors %}
+								{{ form.emergency_type_id(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.emergency_type_id.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.emergency_type_id(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.emergency_glide.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.emergency_glide.errors %}
+								{{ form.emergency_glide(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.emergency_glide.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.emergency_glide(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			
+				{{ form.submit(class="btn btn-outline-danger") }}
+			</form>
+
+		</div>
+	</div>
+	
+</div>
+{% endblock content %}

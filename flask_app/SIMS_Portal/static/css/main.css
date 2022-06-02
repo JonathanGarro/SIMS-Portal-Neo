@@ -27,3 +27,7 @@
 a:link {
 	text-decoration: none;
 }
+
+.dropdown-item:active {
+background-color: red;
+}

@@ -3,8 +3,8 @@ import secrets
 from PIL import Image
 from flask import request, render_template, url_for, flash, redirect
 from SIMS_Portal import app, db, bcrypt
-from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language
-from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm, PortfolioUploadForm
+from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill
+from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm, PortfolioUploadForm, UpdateEmergencyForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime
@@ -41,8 +41,8 @@ def register():
 			hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 			user = User(firstname=form.firstname.data, lastname=form.lastname.data, email=form.email.data, password=hashed_password)
 			db.session.add(user)
-			print(user)
 			db.session.commit()
+			flash('Your account has been created.', 'success')
 			return redirect(url_for('login'))
 		# else:
 		# 	flash('There are errors in your registration details. Please correct them.', 'danger')
@@ -147,7 +147,8 @@ def update_profile():
 		form.email.data = current_user.email
 		form.job_title.data = current_user.job_title
 		form.ns_id.data = current_user.ns_id
-		# form.ns_id.data = current_user.ns_id
+		# for skill in Skill.query.filter(User.id==user_skill.user_id).select(Skill.name).all():
+		# 	form.skills.data = skill
 		form.bio.data = current_user.bio
 		form.github.data = current_user.github
 		# form.birthday.data = current_user.birthday
@@ -175,10 +176,18 @@ def new_assignment():
 def view_emergency(id):
 	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
 	# emergency_type = db.session.query(Emergency, EmergencyType).join(EmergencyType, EmergencyType.emergency_type_go_id == Emergency.emergency_type_id).first()
-	
+	deployments = db.engine.execute("SELECT * FROM assignment JOIN emergency ON emergency.id = assignment.emergency_id JOIN user ON user.id = assignment.user_id JOIN nationalsociety ON nationalsociety.id = user.ns_id WHERE emergency.id = :id", {'id': id}).all()
+	print(emergency_info)
 	emergency_type = db.engine.execute("SELECT * FROM emergency JOIN emergencytype ON emergencytype.id = emergency.emergency_type_id WHERE emergency.id = :id", {'id': id})
 	emergency_type_name = [row.emergency_type_name for row in emergency_type]
-	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0])
+	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0], deployments=deployments)
+
+@app.route('/emergency/edit/<int:id>')
+def edit_emergency(id):
+	form = UpdateEmergencyForm()
+	if form.validate_on_submit():
+		emergency.emergency_name = form.emergency_name.data
+	return render_template('emergency_edit.html', form=form)
 
 @app.route('/emergency/new', methods=['GET', 'POST'])
 @login_required
@@ -200,7 +209,7 @@ def new_portfolio():
 		if form.file.data:
 			file = save_portfolio(form.file.data)
 		product = Portfolio(
-			final_file_location = file, title=form.title.data, creator_id=form.creator_id.data.id, description=form.description.data, type=form.type.data, emergency_id=form.emergency_id.data.id
+			final_file_location = file, title=form.title.data, creator_id=form.creator_id.data.id, description=form.description.data, type=form.type.data, emergency_id=form.emergency_id.data.id, external=form.external.data
 		)
 		db.session.add(product)
 		db.session.commit()

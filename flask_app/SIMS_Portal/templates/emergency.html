@@ -17,18 +17,44 @@
 			<div class="card border-0 p-4 bg-light">
 				<h5 class="text-secondary py-3">Response Tools</h5>
 				<div class="row justify-content-center">
-					<div class="col" align="center"><img src="/static/assets/img/slack.png" height="50px"></div>
-					<div class="col" align="center"><img src="/static/assets/img/dropbox.png" height="50px"></div>
-					<div class="col" align="center"><img src="/static/assets/img/trello.png" height="50px"></div>
+					<div class="col" align="center"><img src="/static/assets/img/icons/slack.png" height="50px"></div>
+					<div class="col" align="center"><img src="/static/assets/img/icons/dropbox.png" height="50px"></div>
+					<div class="col" align="center"><img src="/static/assets/img/icons/trello.png" height="50px"></div>
 				</div>
 			</div>
 		</div>
 	
 		<div class="col mx-4">
-			<h3 class="text-danger py-4">Response Overview</h3>
-			<h5>Activation Details</h5>
+			<h3 class="text-danger">Activation Details</h3>
 			<p class="pb-3">{{emergency_info.activation_details}}</p>
-
+			<div class='mb-5'>
+				<h3 class="mb-3 text-danger">Member Support<span class='text-dark'>{{ deployment_history_count }}</span></h3>
+				{% if deployment_history_count == 0 %}
+					No deployments yet.
+				{% else %}
+				<table class="table">
+				  <thead class="">
+					<tr>
+					  <th>Member</th>
+					  <th>National Society</th>
+					  <th>Role</th>
+					  <th>Start Date</th>
+				
+					</tr>
+				  </thead>
+				  <tbody>
+					  {% for deployment in deployments %}
+					  <tr>
+						<td class="fw-bold"><a href="/profile/view/{{deployment.user_id}}" class="link-danger">{{deployment.firstname}} {{deployment.lastname}}</a></td>
+						<td>{{deployment.ns_name}}</td>
+						<td>{{deployment.role}}</td>
+						<td>{{deployment.start_date}}</td>  
+					  </tr>
+					  {% endfor %}
+				  </tbody>
+				</table>
+				{% endif %}
+			</div>
 		</div>
 	</div>
 	
