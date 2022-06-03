@@ -27,7 +27,7 @@ app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'sims_portal@dissolvingdata.com'
-app.config['MAIL_PASSWORD'] = 'buss4SAG0yuck!bork'
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_DEBUG'] = True
 mail = Mail(app)
 
