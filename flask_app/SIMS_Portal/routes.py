@@ -19,6 +19,10 @@ def members():
 
 	return render_template('members.html', members=members)
 
+@app.route('/resources')
+def resources():
+	return render_template('resources.html')
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -39,7 +43,7 @@ def register():
 	else:
 		if form.validate_on_submit():
 			hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-			user = User(firstname=form.firstname.data, lastname=form.lastname.data, email=form.email.data, password=hashed_password)
+			user = User(firstname=form.firstname.data, lastname=form.lastname.data, ns_id=form.ns_id.data.ns_go_id, email=form.email.data, password=hashed_password)
 			db.session.add(user)
 			db.session.commit()
 			flash('Your account has been created.', 'success')
@@ -106,8 +110,9 @@ def view_profile(id):
 	deployment_history_count = len(assignment_history)
 	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==id).filter(User.id==id).all()
 	skills_list = db.engine.execute("SELECT * FROM user JOIN user_skill ON user.id = user_skill.user_id JOIN skill ON skill.id = user_skill.skill_id WHERE user.id=:member_id", {'member_id': id})
+	languages_list = db.engine.execute("SELECT * FROM user JOIN user_language ON user.id = user_language.user_id JOIN language ON language.id = user_language.language_id WHERE user.id=:member_id", {'member_id': id})
 	profile_picture = url_for('static', filename='assets/img/avatars/' + user_info.image_file)
-	return render_template('profile_member.html', title='Member Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list)
+	return render_template('profile_member.html', title='Member Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list)
 
 @app.route('/profile_edit', methods=['GET', 'POST'])
 @login_required
@@ -179,8 +184,9 @@ def view_emergency(id):
 	deployments = db.engine.execute("SELECT * FROM assignment JOIN emergency ON emergency.id = assignment.emergency_id JOIN user ON user.id = assignment.user_id JOIN nationalsociety ON nationalsociety.id = user.ns_id WHERE emergency.id = :id", {'id': id}).all()
 	print(emergency_info)
 	emergency_type = db.engine.execute("SELECT * FROM emergency JOIN emergencytype ON emergencytype.id = emergency.emergency_type_id WHERE emergency.id = :id", {'id': id})
+	emergency_portfolio = db.engine.execute("SELECT * FROM portfolio JOIN emergency ON emergency.id = portfolio.emergency_id WHERE emergency.id = :id", {'id': id}).all()
 	emergency_type_name = [row.emergency_type_name for row in emergency_type]
-	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0], deployments=deployments)
+	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0], deployments=deployments, emergency_portfolio=emergency_portfolio)
 
 @app.route('/emergency/edit/<int:id>')
 def edit_emergency(id):

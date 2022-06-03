@@ -29,5 +29,27 @@ a:link {
 }
 
 .dropdown-item:active {
-background-color: red;
+background-color: #df4759;
 }
+
+body {
+  position: relative;
+}
+
+/* .list-group .list-group-item:active {
+  background-color: #df4759;
+}
+
+.list-group .list-group-item:hover {
+  background-color: #df4759;
+}
+
+.active a {
+	color: red !important;
+}
+
+.list-group-item.active,
+.list-group-item.active:hover {
+  background-color: #df4759 !important;
+  border-color: #df4759 !important;
+} */

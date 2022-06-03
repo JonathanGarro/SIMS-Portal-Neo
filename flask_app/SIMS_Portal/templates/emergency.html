@@ -7,10 +7,10 @@
 				<h2 class="text-danger mb-1">{{ emergency_info.emergency_name}}</h2>
 				<h4 class="text-secondary mb-4">{{emergency_type_name}}</h4>
 				<div class="list-group">
-					<a href="#" class="list-group-item list-group-item-action text-secondary">Log New Assignment</a>
+					<a href="/assignment/new" class="list-group-item list-group-item-action text-secondary">Log New Assignment</a>
 					  <a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
 					  <a href="https://go.ifrc.org/emergencies/{{ emergency_info.emergency_go_id }}" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
-					  <a href="#" class="list-group-item list-group-item-action text-secondary">Edit Emergency</a>
+					  <a href="/emergency/edit/{{emergency_info.id}}" class="list-group-item list-group-item-action text-secondary">Edit Emergency</a>
 					  <a href="#" class="list-group-item list-group-item-action text-danger">Delete Emergency</a>
 				</div>
 			</div>
@@ -54,6 +54,20 @@
 				  </tbody>
 				</table>
 				{% endif %}
+			</div>
+			<h3 class="mb-3 text-danger">Response Portfolio Highlights</h3>
+			<div class="row row-cols-3 row-cols-md-3 g-4 mt-4">
+			{% for product in emergency_portfolio %}
+				<div class="col d-flex align-items-stretch">
+					<div class="card" style="width: 18rem;">
+					  <img src="/static/assets/portfolio/{{product.final_file_location}}" class="card-img-top" alt="...">
+					  <div class="card-body d-flex flex-column">
+						<h5 class="card-title mt-auto">{{product.title}}</h5>
+						<a href="#" class="btn btn-outline-danger mt-5">View</a>
+					  </div>
+					</div>
+				</div>
+			{% endfor %}
 			</div>
 		</div>
 	</div>
