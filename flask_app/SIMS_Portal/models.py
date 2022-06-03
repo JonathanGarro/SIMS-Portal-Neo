@@ -1,4 +1,6 @@
-from SIMS_Portal import db, login_manager
+from SIMS_Portal import db, login_manager, app
+from authlib.jose import jwt, JoseError
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from datetime import datetime
 from flask_login import UserMixin
 from sqlalchemy.orm import declarative_base, relationship
@@ -83,6 +85,19 @@ class User(db.Model, UserMixin):
 	
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
+	
+	def get_reset_token(self, expires_sec=1800):
+		s = Serializer(app.config['SECRET_KEY'], expires_sec)
+		return s.dumps({'user_id': self.id}).decode('utf-8')
+	
+	@staticmethod
+	def verify_reset_token(token):
+		s = Serializer(app.config['SECRET_KEY'])
+		try:
+			user_id = s.loads(token)['user_id']
+		except:
+			return None
+		return User.query.get(user_id)
 	
 	@hybrid_property
 	def fullname(self):

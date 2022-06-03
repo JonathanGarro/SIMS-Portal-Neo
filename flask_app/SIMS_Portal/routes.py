@@ -2,11 +2,12 @@ import os
 import secrets
 from PIL import Image
 from flask import request, render_template, url_for, flash, redirect
-from SIMS_Portal import app, db, bcrypt
+from SIMS_Portal import app, db, bcrypt, mail
 from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill
-from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm, PortfolioUploadForm, UpdateEmergencyForm
+from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm, PortfolioUploadForm, UpdateEmergencyForm, RequestResetForm, ResetPasswordForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
+from flask_mail import Message
 from datetime import datetime
 
 @app.route('/') 
@@ -135,7 +136,6 @@ def update_profile():
 		except:
 			pass
 		current_user.bio = form.bio.data
-		# current_user.birthday = form.birthday.data
 		current_user.twitter = form.twitter.data
 		current_user.github = form.github.data
 		for skill in form.skills.data:
@@ -152,11 +152,8 @@ def update_profile():
 		form.email.data = current_user.email
 		form.job_title.data = current_user.job_title
 		form.ns_id.data = current_user.ns_id
-		# for skill in Skill.query.filter(User.id==user_skill.user_id).select(Skill.name).all():
-		# 	form.skills.data = skill
 		form.bio.data = current_user.bio
 		form.github.data = current_user.github
-		# form.birthday.data = current_user.birthday
 		form.twitter.data = current_user.twitter
 		# form.roles.data = current_user.roles
 		# form.languages.data = current_user.languages
@@ -168,7 +165,7 @@ def update_profile():
 def new_assignment():
 	form = NewAssignmentForm()
 	if form.validate_on_submit():
-		assignment = Assignment(user_id=form.user_id.data.id, emergency_id=form.emergency_id.data.id,start_date=form.start_date.data, end_date=form.end_date.data, role=form.role.data, assignment_details=form.assignment_details.data, remote=form.remote.data)
+		assignment = Assignment(user_id=form.user_id.data.id, emergency_id=form.emergency_id.data.id, start_date=form.start_date.data, end_date=form.end_date.data, role=form.role.data, assignment_details=form.assignment_details.data, remote=form.remote.data)
 		print(assignment)
 		db.session.add(assignment)
 		db.session.commit()
@@ -188,12 +185,29 @@ def view_emergency(id):
 	emergency_type_name = [row.emergency_type_name for row in emergency_type]
 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0], deployments=deployments, emergency_portfolio=emergency_portfolio)
 
-@app.route('/emergency/edit/<int:id>')
+@app.route('/emergency/edit/<int:id>', methods=['GET', 'POST'])
 def edit_emergency(id):
 	form = UpdateEmergencyForm()
+	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
 	if form.validate_on_submit():
-		emergency.emergency_name = form.emergency_name.data
-	return render_template('emergency_edit.html', form=form)
+		emergency_info.emergency_name = form.emergency_name.data
+		emergency_info.emergency_location_id = form.emergency_location_id.data.ns_go_id
+		emergency_info.emerency_type_id = form.emergency_type_id.data.id
+		emergency_info.emergency_glide = form.emergency_glide.data
+		# emergency_info.emergency_go_id = form.emergency_go_id.data
+		emergency_info.activation_details = form.activation_details.data
+		db.session.commit()
+		flash('Emergency record updated!', 'success')
+		return redirect(url_for('dashboard'))
+	elif request.method == 'GET':
+		form.emergency_name.data = emergency_info.emergency_name
+		# form.emergency_location_id.data = 
+		form.emergency_glide.data = emergency_info.emergency_glide
+		form.emergency_type_id.data = db.session.execute("SELECT emergencytype.id FROM emergencytype JOIN emergency ON emergency.emergency_type_id == emergencytype.id WHERE emergency.id = 1").first()[0]
+		print(form.emergency_type_id.data)
+		# form.emergency_go_id.data = emergency_info.emergency_go_id
+		form.activation_details.data = emergency_info.activation_details
+	return render_template('emergency_edit.html', form=form, emergency_info=emergency_info)
 
 @app.route('/emergency/new', methods=['GET', 'POST'])
 @login_required
@@ -223,6 +237,44 @@ def new_portfolio():
 		return redirect(url_for('profile'))
 	return render_template('create_portfolio.html', title='Upload New SIMS Product', form=form)
 
+def send_reset_email(user):
+	token = user.get_reset_token()
+	msg = Message('Password reset request for SIMS', sender='sims_portal@dissolvingdata.com', recipients=[user.email])
+	msg.body = f'''To reset your password, visit the following link:
+{url_for("reset_token", token=token, _external=True)}
+	
+If you did not make this request, then simply ignore this email and no changes will be made.
+'''
+	mail.send(msg)
+	
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+	if current_user.is_authenticated:
+		return redirect(url_for('dashboard'))
+	form = RequestResetForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email=form.email.data).first()
+		send_reset_email(user)
+		flash('An email has been sent with instructions to reset your password.', 'info')
+		return redirect(url_for('login'))
+	return render_template('reset_request.html', title='Reset Password', form=form)
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+	if current_user.is_authenticated:
+		return redirect(url_for('dashboard'))
+	user = User.verify_reset_token(token)
+	if user is None:
+		flash('That is an invalid or expired token.', 'warning')
+		return redirect(url_for('reset_request'))
+	form = ResetPasswordForm()
+	if form.validate_on_submit():
+		hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+		user.password = hashed_password
+		db.session.commit()
+		flash('Your password has been reset.', 'success')
+		return redirect(url_for('login'))
+	return render_template('reset_token.html', title='Reset Password', form=form)
 
 def save_picture(form_picture):
 	random_hex = secrets.token_hex(8)

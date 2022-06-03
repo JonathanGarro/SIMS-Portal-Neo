@@ -5,22 +5,29 @@
 		<div class="col col-md-4">
 			<div class="card border-0 p-4 bg-light">
 				<h4 class="text-secondary mb-1">Editing</h4>
-				<h2 class="text-danger mb-4">EMERGENCY NAME</h2>
-				<div class="list-group">
-					<a href="#" class="list-group-item list-group-item-action text-secondary">Log New Assignment</a>
-					  <a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
-					  <a href="#" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
-					  <a href="#" class="list-group-item list-group-item-action text-secondary">Edit Emergency</a>
-					  <a href="#" class="list-group-item list-group-item-action text-danger">Delete Emergency</a>
-				</div>
-			</div>
-			<div class="card border-0 p-4 bg-light">
-				<h5 class="text-secondary py-3">Response Tools</h5>
-				<div class="row justify-content-center">
-					<div class="col" align="center"><img src="/static/assets/img/icons/slack.png" height="50px"></div>
-					<div class="col" align="center"><img src="/static/assets/img/icons/dropbox.png" height="50px"></div>
-					<div class="col" align="center"><img src="/static/assets/img/icons/trello.png" height="50px"></div>
-				</div>
+				<h2 class="text-danger mb-4">{{emergency_info.emergency_name}}</h2>
+				<ul class="timeline">
+					<li>
+						<h5 class="text-secondary">Emergency Name</h5>
+						<p>Use the same name as what you see on the GO Platform. If no record exists yet on GO, use a simple name for now and edit this record later.</p>
+					</li>
+					<li>
+						<h5 class="text-secondary">Affected Country</h5>
+						<p>The SIMS portal does not currently feature a many-to-many feature on locations. For emergencies that cover multiple countries, select the most affected.</p>
+					</li>
+					<li>
+						<h5 class="text-secondary">Emergency Type</h5>
+						<p>Match the type seen on the GO Platform. </p>
+					</li>
+					<li>
+						<h5 class="text-secondary">Glide Number</h5>
+						<p>The GLIDE number is a unique identifier that helps connect data in this portal with external sources. See <a href="https://glidenumber.net/" class='text-danger'> the system's site</a> for more information.</p>
+					</li>
+					<li>
+						<h5 class="text-secondary">Activation Details</h5>
+						<p>Provide a brief overview of the decision to activate SIMS for this emergency, including any preliminary IM surge alerts that the network triaged.</p>
+					</li>
+				</ul>
 			</div>
 		</div>
 	
@@ -94,6 +101,19 @@
 								{{ form.emergency_glide(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
+					</div>
+					<div class="form-group pb-4">
+						{{ form.activation_details.label(class="form-control-label pb-2 text-danger") }}
+						{% if form.activation_details.errors %}
+							{{ form.activation_details(class="form-control form-control-lg is-invalid big_text_box") }}
+								<div class="invalid-feedback">
+									{% for error in form.activation_details.errors %}
+										<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+						{% else %}
+							{{ form.activation_details(class="form-control form-control-lg") }}
+						{% endif %}
 					</div>
 				</div>
 			
