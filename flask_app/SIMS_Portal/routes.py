@@ -1,7 +1,7 @@
 import os
 import secrets
 from PIL import Image
-from flask import request, render_template, url_for, flash, redirect
+from flask import request, render_template, url_for, flash, redirect, jsonify
 from SIMS_Portal import app, db, bcrypt, mail
 from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill
 from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm, PortfolioUploadForm, UpdateEmergencyForm, RequestResetForm, ResetPasswordForm
@@ -9,6 +9,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_mail import Message
 from datetime import datetime
+import pandas as pd
+import numpy as np
 
 @app.route('/') 
 def index(): 
@@ -177,7 +179,6 @@ def new_assignment():
 @login_required
 def view_emergency(id):
 	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
-	# emergency_type = db.session.query(Emergency, EmergencyType).join(EmergencyType, EmergencyType.emergency_type_go_id == Emergency.emergency_type_id).first()
 	deployments = db.engine.execute("SELECT * FROM assignment JOIN emergency ON emergency.id = assignment.emergency_id JOIN user ON user.id = assignment.user_id JOIN nationalsociety ON nationalsociety.id = user.ns_id WHERE emergency.id = :id", {'id': id}).all()
 	print(emergency_info)
 	emergency_type = db.engine.execute("SELECT * FROM emergency JOIN emergencytype ON emergencytype.id = emergency.emergency_type_id WHERE emergency.id = :id", {'id': id})
@@ -237,10 +238,15 @@ def new_portfolio():
 		return redirect(url_for('profile'))
 	return render_template('create_portfolio.html', title='Upload New SIMS Product', form=form)
 
+@app.route('/portfolio/view/<int:id>')
+def view_portfolio(id):
+	product = db.session.query(Portfolio, User, Emergency).join(User, User.id == Portfolio.creator_id).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id==id).first()
+	return render_template('portfolio_view.html', product=product)
+
 def send_reset_email(user):
 	token = user.get_reset_token()
 	msg = Message('Password reset request for SIMS', sender='sims_portal@dissolvingdata.com', recipients=[user.email])
-	msg.body = f'''To reset your password, visit the following link:
+	msg.body = f'''Login issues, huh? No sweat, it happens to the best of us. To reset your password, visit the following link:
 {url_for("reset_token", token=token, _external=True)}
 	
 If you did not make this request, then simply ignore this email and no changes will be made.
