@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from flask import request, render_template, url_for, flash, redirect, jsonify
 from SIMS_Portal import app, db, bcrypt, mail
-from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill
+from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill, user_language, Badge, Alert
 from SIMS_Portal.forms import RegistrationForm, LoginForm, UpdateAccountForm, NewAssignmentForm, NewEmergencyForm, PortfolioUploadForm, UpdateEmergencyForm, RequestResetForm, ResetPasswordForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
@@ -15,6 +15,15 @@ import numpy as np
 @app.route('/') 
 def index(): 
 	return render_template('index.html')
+	
+@app.route('/staging') 
+def staging(): 
+	return render_template('visualization.html')
+
+@app.route('/clear_alerts', methods=['GET', 'POST'])
+def delete_alerts():
+	delete = db.engine.execute("DELETE FROM alert")
+	return redirect(url_for('dashboard'))
 
 @app.route('/members')
 def members():
@@ -33,8 +42,9 @@ def dashboard():
 	
 	count_active_assignments = db.engine.execute("SELECT COUNT(role) as AssignmentCount FROM assignment WHERE end_date > :todays_date", {'todays_date': todays_date}).first()
 	active_assignments = db.engine.execute("SELECT * FROM assignment JOIN user ON user.id = assignment.user_id JOIN emergency ON emergency.id = assignment.emergency_id WHERE end_date > :todays_date", {'todays_date': todays_date})
-	
-	return render_template('dashboard.html', active_assignments=active_assignments, count_active_assignments=count_active_assignments)
+	most_recent_emergencies = db.session.query(Emergency).order_by(Emergency.created_at.desc()).all()
+	surge_alerts = db.session.query(Alert).limit(20).all()
+	return render_template('dashboard.html', active_assignments=active_assignments, count_active_assignments=count_active_assignments, most_recent_emergencies=most_recent_emergencies,surge_alerts=surge_alerts)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -220,7 +230,8 @@ def new_emergency():
 		db.session.commit()
 		flash('New emergency successfully created.', 'success')
 		return redirect(url_for('dashboard'))
-	return render_template('create_emergency.html', title='Create New Emergency', form=form)
+	latest_emergencies = Emergency.get_latest_go_emergencies()
+	return render_template('create_emergency.html', title='Create New Emergency', form=form, latest_emergencies=latest_emergencies)
 
 @app.route('/portfolio/new', methods=['GET', 'POST'])
 @login_required

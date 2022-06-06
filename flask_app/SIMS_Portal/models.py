@@ -1,4 +1,5 @@
 from SIMS_Portal import db, login_manager, app
+from flask_sqlalchemy import SQLAlchemy
 from authlib.jose import jwt, JoseError
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from datetime import datetime
@@ -7,6 +8,7 @@ from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.sql import func
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import Column, ForeignKey, Integer, Table
+import requests
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -22,6 +24,11 @@ user_language = db.Table('user_language',
 	db.Column('language_id', db.Integer, db.ForeignKey('language.id'))
 )
 
+user_badge = db.Table('user_badge',
+	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+	db.Column('badge_id', db.Integer, db.ForeignKey('badge.id'))
+)
+
 class Skill(db.Model):
 	__tablename__ = 'skill'
 	
@@ -34,6 +41,13 @@ class Language(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	
 	name = db.Column(db.String)
+
+class Badge(db.Model):
+	__tablename__ = 'badge'
+	
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String)
+	badge_url = db.Column(db.String)
 
 class NationalSociety(db.Model):
 	__tablename__ = 'nationalsociety'
@@ -82,6 +96,7 @@ class User(db.Model, UserMixin):
 	products = db.relationship('Portfolio', backref='creator', lazy=True)
 	skills = db.relationship('Skill', secondary='user_skill', backref='members_with_skill')
 	languages = db.relationship('Language', secondary='user_language', backref='members_with_language')
+	badges = db.relationship('Badge', secondary='user_badge', backref='members_with_badge')
 	
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
@@ -137,6 +152,9 @@ class Emergency(db.Model):
 	emergency_location_id = db.Column(db.Integer)
 	emergency_review_id = db.Column(db.Integer)
 	activation_details = db.Column(db.String(1000))
+	slack_channel = db.Column(db.String)
+	dropbox_url = db.Column(db.String)
+	trello_url = db.Column(db.String)
 	
 	emergency_type_id = db.Column(db.Integer, db.ForeignKey('emergencytype.id'))
 	
@@ -145,6 +163,21 @@ class Emergency(db.Model):
 	
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
+	
+	@staticmethod
+	def get_latest_go_emergencies():
+		api_call = 'https://goadmin.ifrc.org/api/v2/event/'
+		r = requests.get(api_call).json()
+		
+		output = []
+		
+		for x in r['results']:
+			temp_dict = {}
+			temp_dict['dis_id'] = x['id']
+			temp_dict['dis_name'] = x['name']
+			output.append(temp_dict)
+		
+		return output
 		
 	def __repr__(self):
 		return f"Emergency('{self.emergency_name}','{self.emergency_glide}','{self.emergency_go_id}','{self.emergency_location_id}','{self.emergency_type_id}','{self.emergency_review_id}','{self.activation_details}')"
@@ -200,19 +233,20 @@ class Alert(db.Model):
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
 	
+	def __init__(self, role_profile, alert_date, alert_id, alert_status, event_name, event_go_id, event_date, location):
+		self.role_profile = role_profile
+		self.alert_date = datetime.strptime(alert_date, '%Y-%m-%dT%H:%M:%SZ')
+		self.alert_id = alert_id
+		self.alert_status = alert_status
+		self.event_name = event_name
+		self.event_go_id = event_go_id
+		self.event_date = datetime.strptime(event_date, '%Y-%m-%dT%H:%M:%SZ')
+		self.location = location
+	
+	@classmethod
+	def save_go_alerts(cls, data):
+		query = "INSERT INTO alerts (role_profile, alert_date, alert_id, alert_status, event_name, event_go_id, event_date, location) VALUES (%(role_profile)s, %(alert_date)s, %(alert_id)s, %(alert_status)s, %(event_name)s, %(event_go_id)s, %(event_date)s, %(location)s)"
+		return query
+	
 	def __repr__(self):
 		return f"Alert('{self.event_name}','{self.event_go_id}','{self.event_date}','{self.event_profile}','{self.alert_date}','{self.alert_id}','{self.alert_status}','{self.location}')"
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-

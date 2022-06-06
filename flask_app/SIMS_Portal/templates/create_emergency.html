@@ -103,27 +103,22 @@
 </div>
 
 	<div class="col">
-		<h4> Latest GO Events</h4>
-		<table class="table table-striped">
+		<h4 class="text-danger">Latest GO Events</h4>
+		<p>This is a list of the most recent events in GO. Use this as a reference for getting the emergency ID number. If you don't see it here, navigate to the emergency in GO and use the integer in the URL.
+		<table class="table table-striped table-sm">
 		<thead>
 			<tr>
-				<th scope="col">ID</th>
-				<th scope="col">Name</th>
+				<th class="text-danger" scope="col">ID</th>
+				<th class="text-danger" scope="col">Name</th>
 			</tr>
 		</thead>
 		<tbody>
+			{% for emergency in latest_emergencies %}
 		<tr>
-			<th scope="row">1324</th>
-			<th>Mozambique Floods</th>
+			<td scope="row">{{emergency.dis_id}}</td>
+			<td>{{emergency.dis_name}}</td>
 		</tr>
-		<tr>
-			<th scope="row">1238</th>
-			<th>Myanmar Population Movement</th>
-		</tr>
-		<tr>
-			<th scope="row">1389</th>
-			<th>Paraguay Drought</th>
-		</tr>
+			{% endfor %}
 		</tbody>
 		</table>
 	</div>
