@@ -1,15 +1,15 @@
-from flask import url_for
+from flask import url_for, current_app
 import os
 import secrets
 from PIL import Image
 from flask_mail import Message
-from SIMS_Portal import app, mail
+from SIMS_Portal import mail
 
 def save_picture(form_picture):
 	random_hex = secrets.token_hex(8)
 	filename, file_ext = os.path.splitext(form_picture.filename)
 	picture_filename = random_hex + file_ext
-	picture_path = os.path.join(app.root_path, 'static/assets/img/avatars', picture_filename)
+	picture_path = os.path.join(current_app.root_path, 'static/assets/img/avatars', picture_filename)
 	
 	output_size = (400, 400)
 	resized_image = Image.open(form_picture)
