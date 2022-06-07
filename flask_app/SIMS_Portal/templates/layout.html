@@ -57,7 +57,7 @@
 	  <div class="collapse navbar-collapse" id="main_nav">
 		<ul class="navbar-nav ms-auto">
 			<li class="nav-item px-3"><a class="nav-link text-dark" href="#">Learning & Development</a></li>
-			<li class="nav-item px-3"><a class="nav-link text-dark" href="{{ url_for('resources')}}">Doctrine & Resources</a></li>
+			<li class="nav-item px-3"><a class="nav-link text-dark" href="{{ url_for('main.resources')}}">Doctrine & Resources</a></li>
 			<li class="nav-item dropdown px-3">
 				<a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View National Society</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -69,8 +69,8 @@
 			<li class="nav-item dropdown pl-3">
 				<a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Create Record</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					  <a class="dropdown-item" href="{{ url_for('new_emergency') }}">New Emergency Record</a>
-					  <a class="dropdown-item" href="{{ url_for('new_assignment') }}">New Assignment</a>
+					  <a class="dropdown-item" href="{{ url_for('emergencies.new_emergency') }}">New Emergency Record</a>
+					  <a class="dropdown-item" href="{{ url_for('assignments.new_assignment') }}">New Assignment</a>
 					  <a class="dropdown-item" href="#">New Emergency Review</a>
 					</div>
 			</li>
