@@ -27,5 +27,5 @@ def dashboard():
 	count_active_assignments = db.engine.execute("SELECT COUNT(role) as AssignmentCount FROM assignment WHERE end_date > :todays_date", {'todays_date': todays_date}).first()
 	active_assignments = db.engine.execute("SELECT * FROM assignment JOIN user ON user.id = assignment.user_id JOIN emergency ON emergency.id = assignment.emergency_id WHERE end_date > :todays_date", {'todays_date': todays_date})
 	most_recent_emergencies = db.session.query(Emergency).order_by(Emergency.created_at.desc()).all()
-	surge_alerts = db.session.query(Alert).limit(20).all()
+	surge_alerts = db.session.query(Alert).limit(100).all()
 	return render_template('dashboard.html', active_assignments=active_assignments, count_active_assignments=count_active_assignments, most_recent_emergencies=most_recent_emergencies,surge_alerts=surge_alerts)

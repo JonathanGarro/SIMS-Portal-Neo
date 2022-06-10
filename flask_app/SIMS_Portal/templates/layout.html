@@ -39,7 +39,7 @@
 				{% endif %}
 				<li class="nav-item px-3"><a class="nav-link text-light" href="/logout"> Logout </a></li>
 			{% else %}
-				<li class="nav-item px-3"><a class="nav-link text-light" href="/about"> About </a></li>
+				<li class="nav-item px-3"><a class="nav-link text-light" href="/about"> About </a></li>	
 				<li class="nav-item px-3"><a class="nav-link text-light" href="#"> Resources </a></li>
 				<li class="nav-item px-3"><a class="nav-link text-light" href="/portfolio"> Portfolio </a></li>
 				<li class="nav-item px-3"><a class="nav-link text-light" href="/members"> Members </a></li>
@@ -57,7 +57,11 @@
 	  <div class="collapse navbar-collapse" id="main_nav">
 		<ul class="navbar-nav ms-auto">
 			<li class="nav-item px-3"><a class="nav-link text-dark" href="#">Learning & Development</a></li>
-			<li class="nav-item px-3"><a class="nav-link text-dark" href="{{ url_for('main.resources')}}">Doctrine & Resources</a></li>
+			{% if request.path == '/resources' %}
+				<li class="nav-item px-3"><button type="button" class="btn btn-danger">Doctrine & Resources</button></li>
+			{% else %}
+				<li class="nav-item px-3"><a class="nav-link text-dark" href="{{ url_for('main.resources')}}">Doctrine & Resources</a></li>
+			{% endif %}
 			<li class="nav-item dropdown px-3">
 				<a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View National Society</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">

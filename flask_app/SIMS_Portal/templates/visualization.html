@@ -1,65 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container">
-	<button class="btn btn-outline-secondary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-		Button with data-target
-	  </button>
-	</p>
-	<div class="collapse" id="collapseExample">
-	  <div class="card card-body">
-		
-		"""
-		README
-		
-		- You may need to install the 'requests' module. If you get an error mentioning it, open your terminal, and run `pip install requests`
-		- This script will save the alerts to a list called "alert_messages". The portal manipulates that data in a way that would not be useful to most end users, so I have omitted the full function to then send that data to our database. If you would like to save this data to a file, you can use the `with open()` feature. A Google search will return several quick guides on how to manipulate the data you get back from the server. 
-		- The while loop is doing plain text-string searches. The ones you see in this version are the Molnix codes used by the GO database as of 2022-01-19 (creation date of this script). Those codes may change in the future, so reach out to the Surge database team if you have problems. 
-		
-		Feel free to reach out to Jonathan Garro (jonathan.garro@redcross.org) with any questions about how to use or modify this code.
-		"""
-							
-		import requests
-		import math
-		api_call = 'https://goadmin.ifrc.org/api/v2/surge_alert/'
-		r = requests.get(api_call).json()
-		
-		current_page = 1
-		page_count = int(math.ceil(r['count'] / 50))
-		print(f"THE PAGE COUNT TOTAL IS: {page_count}")
-		
-		output = []
-		
-		while current_page <= page_count:
-			for x in r['results']:
-				temp_dict = {}
-				if x['molnix_tags']:
-					for y in x['molnix_tags']:
-						if ("Manager" in y['description']) or ("Officer" in y['description']) or ("Analyst" in y['description']) or ("Coordinator" in y['description']):
-							temp_dict['role_profile'] = y['description']
-							temp_dict['alert_date'] = x['opens']
-							temp_dict['alert_id'] = x['id']
-							temp_dict['alert_status'] = x['molnix_status']
-							if x['event']:
-								temp_dict['event_name'] = x['event']['name']
-								temp_dict['event_go_id'] = x['event']['id']
-								temp_dict['event_date'] = x['event']['disaster_start_date']
-							if x['country']:
-								temp_dict['location'] = x['country']['name']
-							output.append(temp_dict)
-			if r['next']:
-				next_page = requests.get(r['next']).json()
-				r = next_page
-				current_page += 1
-			else:
-				break
-		
-		""" 
-		At the end of the while loop, you will have a variable called 'output', which will be a list of dictionaries. This list is iterable, so you could create a for loop to take some action on it, like save each dictionary as a row in a CSV file. This tutorial will walk you through that process: https://www.kite.com/python/answers/how-to-write-a-list-of-dictionaries-to-a-csv-file-in-python
-		
-		You could also simply print the output with `print(output)` if you just want to see the data, then copy/paste what you get back into a JSON to CSV conversion tool, many of which are available online. 
-		"""
-	
-	  </div>
+<div class="container-fluid">
+	<div class='col-8 row-height full-height-div' id='full-height-div'>
+		test
 	</div>
 </div>
 {% endblock content %}

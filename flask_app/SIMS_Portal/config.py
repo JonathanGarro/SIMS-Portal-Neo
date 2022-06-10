@@ -11,3 +11,4 @@ class Config:
 	MAIL_USERNAME = 'sims_portal@dissolvingdata.com'
 	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 	MAIL_DEBUG = True
+	SCHEDULER_API_ENABLED = True

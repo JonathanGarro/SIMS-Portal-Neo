@@ -179,7 +179,9 @@ class Emergency(db.Model):
 			temp_dict['dis_name'] = x['name']
 			output.append(temp_dict)
 		
-		return output
+		sorted_output = sorted(output, key=lambda d: d['dis_id'], reverse=True)[:11]
+		
+		return sorted_output
 		
 	def __repr__(self):
 		return f"Emergency('{self.emergency_name}','{self.emergency_glide}','{self.emergency_go_id}','{self.emergency_location_id}','{self.emergency_type_id}','{self.emergency_review_id}','{self.activation_details}')"
@@ -210,7 +212,7 @@ class Portfolio(db.Model):
 	external = db.Column(db.Boolean, default=False)
 	
 	creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-	emergency_id = db.Column(db.Integer, ForeignKey('emergency.id'))
+	emergency_id = db.Column(db.Integer, db.ForeignKey('emergency.id'))
 	
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())

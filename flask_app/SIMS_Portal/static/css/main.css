@@ -29,8 +29,15 @@ a:link {
 }
 
 .dropdown-item:active {
-background-color: #df4759;
+	background-color: #df4759;
 }
 
 body {
   position: relative;
+}
+
+#box {
+  height: 100px;
+  width: 200px;
+  clear: both;
+}

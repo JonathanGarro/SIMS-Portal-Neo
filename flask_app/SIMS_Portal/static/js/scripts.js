@@ -2,9 +2,9 @@ window.setTimeout(function() {
 	$("#alert").fadeTo(500, 0) 
 }, 6000);
 
-var scrollSpy = new bootstrap.ScrollSpy(document.body, {
-  target: '#navbar-example'
-})
+// var scrollSpy = new bootstrap.ScrollSpy(document.body, {
+//   target: '#navbar-example'
+// })
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
@@ -57,5 +57,7 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 
 $(document).ready(function () {
-	$('#datatable').DataTable();
+	$('#datatable').DataTable({
+		order: [[2, 'desc']],
+	});
 });

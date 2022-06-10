@@ -10,12 +10,14 @@
 				</div>
 				<div class="row">
 					<h5 class="text-secondary mt-4">Creator</h5>
-					<h4>{{ product.User.firstname }} {{ product.User.lastname }}</h4>
+					<h4><a href="/profile/view/{{product.Portfolio.creator_id}}" class="text-danger">{{ product.User.firstname }} {{ product.User.lastname }}</a></h4>
 				</div>
 				<div class="row">
 					<h5 class="text-secondary mt-4">Emergency Response</h5>
-					<h4>{{ product.Emergency.emergency_name}}</h4>
+					<h4><a href={{url_for('emergencies.view_emergency', id=product.Portfolio.emergency_id)}} class='text-danger'> {{ product.Emergency.emergency_name}}</a></h4>
+					<h6><a href='https://go.ifrc.org/emergencies/{{product.Emergency.emergency_go_id}}' class='text-danger'>View on GO Platform</a></h6>
 				</div>
+
 				<div class="row">
 					<h5 class="text-secondary mt-4">Description</h5>
 					<p>{{ product.Portfolio.description}}</p>
