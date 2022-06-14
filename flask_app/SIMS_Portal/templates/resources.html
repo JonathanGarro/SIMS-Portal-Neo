@@ -2,96 +2,27 @@
 {% block content %}
 <div class="container">
 	<div class="row">
-	  <div class="col-4">
+	  <div class="col-3">
 		  <div class="card border-0 p-4 bg-light sticky-top">
 			  <h2 class="text-danger mb-5">Doctrine & Resources</h2>
-		<div class="list-group" id="list-tab" role="tablist">
-		  <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-sops">Standard Operating Procedures</a>
-		  <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-collaboration">Collaboration Processes</a>
-		  <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-colors">Colors and Fonts</a>
-		  <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-basemap">Basemap Styling</a>
-		  <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-footer">Map Footers and Language</a>
-		  <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-templates">Templates</a>
-		</div>
+			  	<div class="list-group">
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Standard Procedures</a>
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Collaboration Processes</a>
+					<a href="/resources/colors" class="list-group-item list-group-item-action text-secondary">Colors and Fonts</a>
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Basemap Styling</a>
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Language and Disclaimers</a>
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Product Templates</a>
+					<a href="#" class="list-group-item list-group-item-action text-secondary">SIMS Portal Guide</a>
+				</div>
+	 	   </div>
+	  </div>
+	  <div class="col">
+	  	<h2 class='my-4 text-danger'>Overview</h2>
+	  	<p>This Doctrine and Resources section is designed to provide quick access to key information relevant to how we work, collaborate, and produce products and services for response operations. The ways that we work evolve over time, and this section is periodically updated to reflect those changes. The learning process after an operation winds down is a vital part of the feedback mechanism for making these changes, so be sure to be constructive about what resources and support you feel the network would benefit from. <br><br>
+	  	
+	  	Much of this section focuses on standardizing the look and content of our products, but remember that the needs of an operation typically outweigh the importance of uniform visual styling. Whenever in doubt, communicate with the network directly for support in making decisions.
+	  	</p>
 	  </div>
 	  </div>
-	  <div class="col-8">
-		<div class="tab-content" id="nav-tabContent">
-		  <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-			  <h2 class='my-4 text-danger'>Colors</h2>
-			  <p>Whenever appropriate, SIMS should align our products' colors with the official IFRC color palette. How you use these colors depends on the element within the product. Below are broad rules of thumb for how best to choose the right colors. The button below will download an Adobe file which can be imported into Illustrator (and any other Creative Suite app) for quick access to the swatches referenced in this guide.</p>
-			  <a href="/static/assets/img/swatches/SIMS Colors.ai" download rel='noopener noreferrer' target= "_blank"><button type="button" class="btn btn-secondary btn-sm mt-2 mb-4">Download the SIMS Adobe Swatch Group</button></a>
-			  <h4 class='mb-4'>Primary</h4>
-			  <p>These should be used for infographic and map titles, icons, and any other elements that are designed to draw the viewers eye. Note that these should not be used for basemaps or large areas of infographics.</p>
-			  <div class="row row-cols-4 row-cols-md-4 g-4 mt-4">
-			  	<div class="col d-flex align-items-stretch">
-			  		<div class="card"">
-						<img class="card-img-top img-fluid" style='width: 12rem' src="/static/assets/img/swatches/swatch-dk-grey.png" alt="">
-						<div class="card-body">
-							<h5>Hex</h5>
-				  		  	<p>323232</p>
-							<h5>CMYK</h5>
-							<p>0 0 0 95</p>
-							<h5>RGB</h5>
-				  		  	<p>50 50 50</p>
-						</div>
-			  		</div>
-				  </div>
-				  <div class="col d-flex align-items-stretch">
-						<div class="card"">
-						  <img class="card-img-top img-fluid" style='width: 12rem' src="/static/assets/img/swatches/swatch-dk-red.png" alt="">
-						  <div class="card-body">
-							  <h5>Hex</h5>
-								  <p>F5333F</p>
-							  <h5>CMYK</h5>
-							  <p>C0 M86 Y63 K0</p>
-							  <h5>RGB</h5>
-								  <p>239 51 64</p>
-						  </div>
-						</div>
-					</div>
-					<div class="col d-flex align-items-stretch">
-						  <div class="card"">
-							<img class="card-img-top img-fluid" style='width: 12rem' src="/static/assets/img/swatches/swatch-dk-blue.png" alt="">
-							<div class="card-body">
-								<h5>Hex</h5>
-									<p>011E41</p>
-								<h5>CMYK</h5>
-								<p>100 87 42 52</p>
-								<h5>RGB</h5>
-									<p>1 30 65</p>
-							</div>
-						  </div>
-					  </div>
-			  </div>
-			 </div>
-			 <p class='mt-5'>The infographic seen below is an example of using these primary colors for the title and subtitle of the document in order to draw the eyes. The text in the main table, however, uses more muted grays.</p>
-			 <img src='/static/assets/img/colors-example-infographic.png' class='mb-3' width='100%'>
-			 <figcaption class="figure-caption">The primary colors are used for the title and match the IFRC icons.</figcaption> 
-			 
-			  <h4 class='my-5'>Secondary</h4>
-			  <h2 class='my-3 text-danger'>Fonts</h2>
-					Curabitur laoreet ipsum eu ipsum suscipit, sed malesuada tellus suscipit. Phasellus at sapien tellus. Nam aliquet posuere lorem, a tempor tortor dignissim vitae. Morbi pellentesque urna id dictum tincidunt. Sed sollicitudin lorem eget tortor ultrices ultricies. Proin et urna vel lacus tincidunt congue. Phasellus congue justo ut nibh pretium fringilla.Suspendisse vel mi et orci laoreet tristique. Donec pharetra dui id nisi imperdiet, quis rutrum sem vehicula. In bibendum faucibus magna eget suscipit. Morbi consectetur mauris dui, eget efficitur turpis mattis ut. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet massa vitae turpis laoreet interdum vitae at augue. Sed quam felis, imperdiet sit amet scelerisque convallis, finibus quis risus. Donec molestie, ipsum id vestibulum pulvinar, mauris sapien lacinia dolor, vitae cursus arcu ex eu eros. Donec efficitur semper mi, venenatis egestas enim sagittis in. Nam sollicitudin augue eu est finibus laoreet. In vitae est vel tortor dictum commodo faucibus vitae nisl. Proin justo quam, consectetur in ex at, lacinia condimentum massa. Praesent lectus sem, vestibulum a est ac, blandit venenatis purus.
-					  
-					  Curabitur laoreet ipsum eu ipsum suscipit, sed malesuada tellus suscipit. Phasellus at sapien tellus. Nam aliquet posuere lorem, a tempor tortor dignissim vitae. Morbi pellentesque urna id dictum tincidunt. Sed sollicitudin lorem eget tortor ultrices ultricies. Proin et urna vel lacus tincidunt congue. Phasellus congue justo ut nibh pretium fringilla.Suspendisse vel mi et orci laoreet tristique. Donec pharetra dui id nisi imperdiet, quis rutrum sem vehicula. In bibendum faucibus magna eget suscipit. Morbi consectetur mauris dui, eget efficitur turpis mattis ut. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet massa vitae turpis laoreet interdum vitae at augue. Sed quam felis, imperdiet sit amet scelerisque convallis, finibus quis risus. Donec molestie, ipsum id vestibulum pulvinar, mauris sapien lacinia dolor, vitae cursus arcu ex eu eros. Donec efficitur semper mi, venenatis egestas enim sagittis in. Nam sollicitudin augue eu est finibus laoreet. In vitae est vel tortor dictum commodo faucibus vitae nisl. Proin justo quam, consectetur in ex at, lacinia condimentum massa. Praesent lectus sem, vestibulum a est ac, blandit venenatis purus.
-						
-						Curabitur laoreet ipsum eu ipsum suscipit, sed malesuada tellus suscipit. Phasellus at sapien tellus. Nam aliquet posuere lorem, a tempor tortor dignissim vitae. Morbi pellentesque urna id dictum tincidunt. Sed sollicitudin lorem eget tortor ultrices ultricies. Proin et urna vel lacus tincidunt congue. Phasellus congue justo ut nibh pretium fringilla.Suspendisse vel mi et orci laoreet tristique. Donec pharetra dui id nisi imperdiet, quis rutrum sem vehicula. In bibendum faucibus magna eget suscipit. Morbi consectetur mauris dui, eget efficitur turpis mattis ut. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet massa vitae turpis laoreet interdum vitae at augue. Sed quam felis, imperdiet sit amet scelerisque convallis, finibus quis risus. Donec molestie, ipsum id vestibulum pulvinar, mauris sapien lacinia dolor, vitae cursus arcu ex eu eros. Donec efficitur semper mi, venenatis egestas enim sagittis in. Nam sollicitudin augue eu est finibus laoreet. In vitae est vel tortor dictum commodo faucibus vitae nisl. Proin justo quam, consectetur in ex at, lacinia condimentum massa. Praesent lectus sem, vestibulum a est ac, blandit venenatis purus.
-						  
-						  Curabitur laoreet ipsum eu ipsum suscipit, sed malesuada tellus suscipit. Phasellus at sapien tellus. Nam aliquet posuere lorem, a tempor tortor dignissim vitae. Morbi pellentesque urna id dictum tincidunt. Sed sollicitudin lorem eget tortor ultrices ultricies. Proin et urna vel lacus tincidunt congue. Phasellus congue justo ut nibh pretium fringilla.
-			  Curabitur laoreet ipsum eu ipsum suscipit, sed malesuada tellus suscipit. Phasellus at sapien tellus. Nam aliquet posuere lorem, a tempor tortor dignissim vitae. Morbi pellentesque urna id dictum tincidunt. Sed sollicitudin lorem eget tortor ultrices ultricies. Proin et urna vel lacus tincidunt congue. Phasellus congue justo ut nibh pretium fringilla.
-		  
-		  Suspendisse vel mi et orci laoreet tristique. Donec pharetra dui id nisi imperdiet, quis rutrum sem vehicula. In bibendum faucibus magna eget suscipit. Morbi consectetur mauris dui, eget efficitur turpis mattis ut. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet massa vitae turpis laoreet interdum vitae at augue. Sed quam felis, imperdiet sit amet scelerisque convallis, finibus quis risus. Donec molestie, ipsum id vestibulum pulvinar, mauris sapien lacinia dolor, vitae cursus arcu ex eu eros. Donec efficitur semper mi, venenatis egestas enim sagittis in. Nam sollicitudin augue eu est finibus laoreet. In vitae est vel tortor dictum commodo faucibus vitae nisl. Proin justo quam, consectetur in ex at, lacinia condimentum massa. Praesent lectus sem, vestibulum a est ac, blandit venenatis purus.
-			
-			Curabitur laoreet ipsum eu ipsum suscipit, sed malesuada tellus suscipit. Phasellus at sapien tellus. Nam aliquet posuere lorem, a tempor tortor dignissim vitae. Morbi pellentesque urna id dictum tincidunt. Sed sollicitudin lorem eget tortor ultrices ultricies. Proin et urna vel lacus tincidunt congue. Phasellus congue justo ut nibh pretium fringilla.
-			Suspendisse vel mi et orci laoreet tristique. Donec pharetra dui id nisi imperdiet, quis rutrum sem vehicula. In bibendum faucibus magna eget suscipit. Morbi consectetur mauris dui, eget efficitur turpis mattis ut. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sit amet massa vitae turpis laoreet interdum vitae at augue. Sed quam felis, imperdiet sit amet scelerisque convallis, finibus quis risus. Donec molestie, ipsum id vestibulum pulvinar, mauris sapien lacinia dolor, vitae cursus arcu ex eu eros. Donec efficitur semper mi, venenatis egestas enim sagittis in. Nam sollicitudin augue eu est finibus laoreet. In vitae est vel tortor dictum commodo faucibus vitae nisl. Proin justo quam, consectetur in ex at, lacinia condimentum massa. Praesent lectus sem, vestibulum a est ac, blandit venenatis purus.
-			  
-			  Curabitur laoreet ipsum eu ipsum suscipit, sed malesuada tellus suscipit. Phasellus at sapien tellus. Nam aliquet posuere lorem, a tempor tortor dignissim vitae. Morbi pellentesque urna id dictum tincidunt. Sed sollicitudin lorem eget tortor ultrices ultricies. Proin et urna vel lacus tincidunt congue. Phasellus congue justo ut nibh pretium fringilla.
-		  </div>
-		  <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur in elementum est. Vivamus congue molestie volutpat. Pellentesque gravida orci in pharetra venenatis. Sed ex enim, elementum ac tincidunt et, dignissim eu mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam a massa sit amet neque venenatis mollis. Nullam sed tortor egestas, convallis odio nec, sodales lacus. Quisque ipsum arcu, aliquam ac molestie nec, eleifend vel arcu. Aenean semper ante orci. Morbi at dictum enim, vitae sodales est. Maecenas gravida sem ac convallis porttitor.</div>
-		  <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">Morbi vitae ligula nisl. Suspendisse potenti. Etiam luctus non sem ut tincidunt. Fusce congue, turpis quis condimentum dictum, libero orci vulputate metus, id tincidunt elit nisi at leo. Nunc elementum enim magna, eu suscipit augue egestas id. Phasellus tincidunt orci erat, eget tincidunt nunc scelerisque eu. Quisque aliquam dictum enim, ac commodo ante lobortis at. Nam malesuada elit est, non accumsan metus tincidunt et. Sed viverra nec dui et imperdiet. Aliquam erat volutpat. Ut a orci tincidunt, congue lorem eu, dictum nibh. Vivamus lobortis semper felis at sagittis. Phasellus lobortis libero eget neque posuere maximus. Praesent et tortor a metus lacinia lobortis. Suspendisse lacinia porta convallis.</div>
-		  <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
-		</div>
-	  </div>
-	</div>
-	</div>
+</div>
 {% endblock content %}

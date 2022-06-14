@@ -18,6 +18,10 @@ def staging():
 @main.route('/resources')
 def resources():
 	return render_template('resources.html')
+	
+@main.route('/resources/colors')
+def resources_colors():
+	return render_template('resources_colors.html')
 
 @main.route('/dashboard')
 @login_required

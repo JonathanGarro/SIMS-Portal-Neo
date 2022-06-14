@@ -57,7 +57,7 @@
 	  <div class="collapse navbar-collapse" id="main_nav">
 		<ul class="navbar-nav ms-auto">
 			<li class="nav-item px-3"><a class="nav-link text-dark" href="#">Learning & Development</a></li>
-			{% if request.path == '/resources' %}
+			{% if '/resources' in request.path %}
 				<li class="nav-item px-3"><button type="button" class="btn btn-danger">Doctrine & Resources</button></li>
 			{% else %}
 				<li class="nav-item px-3"><a class="nav-link text-dark" href="{{ url_for('main.resources')}}">Doctrine & Resources</a></li>

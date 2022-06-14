@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class="row">
+	  <div class="col-3">
+		  <div class="card border-0 p-4 bg-light sticky-top">
+			  <h2 class="text-danger mb-5">Doctrine & Resources</h2>
+				  <div class="list-group">
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Standard Procedures</a>
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Collaboration Processes</a>
+					<a href="/resources/colors" class="list-group-item list-group-item-dark text-secondary">Colors and Fonts</a>
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Basemap Styling</a>
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Language and Disclaimers</a>
+					<a href="#" class="list-group-item list-group-item-action text-secondary">Product Templates</a>
+					<a href="#" class="list-group-item list-group-item-action text-secondary">SIMS Portal Guide</a>
+				</div>
+			</div>
+	  </div>
+	  <div class="col">
+		  <h2 class='my-4 text-danger'>Colors</h2>
+<p>Whenever appropriate, SIMS should align our products' colors with the official IFRC color palette. How you use these colors depends on the element within the product. Below are broad rules of thumb for how best to choose the right colors. The button below will download an Adobe file which can be imported into Illustrator (and any other Creative Suite app) for quick access to the swatches referenced in this guide.</p>
+			<a href="/static/assets/img/swatches/SIMS Colors.ai" download rel='noopener noreferrer' target= "_blank"><button type="button" class="btn btn-secondary btn-sm mt-2 mb-4">Download the SIMS Adobe Swatch Group</button></a>
+			<h4 class='mb-4'>Primary</h4>
+			<p>These should be used for infographic and map titles, icons, and any other elements that are designed to draw the viewers eye. Note that these should not be used for basemaps or large areas of infographics.</p>
+			<div class="row row-cols-4 row-cols-md-4 g-4 mt-4">
+				<div class="col d-flex align-items-stretch">
+					<div class="card"">
+					  <img class="card-img-top img-fluid" style='width: 12rem' src="/static/assets/img/swatches/swatch-dk-grey.png" alt="">
+					  <div class="card-body">
+						  <h5>Hex</h5>
+							  <p>323232</p>
+						  <h5>CMYK</h5>
+						  <p>0 0 0 95</p>
+						  <h5>RGB</h5>
+							  <p>50 50 50</p>
+					  </div>
+					</div>
+				</div>
+				<div class="col d-flex align-items-stretch">
+					  <div class="card"">
+						<img class="card-img-top img-fluid" style='width: 12rem' src="/static/assets/img/swatches/swatch-dk-red.png" alt="">
+						<div class="card-body">
+							<h5>Hex</h5>
+								<p>F5333F</p>
+							<h5>CMYK</h5>
+							<p>C0 M86 Y63 K0</p>
+							<h5>RGB</h5>
+								<p>239 51 64</p>
+						</div>
+					  </div>
+				  </div>
+				  <div class="col d-flex align-items-stretch">
+						<div class="card"">
+						  <img class="card-img-top img-fluid" style='width: 12rem' src="/static/assets/img/swatches/swatch-dk-blue.png" alt="">
+						  <div class="card-body">
+							  <h5>Hex</h5>
+								  <p>011E41</p>
+							  <h5>CMYK</h5>
+							  <p>100 87 42 52</p>
+							  <h5>RGB</h5>
+								  <p>1 30 65</p>
+						  </div>
+						</div>
+					</div>
+			</div>
+		   <p class='mt-5'>The infographic seen below is an example of using these primary colors for the title and subtitle of the document in order to draw the eyes. The text in the main table, however, uses more muted grays.</p>
+		   <img src='/static/assets/img/colors-example-infographic.png' class='mb-3' width='100%'>
+		   <figcaption class="figure-caption">The primary colors are used for the title and match the IFRC icons.</figcaption> 
+		   
+			<h4 class='my-5'>Secondary</h4>
+	  </div>
+	  </div>
+</div>
+{% endblock content %}
