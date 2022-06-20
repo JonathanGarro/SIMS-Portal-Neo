@@ -25,7 +25,7 @@ def new_emergency():
 def view_emergency(id):
 	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
 	deployments = db.engine.execute("SELECT * FROM assignment JOIN emergency ON emergency.id = assignment.emergency_id JOIN user ON user.id = assignment.user_id JOIN nationalsociety ON nationalsociety.ns_go_id = user.ns_id WHERE emergency.id = :id", {'id': id}).all()
-	emergency_type = db.engine.execute("SELECT * FROM emergency JOIN emergencytype ON emergencytype.id = emergency.emergency_type_id WHERE emergency.id = :id", {'id': id})
+	emergency_type = db.engine.execute("SELECT * FROM emergency JOIN emergencytype ON emergencytype.emergency_type_go_id = emergency.emergency_type_id WHERE emergency.id = :id", {'id': id})
 	emergency_portfolio = db.engine.execute("SELECT * FROM portfolio JOIN emergency ON emergency.id = portfolio.emergency_id WHERE emergency.id = :id", {'id': id}).all()
 	emergency_type_name = [row.emergency_type_name for row in emergency_type]
 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0], deployments=deployments, emergency_portfolio=emergency_portfolio)

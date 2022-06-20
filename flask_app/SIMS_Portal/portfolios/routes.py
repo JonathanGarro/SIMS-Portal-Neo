@@ -12,7 +12,6 @@ portfolios = Blueprint('portfolios', __name__)
 @portfolios.route('/portfolio')
 def portfolio():
 	public_portfolio = db.session.query(Portfolio).filter(Portfolio.external==1).all()
-	print(public_portfolio)
 	return render_template('portfolio_public.html', title="SIMS Products", public_portfolio=public_portfolio)
 
 @portfolios.route('/portfolio/new', methods=['GET', 'POST'])
