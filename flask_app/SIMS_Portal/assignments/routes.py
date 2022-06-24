@@ -4,6 +4,7 @@ from SIMS_Portal import db, login_manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, current_user, logout_user, login_required
 from SIMS_Portal.assignments.forms import NewAssignmentForm
+from datetime import datetime
 
 assignments = Blueprint('assignments', __name__)
 
@@ -19,3 +20,26 @@ def new_assignment():
 		flash('New assignment successfully created.', 'success')
 		return redirect(url_for('main.dashboard'))
 	return render_template('create_assignment.html', title='New Assignment', form=form)
+
+@assignments.route('/assignment/<int:id>')
+@login_required
+def view_assignment(id):
+	assignment_info = db.session.query(Assignment, User).join(User).filter(Assignment.id == id).first()
+	dict_assignment = assignment_info.Assignment.__dict__
+	dict_start_date = str(dict_assignment['start_date'])
+	dict_end_date = str(dict_assignment['end_date'])
+	
+	formatted_start_date = datetime.strptime(dict_start_date, '%Y-%m-%d').strftime('%d %b %Y')
+	formatted_end_date = datetime.strptime(dict_end_date, '%Y-%m-%d').strftime('%d %b %Y')
+	
+	days_left = db.engine.execute("SELECT JULIANDAY(:end_date) - JULIANDAY(DATE('now')) AS days_remaining FROM Assignment WHERE id = :id", {'id': id, 'end_date': dict_end_date})
+	days_left_dict = days_left.mappings().first()
+	days_left_int = int(days_left_dict['days_remaining'])
+	print(f"days left value is: {days_left_int}")
+	
+	assingment_length = db.engine.execute("SELECT JULIANDAY(:end_date) - JULIANDAY(:start_date) AS length FROM Assignment WHERE id = :id", {'id': id, 'end_date': dict_end_date, 'start_date': dict_start_date})
+	assignment_length_dict = assingment_length.mappings().first()
+	assignment_length_int = int(assignment_length_dict['length'])
+	print(f"assignment length value is: {assignment_length_int}")
+	
+	return render_template('assignment_view.html', assignment_info=assignment_info, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date, days_left_int=days_left_int, assignment_length_int=assignment_length_int)

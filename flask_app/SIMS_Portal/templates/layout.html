@@ -74,9 +74,9 @@
 			<li class="nav-item dropdown pl-3">
 				<a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Create Record</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					  <a class="dropdown-item" href="{{ url_for('emergencies.new_emergency') }}">New Emergency Record</a>
+					  <a class="dropdown-item" href="{{ url_for('emergencies.new_emergency') }}">New Emergency</a>
 					  <a class="dropdown-item" href="{{ url_for('assignments.new_assignment') }}">New Assignment</a>
-					  <a class="dropdown-item" href="#">New Emergency Review</a>
+					  <a class="dropdown-item" href="#">New Review</a>
 					</div>
 			</li>
 		</ul>
@@ -111,7 +111,7 @@
 				<a href="https://github.com/JonathanGarro/SIMS-Portal-Neo" class="text-white">Site Source Code</a>
 			  </li>
 			  <li>
-				<a href="#!" class="text-white">Site Map</a>
+				<a href="https://trello.com/b/zzwVdwoY/sims-portal-development-roadmap" class="text-white">Site Dev Roadmap</a>
 			  </li>
 			  <li>
 				<a href="#!" class="text-white">Contact Administrator</a>
@@ -128,7 +128,7 @@
 				  <a href="https://go.ifrc.org" class="text-white">IFRC GO Platform</a>
 				</li>
 				<li>
-				  <a href="https://go.ifrc.org/deployments/catalogue/infoMgt" class="text-white">Information Management Surge Catalogue</a>
+				  <a href="https://go.ifrc.org/deployments/catalogue/infoMgt" class="text-white">IM Surge Catalogue</a>
 				</li>
 				<li>
 				  <a href="https://data.humdata.org" class="text-white">Humanitarian Data Exchange</a>
@@ -148,6 +148,17 @@
 	  <!-- Copyright -->
 	</footer>
 </body>
+	<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+	<script>
+		var typed = new Typed(".typed",{
+		strings: [,  "affected area basemaps.","achievement infographics.","mobile data collection.", "data analysis.", "dashboard creation.", "web visualizations."] ,
+		typeSpeed: 20,
+		backSpeed: 50,
+		backDelay: 1500,
+		loop: true
+	
+		})
+	</script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://d3js.org/d3.v7.min.js"></script>

@@ -139,6 +139,11 @@ class Assignment(db.Model):
 	
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
+	
+	# @classmethod
+	# def count_assignment_days(cls, end_date, id):
+	# 	query = db.session.query("SELECT DATEDIFF(%(end_date)s, CURDATE()) AS time_remaining FROM assignments WHERE id = %(id)s"
+	# 	return query
 
 	def __repr__(self):
 		return f"Assignment('{self.role}','{self.start_date}','{self.end_date}','{self.remote}','{self.assignment_details}')"

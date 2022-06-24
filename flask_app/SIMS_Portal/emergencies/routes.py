@@ -1,6 +1,6 @@
 from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
 from SIMS_Portal import db
-from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, EmergencyType, Alert
+from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, EmergencyType, Alert, Portfolio
 from SIMS_Portal.emergencies.forms import NewEmergencyForm, UpdateEmergencyForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required

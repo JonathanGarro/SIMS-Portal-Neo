@@ -21,6 +21,10 @@ def new_portfolio():
 	if form.validate_on_submit():
 		if form.file.data:
 			file = save_portfolio(form.file.data)
+		if form.external.data == True:
+			form.external.data = 1
+		else:
+			form.external.data = 0
 		product = Portfolio(
 			final_file_location = file, title=form.title.data, creator_id=form.creator_id.data.id, description=form.description.data, type=form.type.data, emergency_id=form.emergency_id.data.id, external=form.external.data
 		)

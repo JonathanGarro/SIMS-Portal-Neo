@@ -13,7 +13,6 @@ import math
 import time	
 from SIMS_Portal.config import Config
 
-
 load_dotenv()
 
 db = SQLAlchemy()
