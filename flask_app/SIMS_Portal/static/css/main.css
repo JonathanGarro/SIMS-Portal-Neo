@@ -47,6 +47,10 @@ body {
 	border: none;
 }
 
+.card:hover {
+  transform: scale(1.1);
+}
+
 .card-img-top {
 	width: 100%;
 	height: 15vw;

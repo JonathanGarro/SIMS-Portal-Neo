@@ -8,7 +8,6 @@ from SIMS_Portal.portfolios.utils import save_portfolio
 
 portfolios = Blueprint('portfolios', __name__)
 
-	
 @portfolios.route('/portfolio')
 def portfolio():
 	public_portfolio = db.session.query(Portfolio).filter(Portfolio.external==1).all()
