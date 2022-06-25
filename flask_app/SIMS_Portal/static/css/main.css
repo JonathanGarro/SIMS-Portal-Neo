@@ -36,6 +36,10 @@ body {
   position: relative;
 }
 
+p {
+	font-size: 18px;
+}
+
 #box {
   height: 100px;
   width: 200px;
@@ -47,7 +51,7 @@ body {
 	border: none;
 }
 
-.card:hover {
+#portfolio-card:hover {
   transform: scale(1.1);
 }
 
