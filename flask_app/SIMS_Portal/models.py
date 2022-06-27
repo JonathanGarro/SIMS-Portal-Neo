@@ -92,7 +92,7 @@ class User(db.Model, UserMixin):
 	messaging_number_country_code = db.Column(db.Integer)
 	messaging_number = db.Column(db.Integer)
 	
-	ns_id = db.Column(db.Integer, ForeignKey('nationalsociety.ns_go_id'))
+	ns_id = db.Column(db.Integer, db.ForeignKey('nationalsociety.ns_go_id'))
 	
 	assignments = db.relationship('Assignment', backref='assigned_member')
 	products = db.relationship('Portfolio', backref='creator', lazy=True)
@@ -133,6 +133,9 @@ class Assignment(db.Model):
 	end_date = db.Column(db.Date, nullable=False)
 	remote = db.Column(db.Boolean)
 	assignment_details = db.Column(db.String(1000))
+
+	products = db.relationship('Portfolio', backref='assignment', lazy=True)
+	learning = db.relationship('Learning', backref='assignment', uselist=False)
 	
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	emergency_id = db.Column(db.Integer, db.ForeignKey('emergency.id'), default=0)
@@ -147,6 +150,14 @@ class Assignment(db.Model):
 
 	def __repr__(self):
 		return f"Assignment('{self.role}','{self.start_date}','{self.end_date}','{self.remote}','{self.assignment_details}')"
+
+class Learning(db.Model):
+		__tablename__ = 'learning'
+		
+		id = db.Column(db.Integer, primary_key=True)
+		overall = db.Column(db.String, nullable=False)
+		
+		assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'), unique=True)
 
 class Emergency(db.Model):
 	__tablename__ = 'emergency'
@@ -216,6 +227,7 @@ class Portfolio(db.Model):
 	asset_file_location = db.Column(db.String(100))
 	external = db.Column(db.Boolean, default=False)
 	
+	assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
 	creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	emergency_id = db.Column(db.Integer, db.ForeignKey('emergency.id'))
 	

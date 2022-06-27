@@ -1,0 +1,3 @@
+id,role,start_date,end_date,remote,assignment_details,user_id,emergency_id,created_at,updated_at
+1,Information Management Coordinator,2022-03-03,2022-04-14,0,"Jonathan served as the Humanitarian Information Analysis Coordinator, based in Budapest.",1,4,2022-06-04 17:05:50,NULL
+2,Remote IM Support,2022-06-03,2022-11-02,1,"Providing remote support to the operation, focusing on maps and infographics.",4,1,2022-06-04 17:07:45,NULL

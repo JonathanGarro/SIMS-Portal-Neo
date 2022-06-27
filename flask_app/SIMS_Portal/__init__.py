@@ -23,7 +23,8 @@ login_manager.login_message_category = 'danger'
 mail = Mail()
 
 from SIMS_Portal import models
-# from SIMS_Portal.models import Alert
+
+
 
 def create_app(config_class=Config):
 	app = Flask(__name__)
@@ -34,10 +35,10 @@ def create_app(config_class=Config):
 	login_manager.init_app(app)
 	mail.init_app(app)
 	
-	# scheduler = APScheduler()
-	# job = scheduler(get_im_alerts, 'cron', minute = '*')
-	# scheduler.init_app(app)
-	# scheduler.start()
+	# use this when migrating to new DB - will generate db file when running
+	with app.app_context():
+		db.create_all()
+	
 	
 	from SIMS_Portal.main.routes import main
 	from SIMS_Portal.assignments.routes import assignments

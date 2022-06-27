@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container">
-	<h2 class="mt-5">Active Members  </h2>
-	<p class="text-secondary"><a href="/register" class="text-danger">Learn more</a> about SIMS membership</p>
+	<h3 class="mt-5" style="font-family: 'Montserrat';" id='sims-blue'>Active Members  </h3>
+	<p class="lead"><a href="/register" class="text-danger">Learn more</a> about SIMS membership</p>
 	<div class="row row-cols-5 row-cols-md-5 g-4 mt-4">
 		{% for member in members %}
 			  <div class="col d-flex align-items-stretch">
@@ -12,7 +12,7 @@
 					<h5 class="card-title mt-auto mb-2">{{member.firstname}} {{member.lastname}}</h5>
 					<h6 class="fw-bold text-danger">{{member.ns_name}}</h6>
 
-					<a href='/profile/view/{{member.user_id}}' class="btn btn-outline-secondary mt-2">Profile</a>
+					<a href='/profile/view/{{member.user_id}}' class="btn btn-outline-secondary mt-2" id='profile-button'>Profile</a>
 				  </div>
 				</div>
 			  </div>
