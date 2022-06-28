@@ -135,10 +135,62 @@ def update_profile():
 		form.bio.data = current_user.bio
 		form.github.data = current_user.github
 		form.twitter.data = current_user.twitter
+		# form.ns_id.data = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id == current_user.id).with_entities(NationalSociety.ns_name).first()[0]
 		# form.roles.data = current_user.roles
 		# form.languages.data = current_user.languages
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
-	return render_template('profile_edit.html', title='Profile', profile_picture=profile_picture, form=form,ns_association=ns_association)
+	return render_template('profile_edit.html', title='Profile', profile_picture=profile_picture, form=form, ns_association=ns_association)
+
+@users.route('/profile_edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def update_specified_profile(id):
+	if current_user.is_admin == 1:
+		form = UpdateAccountForm()
+		this_user = db.session.query(User).filter(User.id==id).first()
+		
+		try:
+			ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==id).with_entities(NationalSociety.ns_name).first()[0]	
+		except:
+			ns_association = 'None'
+		
+		
+		if form.validate_on_submit():
+			if form.picture.data:
+				picture_file = save_picture(form.picture.data)
+				this_user.image_file = picture_file
+			this_user.firstname = form.firstname.data
+			this_user.lastname = form.lastname.data
+			this_user.email = form.email.data
+			this_user.job_title = form.job_title.data
+			try:
+				this_user.ns_id = form.ns_id.data.ns_go_id
+			except:
+				pass
+			this_user.bio = form.bio.data
+			this_user.twitter = form.twitter.data
+			this_user.github = form.github.data
+			for skill in form.skills.data:
+				this_user.skills.append(Skill.query.filter(Skill.name==skill).one())
+			# this_user.roles = form.roles.data
+			for language in form.languages.data:
+				this_user.languages.append(Language.query.filter(Language.name==language).one())
+			db.session.commit()
+			flash('Your account has been updated!', 'success')
+			return redirect(url_for('users.profile'))
+		elif request.method == 'GET':
+			form.firstname.data = this_user.firstname
+			form.lastname.data = this_user.lastname
+			form.email.data = this_user.email
+			form.job_title.data = this_user.job_title
+			form.ns_id.data = this_user.ns_id
+			form.bio.data = this_user.bio
+			form.github.data = this_user.github
+			form.twitter.data = this_user.twitter
+		profile_picture = url_for('static', filename='assets/img/avatars/' + this_user.image_file)
+		return render_template('profile_edit.html', title='Profile', profile_picture=profile_picture, form=form, ns_association=ns_association, current_user=this_user)
+	else:
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
 	
 @users.route('/reset_password', methods=['GET', 'POST'])
 def reset_request():

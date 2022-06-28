@@ -28,6 +28,7 @@ def view_emergency(id):
 	emergency_type = db.engine.execute("SELECT * FROM emergency JOIN emergencytype ON emergencytype.emergency_type_go_id = emergency.emergency_type_id WHERE emergency.id = :id", {'id': id})
 	emergency_portfolio = db.engine.execute("SELECT * FROM portfolio JOIN emergency ON emergency.id = portfolio.emergency_id WHERE emergency.id = :id", {'id': id}).all()
 	emergency_type_name = [row.emergency_type_name for row in emergency_type]
+	
 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0], deployments=deployments, emergency_portfolio=emergency_portfolio)
 
 @emergencies.route('/emergency/edit/<int:id>', methods=['GET', 'POST'])
@@ -39,7 +40,6 @@ def edit_emergency(id):
 		emergency_info.emergency_location_id = form.emergency_location_id.data.ns_go_id
 		emergency_info.emerency_type_id = form.emergency_type_id.data.id
 		emergency_info.emergency_glide = form.emergency_glide.data
-		# emergency_info.emergency_go_id = form.emergency_go_id.data
 		emergency_info.activation_details = form.activation_details.data
 		db.session.commit()
 		flash('Emergency record updated!', 'success')

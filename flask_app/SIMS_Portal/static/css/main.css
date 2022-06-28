@@ -52,6 +52,12 @@ p {
   clear: both;
 }
 
+#date-label {
+	font-size:.8em;
+	font-weight: bold;
+	color: #df4759;
+}
+
 .list-group-item.active {
 	background-color: rgb(192, 192, 192);
 	border: none;
