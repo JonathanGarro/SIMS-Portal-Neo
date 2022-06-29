@@ -34,8 +34,17 @@ a:link {
 	color: #df4759
 }
 
+a:hover {
+	text-decoration: underline;
+	color: #df4759
+}
+
 .dropdown-item:active {
 	background-color: #df4759;
+}
+
+#override-link-color {
+	color: white
 }
 
 body {
@@ -66,6 +75,16 @@ p {
 #portfolio-card:hover {
   /* transform: scale(1.1); */
   background: lightgray !important;
+}
+
+#assignment-guidance {
+	font-size: 1em;
+	color: grey
+}
+
+#response-tools-explainer {
+	font-size: .9em;
+	color: grey
 }
 
 /* #invert-card-text:hover {

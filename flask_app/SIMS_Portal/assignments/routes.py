@@ -61,10 +61,9 @@ def view_assignment(id):
 @assignments.route('/assignment/delete/<int:id>')
 @login_required
 def delete_assignment(id):
-	if current_user.is_admin == 1:
-		assignment_to_delete = Assignment.query.get_or_404(id)
+	if current_user.is_admin == 1 or current_user.id == id:
 		try:
-			db.session.delete(assignment_to_delete)
+			db.session.query(Assignment).filter(Assignment.id==id).update({'assignment_status':'Removed'})
 			db.session.commit()
 			flash("Assignment deleted.", 'success')
 		except:

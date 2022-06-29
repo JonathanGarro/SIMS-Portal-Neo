@@ -1,5 +1,5 @@
-id,emergency_name,emergency_glide,emergency_go_id,emergency_location_id,emergency_review_id,activation_details,slack_channel,dropbox_url,trello_url,emergency_type_id,created_at,updated_at
-1,Canada Wildfires,2123,132,14,NULL,asdf,NULL,NULL,NULL,15,2022-05-29 12:09:30,NULL
-2,Indonesia Floods,123331,1443,85,NULL,We were asked to support some mapping related to the floods.,NULL,NULL,NULL,12,2022-05-29 15:26:07,NULL
-3,Haiti Earthquake,1234,3,80,NULL,"Bad earthquake, we came to map it.",NULL,NULL,NULL,2,2022-05-29 17:03:03,NULL
-4,Ukraine Crisis,123,123,1,NULL,asdf,NULL,NULL,NULL,5,2022-05-29 17:06:13,NULL
+id,emergency_name,emergency_status,emergency_glide,emergency_go_id,emergency_location_id,emergency_review_id,activation_details,slack_channel,dropbox_url,trello_url,emergency_type_id,created_at,updated_at
+1,Canada Wildfires,Active,2123,132,14,NULL,asdf,NULL,NULL,NULL,15,2022-06-12 15:05:01,NULL
+2,Indonesia Floods,Active,123331,1443,85,NULL,We were asked to support some mapping related to the floods.,NULL,NULL,NULL,12,2022-06-13 15:05:01,NULL
+3,Haiti Earthquake,Active,1234,3,80,NULL,"Bad earthquake, we came to map it.",NULL,NULL,NULL,2,2022-06-14 15:05:01,NULL
+4,Ukraine Crisis,Active,123,123,1,NULL,asdf,NULL,NULL,NULL,5,2022-06-15 15:05:01,NULL

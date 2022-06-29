@@ -31,7 +31,6 @@ def resources_colors():
 @login_required
 def dashboard():
 	todays_date = datetime.today()
-	
 	count_active_assignments = db.engine.execute("SELECT COUNT(role) as AssignmentCount FROM assignment WHERE end_date > :todays_date", {'todays_date': todays_date}).first()
 	active_assignments = db.engine.execute("SELECT * FROM assignment JOIN user ON user.id = assignment.user_id JOIN emergency ON emergency.id = assignment.emergency_id WHERE end_date > :todays_date", {'todays_date': todays_date})
 	most_recent_emergencies = db.session.query(Emergency).order_by(Emergency.created_at.desc()).all()

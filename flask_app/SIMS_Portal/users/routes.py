@@ -71,7 +71,7 @@ def profile():
 	except:
 		pass
 	deployment_history_count = len(assignment_history)
-	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==User.id).filter(User.id==current_user.id).all()
+	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==User.id).filter(User.id==current_user.id, Portfolio.product_status=='Active').all()
 	skills_list = db.engine.execute("SELECT * FROM user JOIN user_skill ON user.id = user_skill.user_id JOIN skill ON skill.id = user_skill.skill_id WHERE user.id=:current_user", {'current_user': current_user.id})
 	languages_list = db.engine.execute("SELECT * FROM user JOIN user_language ON user.id = user_language.user_id JOIN language ON language.id = user_language.language_id WHERE user.id=:current_user", {'current_user': current_user.id})
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
@@ -220,3 +220,18 @@ def reset_token(token):
 		flash('Your password has been reset.', 'success')
 		return redirect(url_for('users.login'))
 	return render_template('reset_token.html', title='Reset Password', form=form)
+
+@users.route('/user/delete/<int:id>')
+@login_required
+def delete_user(id):
+	if current_user.is_admin == 1 or current_user.id == id:
+		try:
+			db.session.query(User).filter(User.id==id).update({'status':'Removed'})
+			db.session.commit()
+			flash("Account deleted.", 'success')
+		except:
+			flash("Error deleting user. Check that the user ID exists.")
+		return redirect(url_for('users.logout'))
+	else:
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins), 403

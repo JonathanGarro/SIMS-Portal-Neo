@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container">
-	<div class="row mb-5">
+	<div class="row my-5">
 	{# Left Column #}
 	<div class="col-md-8">
-		<h3 class="mb-3 text-danger">Log New Emergency Response Record</h3>
+		<h3 class="mb-3 text-danger mb-5">Log New Emergency Response Record</h3>
 		<form action="" method="POST" class="mx-auto p-4 bg-light text-light rounded-3" novalidate>
 			{{ form.hidden_tag() }}
 		<div class="row">
@@ -41,7 +41,7 @@
 		</div>
 	<div>
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col">
 				<div class="form-group pb-4">
 					{{ form.emergency_type_id.label(class="form-control-label pb-2 text-danger") }}
 					{% if form.emergency_type_id.errors %}
@@ -69,21 +69,24 @@
 					{{ form.emergency_glide(class="form-control form-control-lg") }}
 				{% endif %}
 			</div>
+			<div class='col'>
+				<div class="form-group pb-4">
+					{{ form.emergency_go_id.label(class="form-control-label pb-2 text-danger") }}
+					{% if form.emergency_go_id.errors %}
+						{{ form.emergency_go_id(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.emergency_go_id.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+					{% else %}
+						{{ form.emergency_go_id(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</div>
 		</div>
 	</div>
-		<div class="form-group pb-4">
-			{{ form.emergency_go_id.label(class="form-control-label pb-2 text-danger") }}
-			{% if form.emergency_go_id.errors %}
-				{{ form.emergency_go_id(class="form-control form-control-lg is-invalid") }}
-					<div class="invalid-feedback">
-						{% for error in form.emergency_go_id.errors %}
-							<span>{{ error }}</span>
-						{% endfor %}
-					</div>
-			{% else %}
-				{{ form.emergency_go_id(class="form-control form-control-lg") }}
-			{% endif %}
-		</div>
+		
 		<div class="form-group pb-4">
 			{{ form.activation_details.label(class="form-control-label pb-2 text-danger") }}
 			{% if form.activation_details.errors %}
@@ -97,15 +100,65 @@
 				{{ form.activation_details(class="form-control form-control-lg") }}
 			{% endif %}
 		</div>
-	{{ form.submit(class="btn btn-outline-danger") }}
+		<div class="row">
+			<div class="col">
+				<div class="form-group pb-4">
+					{{ form.slack_channel.label(class="form-control-label pb-2 text-danger") }}
+					
+					{% if form.slack_channel.errors %}
+						{{ form.slack_channel(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.slack_channel.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+					{% else %}
+						{{ form.slack_channel(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group pb-4">
+					{{ form.dropbox_url.label(class="form-control-label pb-2 text-danger") }}
+					
+					{% if form.dropbox_url.errors %}
+						{{ form.dropbox_url(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.dropbox_url.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+					{% else %}
+						{{ form.dropbox_url(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group pb-4">
+					{{ form.trello_url.label(class="form-control-label pb-2 text-danger") }}
+					
+					{% if form.trello_url.errors %}
+						{{ form.trello_url(class="form-control form-control-lg is-invalid") }}
+							<div class="invalid-feedback">
+								{% for error in form.trello_url.errors %}
+									<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+					{% else %}
+						{{ form.trello_url(class="form-control form-control-lg") }}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	{{ form.submit(class="btn btn-outline-danger mt-3") }}
 	
 	</form>
 </div>
 
-	<div class="col">
+	<div class="col ps-5">
 		<h4 class="text-danger">Latest GO Events</h4>
 		<p>This is a list of the most recent events in GO. Use this as a reference for getting the emergency ID number. If you don't see it here, <a href="https://go.ifrc.org/emergencies" class='text-danger'>navigate to the emergency in GO</a> and use the integer in the URL.
-		<table class="table table-striped table-sm">
+		<table class="table table-hover table-sm">
 		<thead>
 			<tr>
 				<th class="text-danger" scope="col">ID</th>

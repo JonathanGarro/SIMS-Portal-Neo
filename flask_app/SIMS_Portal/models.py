@@ -35,6 +35,7 @@ class Skill(db.Model):
 	__tablename__ = 'skill'
 	
 	id = db.Column(db.Integer, primary_key=True)
+	
 	name = db.Column(db.String)
 
 class Language(db.Model):
@@ -133,6 +134,7 @@ class Assignment(db.Model):
 	end_date = db.Column(db.Date, nullable=False)
 	remote = db.Column(db.Boolean)
 	assignment_details = db.Column(db.String(1000))
+	assignment_status = db.Column(db.String(100), default='Active')
 
 	products = db.relationship('Portfolio', backref='assignment', lazy=True)
 	learning = db.relationship('Learning', backref='assignment', uselist=False)
@@ -165,6 +167,7 @@ class Emergency(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	
 	emergency_name = db.Column(db.String(100), nullable=False)
+	emergency_status = db.Column(db.String(100), nullable=False, default='Active')
 	emergency_glide = db.Column(db.String(20))
 	emergency_go_id = db.Column(db.Integer)
 	emergency_location_id = db.Column(db.Integer)
@@ -223,6 +226,7 @@ class Portfolio(db.Model):
 	title = db.Column(db.String(200), nullable=False)
 	type = db.Column(db.String(100), nullable=False)
 	description = db.Column(db.Text)
+	product_status = db.Column(db.String(100), default='Active')
 	final_file_location = db.Column(db.String(100), nullable=False)
 	asset_file_location = db.Column(db.String(100))
 	external = db.Column(db.Boolean, default=False)

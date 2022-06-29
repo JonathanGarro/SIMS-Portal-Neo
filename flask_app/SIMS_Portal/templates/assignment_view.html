@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="container">
-	<div class="row pb-5">
+	<div class="row my-5">
 		<div class="col col-md-4 rounded rounded-3">
 			<div class="card border-0 p-4 bg-light rounded rounded-4">
 				
@@ -36,9 +36,6 @@
 				</table>
 
 				<br>
-				
-
-					
 					{# 
 					---
 					debug tools for date calculations
@@ -50,11 +47,12 @@
 					#}
 
 				<div class="list-group mt-4">
-					<a href="#" class="list-group-item list-group-item-action text-secondary">Edit Assignment</a>
+					<a href="/portfolio/new_from_assignment/{{assignment_info.Assignment.id}}/{{assignment_info.User.id}}/{{assignment_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Upload Product</a>
 					<a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
 					<a href="#" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
-					{% if current_user.is_admin == 1 %}
-					<a href="/assignment/delete/{{assignment_info.Assignment.id}}" class="list-group-item list-group-item-action text-danger">Delete Assignment</a>
+					{% if current_user.is_admin == 1 or current_user.id == assignment_info.User.id%}
+						<a href="#" class="list-group-item list-group-item-action text-secondary">Edit Assignment</a>
+						<a href="/assignment/delete/{{assignment_info.Assignment.id}}" class="list-group-item list-group-item-action text-danger">Delete Assignment</a>
 					{% endif %}
 				</div>
 

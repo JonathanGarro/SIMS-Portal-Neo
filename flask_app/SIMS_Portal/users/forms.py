@@ -34,7 +34,7 @@ class UpdateAccountForm(FlaskForm):
 	email = StringField('Email', validators=[DataRequired(), Email()])
 	job_title = StringField('Job Title')
 	ns_id = QuerySelectField('National Society Country', query_factory=lambda:NationalSociety.query.all(), get_label='country_name', allow_blank=True)
-	bio = TextAreaField('Short Bio')
+	bio = TextAreaField('Short Bio', render_kw={'style':'height: 200px'})
 	birthday = DateField('Birthday')
 	molnix_id = IntegerField('Molnix ID')
 	twitter = StringField('Twitter Handle')

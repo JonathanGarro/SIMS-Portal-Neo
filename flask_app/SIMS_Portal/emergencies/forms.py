@@ -12,6 +12,9 @@ class NewEmergencyForm(FlaskForm):
 	emergency_glide = StringField('GLIDE Number')
 	emergency_go_id = IntegerField('GO ID Number')
 	activation_details = TextAreaField('SIMS Activation Details')
+	slack_channel = StringField('Slack Channel ID')
+	dropbox_url = StringField('Dropbox URL')
+	trello_url = StringField('Trello URL')
 	submit = SubmitField('Create Emergency')
 	
 class UpdateEmergencyForm(FlaskForm):
@@ -21,4 +24,7 @@ class UpdateEmergencyForm(FlaskForm):
 	emergency_glide = StringField('GLIDE Number')
 	emergency_go_id = IntegerField('GO ID Number')
 	activation_details = TextAreaField('SIMS Activation Details')
+	slack_channel = StringField('Slack Channel ID')
+	dropbox_url = StringField('Dropbox URL')
+	trello_url = StringField('Trello URL')
 	submit = SubmitField('Update Emergency')

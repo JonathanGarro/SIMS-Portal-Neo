@@ -12,7 +12,7 @@ emergencies = Blueprint('emergencies', __name__)
 def new_emergency():
 	form = NewEmergencyForm()
 	if form.validate_on_submit():
-		emergency = Emergency(emergency_name=form.emergency_name.data, emergency_location_id=form.emergency_location_id.data.ns_go_id, emergency_type_id=form.emergency_type_id.data.id, emergency_glide=form.emergency_glide.data, emergency_go_id=form.emergency_go_id.data, activation_details=form.activation_details.data)
+		emergency = Emergency(emergency_name=form.emergency_name.data, emergency_location_id=form.emergency_location_id.data.ns_go_id, emergency_type_id=form.emergency_type_id.data.id, emergency_glide=form.emergency_glide.data, emergency_go_id=form.emergency_go_id.data, activation_details=form.activation_details.data, slack_channel=form.slack_channel.data, dropbox_url=form.dropbox_url.data, trello_url=form.trello_url.data)
 		db.session.add(emergency)
 		db.session.commit()
 		flash('New emergency successfully created.', 'success')
@@ -41,15 +41,48 @@ def edit_emergency(id):
 		emergency_info.emerency_type_id = form.emergency_type_id.data.id
 		emergency_info.emergency_glide = form.emergency_glide.data
 		emergency_info.activation_details = form.activation_details.data
+		emergency_info.slack_channel = form.slack_channel.data
+		emergency_info.dropbox_url = form.dropbox_url.data
+		emergency_info.trello_url = form.trello_url.data
 		db.session.commit()
 		flash('Emergency record updated!', 'success')
 		return redirect(url_for('main.dashboard'))
 	elif request.method == 'GET':
 		form.emergency_name.data = emergency_info.emergency_name
-		# form.emergency_location_id.data = 
 		form.emergency_glide.data = emergency_info.emergency_glide
 		form.emergency_type_id.data = db.session.execute("SELECT emergencytype.id FROM emergencytype JOIN emergency ON emergency.emergency_type_id == emergencytype.id WHERE emergency.id = 1").first()[0]
-		print(form.emergency_type_id.data)
-		# form.emergency_go_id.data = emergency_info.emergency_go_id
 		form.activation_details.data = emergency_info.activation_details
+		form.slack_channel.data = emergency_info.slack_channel
+		form.dropbox_url.data = emergency_info.dropbox_url
+		form.trello_url.data = emergency_info.trello_url
 	return render_template('emergency_edit.html', form=form, emergency_info=emergency_info)
+
+@emergencies.route('/emergency/closeout/<int:id>')
+@login_required
+def closeout_emergency(id):
+	if current_user.is_admin == 1:
+		try:
+			db.session.query(Emergency).filter(Emergency.id==id).update({'emergency_status':'Closed'})
+			db.session.commit()
+			flash("Emergency closed out.", 'success')
+		except:
+			flash("Error closing emergency. Check that the emergency ID exists.")
+		return redirect(url_for('main.dashboard'))
+	else:
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
+
+@emergencies.route('/emergency/delete/<int:id>')
+@login_required
+def delete_emergency(id):
+	if current_user.is_admin == 1:
+		try:
+			db.session.query(Emergency).filter(Emergency.id==id).update({'emergency_status':'Removed'})
+			db.session.commit()
+			flash("Emergency deleted.", 'success')
+		except:
+			flash("Error deleting emergency. Check that the emergency ID exists.")
+		return redirect(url_for('main.dashboard'))
+	else:
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins), 403

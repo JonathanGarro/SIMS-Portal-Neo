@@ -24,8 +24,6 @@ mail = Mail()
 
 from SIMS_Portal import models
 
-
-
 def create_app(config_class=Config):
 	app = Flask(__name__)
 	app.config.from_object(Config)
@@ -38,6 +36,9 @@ def create_app(config_class=Config):
 	# use this when migrating to new DB - will generate db file when running
 	with app.app_context():
 		db.create_all()
+	
+	app.app_context().push()
+	db.create_all()
 	
 	
 	from SIMS_Portal.main.routes import main

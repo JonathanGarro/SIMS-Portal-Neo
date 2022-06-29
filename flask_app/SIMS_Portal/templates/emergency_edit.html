@@ -70,7 +70,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col">
 						<div class="form-group pb-4">
 							{{ form.emergency_type_id.label(class="form-control-label pb-2 text-danger") }}
 							
@@ -102,6 +102,21 @@
 							{% endif %}
 						</div>
 					</div>
+					<div class='col'>
+						<div class="form-group pb-4">
+							{{ form.emergency_go_id.label(class="form-control-label pb-2 text-danger") }}
+							{% if form.emergency_go_id.errors %}
+								{{ form.emergency_go_id(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.emergency_go_id.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.emergency_go_id(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
 					<div class="form-group pb-4">
 						{{ form.activation_details.label(class="form-control-label pb-2 text-danger") }}
 						{% if form.activation_details.errors %}
@@ -116,8 +131,57 @@
 						{% endif %}
 					</div>
 				</div>
-			
-				{{ form.submit(class="btn btn-outline-danger") }}
+				<div class="row">
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.slack_channel.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.slack_channel.errors %}
+								{{ form.slack_channel(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.slack_channel.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.slack_channel(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.dropbox_url.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.dropbox_url.errors %}
+								{{ form.dropbox_url(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.dropbox_url.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.dropbox_url(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.trello_url.label(class="form-control-label pb-2 text-danger") }}
+							
+							{% if form.trello_url.errors %}
+								{{ form.trello_url(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.trello_url.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.trello_url(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				{{ form.submit(class="btn btn-outline-danger mt-3") }}
 			</form>
 
 		</div>

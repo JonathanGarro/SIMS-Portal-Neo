@@ -1,9 +1,10 @@
-id,title,type,description,final_file_location,asset_file_location,external,creator_id,emergency_id,created_at,updated_at
-1,Activity Map,Map,A map showing where teams have been deployed.,89ae6d4763eac5e6.png,NULL,0,1,4,2022-06-01 18:54:16,NULL
-2,Venezuela Population Movement,Infographic,A 3W map for donors and ICRC partners.,a67c066fbde84b6d.png,NULL,1,1,3,2022-06-01 18:57:04,NULL
-3,Python Seaborn Visualization,Report / Analysis,Visualizing the distribution of cash over time.,06d126f95f5d2d22.png,NULL,1,1,2,2022-06-02 13:54:57,NULL
-4,Activities Dashboard,Dashboard,A live view of activities in response to the earthquake. Built with Klipfolio.,29472dadde615fb8.png,NULL,1,1,5,2022-06-06 22:32:44,NULL
-5,SIMS Response Cycle Infographic,Infographic,An Illustrator-based file showing the various stages of an IM response to an emergency.,d04b9af01e515abb.png,NULL,1,4,1,2022-06-08 16:31:47,NULL
-6,A Mockup of a Logo,Other,A logo example.,5f66a824aa7fec51.png,NULL,1,1,5,2022-06-23 02:57:09,NULL
-7,Test1,Map,Test,38f296e3396ff3b6.png,NULL,1,1,5,2022-06-23 16:22:46,NULL
-8,Test2,Infographic,Test2,f8acf29b2429cd00.png,NULL,0,1,5,2022-06-23 16:23:07,NULL
+id,title,type,description,product_status,final_file_location,asset_file_location,external,assignment_id,creator_id,emergency_id,created_at,updated_at
+1,Activity Map,Map,A map showing where teams have been deployed.,Active,89ae6d4763eac5e6.png,NULL,0,NULL,1,4,6/1/22 18:54,NULL
+2,Venezuela Population Movement,Infographic,A 3W map for donors and ICRC partners.,Active,a67c066fbde84b6d.png,NULL,1,NULL,1,3,6/1/22 18:57,NULL
+3,Python Seaborn Visualization,Report / Analysis,Visualizing the distribution of cash over time.,Active,06d126f95f5d2d22.png,NULL,1,NULL,1,2,6/2/22 13:54,NULL
+4,Activities Dashboard,Dashboard,A live view of activities in response to the earthquake. Built with Klipfolio.,Active,29472dadde615fb8.png,NULL,1,NULL,1,5,6/6/22 22:32,NULL
+5,SIMS Response Cycle Infographic,Infographic,An Illustrator-based file showing the various stages of an IM response to an emergency.,Active,d04b9af01e515abb.png,NULL,1,NULL,4,1,6/8/22 16:31,NULL
+6,A Mockup of a Logo,Other,A logo example.,Active,5f66a824aa7fec51.png,NULL,1,NULL,1,5,6/23/22 2:57,NULL
+7,Test1,Map,Test,Active,38f296e3396ff3b6.png,NULL,1,NULL,1,5,6/23/22 16:22,NULL
+8,Test2,Infographic,Test2,Active,f8acf29b2429cd00.png,NULL,0,NULL,1,5,6/23/22 16:23,NULL
+9,Tets,Infographic,sdfasdf,Active,4ad51445abb74edb.png,NULL,1,NULL,1,1,6/28/22 15:40,NULL
