@@ -23,10 +23,14 @@ def new_emergency():
 @emergencies.route('/emergency/<int:id>', methods=['GET', 'POST'])
 @login_required
 def view_emergency(id):
-	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
+	# emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
 	deployments = db.engine.execute("SELECT * FROM assignment JOIN emergency ON emergency.id = assignment.emergency_id JOIN user ON user.id = assignment.user_id JOIN nationalsociety ON nationalsociety.ns_go_id = user.ns_id WHERE emergency.id = :id", {'id': id}).all()
 	emergency_type = db.engine.execute("SELECT * FROM emergency JOIN emergencytype ON emergencytype.emergency_type_go_id = emergency.emergency_type_id WHERE emergency.id = :id", {'id': id})
-	emergency_portfolio = db.engine.execute("SELECT * FROM portfolio JOIN emergency ON emergency.id = portfolio.emergency_id WHERE emergency.id = :id", {'id': id}).all()
+	
+	emergency_info = db.session.query(Emergency, EmergencyType).join(EmergencyType, EmergencyType.emergency_type_go_id==Emergency.emergency_type_id).filter(Emergency.id==id).first()
+	
+	# emergency_portfolio = db.engine.execute("SELECT * FROM portfolio JOIN emergency ON emergency.id = portfolio.emergency_id WHERE emergency.id = :id", {'id': id}).all()
+	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id==Portfolio.emergency_id).filter(Emergency.id==id, Portfolio.product_status=='Active').all()
 	emergency_type_name = [row.emergency_type_name for row in emergency_type]
 	
 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0], deployments=deployments, emergency_portfolio=emergency_portfolio)

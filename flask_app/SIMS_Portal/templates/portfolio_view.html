@@ -24,12 +24,37 @@
 				</div>
 				<div class="row">
 					<h5 class="text-secondary mt-4">Final Product</h5>
-					<p>Download</p>
+					<p>Direct Download</p>
 				</div>
 				<div class="row">
 					<h5 class="text-secondary mt-4">Source Files</h5>
 					<p>Download on Dropbox</p>
 				</div>
+				{% if current_user.is_admin == 1 or current_user.id == product.User.id %}
+				<div class="list-group mt-5">
+					  <a href="#" class="list-group-item list-group-item-action text-danger" data-toggle="modal" data-target="#confirm-delete">Delete Product</a>
+					  <!-- Modal -->
+						<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+							  <div class="modal-content">
+								<div class="modal-header">
+								  <h5 class="modal-title" id="exampleModalLongTitle">Delete This Product?</h5>
+								  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								  </button>
+								</div>
+								<div class="modal-body">
+								  <span>Are you sure you want to delete this product? It will be removed from the portfolio but remain accessible to administrators.</span>
+								</div>
+								<div class="modal-footer">
+								  <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+								  <a href="/portfolio/delete/{{product.Portfolio.id}}"><button type="button" class="btn btn-danger">Delete</button></a>
+								</div>
+							  </div>
+							</div>
+						  </div>
+				</div>
+				{% endif %}
 			</div>
 		</div>
 		<div class="col mx-4">

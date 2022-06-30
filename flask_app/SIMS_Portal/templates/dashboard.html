@@ -3,7 +3,7 @@
 {% extends "layout.html" %}
 {% block content %}
 	<div class="container">
-		<div class="" id="hideMe">
+		<div class="mt-4" id="hideMe">
 			{% with messages = get_flashed_messages(with_categories=true) %}
 				   {% if messages %}
 					   {% for category, message in messages %}
@@ -15,37 +15,57 @@
 			{% endwith %}
 		</div>
 		<div class="row my-5">
-			<div class="col-md-8">
+			
 				
-				<canvas id='barChart' width='1200' height='300'></canvas>
-				<script>
-					var ctx = document.getElementById('barChart').getContext('2d');
-					var lineChart = new Chart(ctx, {
-						type: 'bar',
-						data: {
-							labels: {{ labels | safe }},
-							datasets: [
-								{
-									label: "Assignments by Emergency, All Time",
-									data: {{ values | safe }},
-									fill: true,
-									borderColor: "#F5333F"
-								}	
-							]
-						},
-						options: {
-							responsive: true,
-							scales: {
-								y: {
-									ticks: {
-										stepSize: 1
-									}
-								}
-							}
-						}
-					})
-				</script>
-
+				<ul class="nav nav-tabs" id="dashboardNav" role="tablist">
+			  <li class="nav-item" role="presentation">
+				<button class="nav-link active text-danger" id="assignments-emergency-tab" data-bs-toggle="tab" data-bs-target="#assignments-emergency" type="button" role="tab" aria-controls="assignments-emergency" aria-selected="true">Assignments by Emergency</button>
+			  </li>
+			  <li class="nav-item" role="presentation">
+				<button class="nav-link text-danger" id="assignments-ns-tab" data-bs-toggle="tab" data-bs-target="#assignments-ns" type="button" role="tab" aria-controls="assignments-ns" aria-selected="false">Assignments by National Society</button>
+			  </li>
+			  <li class="nav-item" role="presentation">
+				<button class="nav-link text-danger" id="products-emergency-tab" data-bs-toggle="tab" data-bs-target="#products-emergency" type="button" role="tab" aria-controls="products-emergency" aria-selected="false">Products by Emergency</button>
+			  </li>
+			</ul>
+			<div class="tab-content" id="dashboardContent">
+			  <div class="tab-pane fade show active" id="assignments-emergency" role="tabpanel" aria-labelledby="assignments-emergency-tab">
+				  <br>
+				  <canvas id='barChart' width='1200' height='300'></canvas>
+				  <script>
+					  var ctx = document.getElementById('barChart').getContext('2d');
+					  var lineChart = new Chart(ctx, {
+						  type: 'bar',
+						  data: {
+							  labels: {{ labels | safe }},
+							  datasets: [
+								  {
+									  label: "Assignments by Emergency, All Time",
+									  data: {{ values | safe }},
+									  fill: true,
+									  borderColor: "#000000"
+								  }	
+							  ]
+						  },
+						  options: {
+							  responsive: true,
+							  scales: {
+								  y: {
+									  ticks: {
+										  stepSize: 1
+									  }
+									  
+								  }
+							  }
+						  }
+					  })
+				  </script>
+				  
+			  </div>
+			  <div class="tab-pane fade" id="assignments-ns" role="tabpanel" aria-labelledby="assignments-ns-tab">Coming soon!</div>
+			  <div class="tab-pane fade" id="products-emergency" role="tabpanel" aria-labelledby="products-emergency-tab">Coming soon!</div>
+			</div>
+			<div class="col-md-8">
 				<h3 class=mt-5>Active Assignments <span class="badge rounded-pill bg-danger" id="smallbadge">{{count_active_assignments.AssignmentCount}}</span></h3>
 				<h5 class="text-secondary mb-5">Members Currently Supporting Operations</h5>
 				<table class='table'>
@@ -121,7 +141,7 @@
 				</div>
 			</div>
 			<div class="col">
-				<div class="card mb-5" style="">
+				<div class="card my-5" style="">
 					  <div class="card-header">Announcements and Reminders</div>
 					  <div class="card-body text-dark">
 						<h5 class="card-title">Weekly SIMS Calls</h5>
