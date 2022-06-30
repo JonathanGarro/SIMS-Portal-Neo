@@ -1,5 +1,5 @@
 from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
-from SIMS_Portal.models import Assignment, User, Emergency
+from SIMS_Portal.models import Assignment, User, Emergency, Portfolio
 from SIMS_Portal import db, login_manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, current_user, logout_user, login_required
@@ -56,7 +56,10 @@ def view_assignment(id):
 	assignment_length_int = int(assignment_length_dict['length'])
 	print(f"assignment length value is: {assignment_length_int}")
 	
-	return render_template('assignment_view.html', assignment_info=assignment_info, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date, days_left_int=days_left_int, assignment_length_int=assignment_length_int)
+	assingment_portfolio = db.session.query(Portfolio).filter(Portfolio.assignment_id==id).all()
+	print(assingment_portfolio)
+	
+	return render_template('assignment_view.html', assignment_info=assignment_info, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date, days_left_int=days_left_int, assignment_length_int=assignment_length_int, assingment_portfolio=assingment_portfolio)
 
 @assignments.route('/assignment/delete/<int:id>')
 @login_required

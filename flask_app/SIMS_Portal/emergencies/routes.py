@@ -23,17 +23,10 @@ def new_emergency():
 @emergencies.route('/emergency/<int:id>', methods=['GET', 'POST'])
 @login_required
 def view_emergency(id):
-	# emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
-	deployments = db.engine.execute("SELECT * FROM assignment JOIN emergency ON emergency.id = assignment.emergency_id JOIN user ON user.id = assignment.user_id JOIN nationalsociety ON nationalsociety.ns_go_id = user.ns_id WHERE emergency.id = :id", {'id': id}).all()
-	emergency_type = db.engine.execute("SELECT * FROM emergency JOIN emergencytype ON emergencytype.emergency_type_go_id = emergency.emergency_type_id WHERE emergency.id = :id", {'id': id})
-	
+	deployments = db.session.query(Assignment, Emergency, User, NationalSociety).join(Emergency, Emergency.id==Assignment.emergency_id).join(User, User.id==Assignment.user_id).join(NationalSociety, NationalSociety.ns_go_id==User.ns_id).filter(Emergency.id==id, Assignment.assignment_status=='Active').all()
 	emergency_info = db.session.query(Emergency, EmergencyType).join(EmergencyType, EmergencyType.emergency_type_go_id==Emergency.emergency_type_id).filter(Emergency.id==id).first()
-	
-	# emergency_portfolio = db.engine.execute("SELECT * FROM portfolio JOIN emergency ON emergency.id = portfolio.emergency_id WHERE emergency.id = :id", {'id': id}).all()
 	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id==Portfolio.emergency_id).filter(Emergency.id==id, Portfolio.product_status=='Active').all()
-	emergency_type_name = [row.emergency_type_name for row in emergency_type]
-	
-	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, emergency_type=emergency_type, emergency_type_name=emergency_type_name[0], deployments=deployments, emergency_portfolio=emergency_portfolio)
+	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio)
 
 @emergencies.route('/emergency/edit/<int:id>', methods=['GET', 'POST'])
 def edit_emergency(id):
@@ -41,9 +34,19 @@ def edit_emergency(id):
 	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
 	if form.validate_on_submit():
 		emergency_info.emergency_name = form.emergency_name.data
-		emergency_info.emergency_location_id = form.emergency_location_id.data.ns_go_id
-		emergency_info.emerency_type_id = form.emergency_type_id.data.id
+		try: 
+			emergency_info.emergency_location_id = form.emergency_location_id.data.ns_go_id
+		except:
+			pass
+		try:
+			emergency_info.emerency_type_id = form.emergency_type_id.data.id
+		except:
+			pass
 		emergency_info.emergency_glide = form.emergency_glide.data
+		try: 
+			emergency_info.emergency_go_id = form.emergency_go_id.data
+		except:
+			pass
 		emergency_info.activation_details = form.activation_details.data
 		emergency_info.slack_channel = form.slack_channel.data
 		emergency_info.dropbox_url = form.dropbox_url.data
@@ -55,6 +58,7 @@ def edit_emergency(id):
 		form.emergency_name.data = emergency_info.emergency_name
 		form.emergency_glide.data = emergency_info.emergency_glide
 		form.emergency_type_id.data = db.session.execute("SELECT emergencytype.id FROM emergencytype JOIN emergency ON emergency.emergency_type_id == emergencytype.id WHERE emergency.id = 1").first()[0]
+		form.emergency_go_id.data = emergency_info.emergency_go_id
 		form.activation_details.data = emergency_info.activation_details
 		form.slack_channel.data = emergency_info.slack_channel
 		form.dropbox_url.data = emergency_info.dropbox_url

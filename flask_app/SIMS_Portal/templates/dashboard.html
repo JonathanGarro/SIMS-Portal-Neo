@@ -53,9 +53,18 @@
 								  y: {
 									  ticks: {
 										  stepSize: 1
+									  },
+									  grid: {
+										  display: false
 									  }
 									  
+								  },
+								  x: {
+									  grid: {
+										  display: false
+									  }
 								  }
+								  
 							  }
 						  }
 					  })
@@ -66,8 +75,13 @@
 			  <div class="tab-pane fade" id="products-emergency" role="tabpanel" aria-labelledby="products-emergency-tab">Coming soon!</div>
 			</div>
 			<div class="col-md-8">
-				<h3 class=mt-5>Active Assignments <span class="badge rounded-pill bg-danger" id="smallbadge">{{count_active_assignments.AssignmentCount}}</span></h3>
-				<h5 class="text-secondary mb-5">Members Currently Supporting Operations</h5>
+				{% if count_active_assignments == 0 %}
+					<h3 class="mt-5">No Active Assignments</h3>
+					<h5 class="text-secondary mb-5">It's a good time to work on your skills to be ready for the next SIMS activation! Check out the learning and development section to find useful resources.</h5>
+					<hr>
+				{% else %}
+				<h3 class="mt-5">Active Assignments <span class="badge rounded-pill bg-danger" id="smallbadge">{{count_active_assignments}}</span></h3>
+				<h5 class="text-secondary mb-3">Members Currently Supporting Operations</h5>
 				<table class='table'>
 					<thead>
 						<tr>
@@ -81,32 +95,18 @@
 					<tbody>
 						{% for assignment in active_assignments %}
 							<tr>
-								<td class="fw-bold"><a href="/profile/view/{{assignment.user_id}}" class='link-danger'>{{assignment.firstname}} {{assignment.lastname}}</a></td>
-								<td><a href="/emergency/{{assignment.emergency_id}}" class='link-danger'>{{assignment.emergency_name}}</a></td>
-								<td><a href='/assignment/{{assignment[0]}}'>{{assignment.role}}</a></td>
-								<td>{{assignment.start_date}}</td>
-								<td>{{assignment.end_date}}</td>
+								<td class="fw-bold"><a href="/profile/view/{{assignment.Assignment.user_id}}" class='link-danger'>{{assignment.User.firstname}} {{assignment.User.lastname}}</a></td>
+								<td><a href="/emergency/{{assignment.Assignment.emergency_id}}" class='link-danger'>{{assignment.Emergency.emergency_name}}</a></td>
+								<td><a href='/assignment/{{assignment.Assignment.id}}'>{{assignment.Assignment.role}}</a></td>
+								<td>{{assignment.Assignment.start_date}}</td>
+								<td>{{assignment.Assignment.end_date}}</td>
 							</tr>
 						{% endfor %}
 					</tbody>
 				</table>
+				{% endif %}
 				
-				
-				{% for assignment in active_assignments %}
-				<div class="card text-dark mb-3">
-				  <div class="row g-0">
-					<div class="col">
-						<div class="card-header"><span class="fw-bold">{{assignment.firstname}} {{assignment.lastname}}</span></div>
-					  <div class="card-body">
-						<h4 class="text-danger">{{assignment.emergency_name}}</h4>
-						<h5><a href="/view/assignment/{{assignment.id}}" class="text-dark font-italic">{{assignment.role}}</a></h5>
 
-						<p class="card-text">{{assignment.assignment_details}}</p>
-					  </div>
-					</div>
-				  </div>
-				</div>
-				{% endfor %}
 				
 				<h3 class="pt-5">Latest Surge Alerts</h3>
 				<h5 class="text-secondary mb-3">via GO API</h5>
