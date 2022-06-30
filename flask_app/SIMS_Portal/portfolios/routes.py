@@ -10,7 +10,7 @@ portfolios = Blueprint('portfolios', __name__)
 
 @portfolios.route('/portfolio')
 def portfolio():
-	public_portfolio = db.session.query(Portfolio).filter(Portfolio.external==1).all()
+	public_portfolio = db.session.query(Portfolio).filter(Portfolio.external==1, Portfolio.product_status=='Active').all()
 	return render_template('portfolio_public.html', title="SIMS Products", public_portfolio=public_portfolio)
 
 @portfolios.route('/portfolio/new', methods=['GET', 'POST'])
@@ -58,6 +58,7 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 @portfolios.route('/portfolio/view/<int:id>')
 def view_portfolio(id):
 	product = db.session.query(Portfolio, User, Emergency).join(User, User.id == Portfolio.creator_id).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id==id).first()
+	print(product)
 	return render_template('portfolio_view.html', product=product)
 
 @portfolios.route('/portfolio/delete/<int:id>')
