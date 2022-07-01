@@ -58,7 +58,6 @@ def edit_emergency(id):
 		print(type(emergency_info.emergency_type_id))
 		db.session.commit()
 		flash('Emergency record updated!', 'success')
-		print(form.emergency_type_id.data.emergency_type_go_id)
 		return redirect(url_for('main.dashboard'))
 	elif request.method == 'GET':
 		form.emergency_name.data = emergency_info.emergency_name
