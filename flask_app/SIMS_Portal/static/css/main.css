@@ -77,6 +77,10 @@ p {
   background: lightgray !important;
 }
 
+#navbar_top_login {
+	background: #505050 !important;
+}
+
 #assignment-guidance {
 	font-size: 1em;
 	color: grey

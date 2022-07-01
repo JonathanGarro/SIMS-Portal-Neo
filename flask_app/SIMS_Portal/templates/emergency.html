@@ -127,7 +127,7 @@
 					  <tr>
 						<td class="fw-bold"><a href="/profile/view/{{deployment.Assignment.user_id}}" class="link-danger">{{deployment.User.firstname}} {{deployment.User.lastname}}</a></td>
 						<td>{{deployment.NationalSociety.ns_name}}</td>
-						<td><a href='/assignment/{{deployment[0]}}'>{{deployment.Assignment.role}}</a></td>
+						<td><a href='/assignment/{{deployment.Assignment.id}}'>{{deployment.Assignment.role}}</a></td>
 						<td>{{deployment.Assignment.start_date}}</td>  
 					  </tr>
 					  {% endfor %}

@@ -56,7 +56,7 @@ def view_assignment(id):
 	assignment_length_int = int(assignment_length_dict['length'])
 	print(f"assignment length value is: {assignment_length_int}")
 	
-	assingment_portfolio = db.session.query(Portfolio).filter(Portfolio.assignment_id==id).all()
+	assingment_portfolio = db.session.query(Portfolio).filter(Portfolio.assignment_id==id, Portfolio.product_status=='Active').all()
 	print(assingment_portfolio)
 	
 	return render_template('assignment_view.html', assignment_info=assignment_info, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date, days_left_int=days_left_int, assignment_length_int=assignment_length_int, assingment_portfolio=assingment_portfolio)

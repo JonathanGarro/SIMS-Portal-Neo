@@ -38,14 +38,12 @@
 						  type: 'bar',
 						  data: {
 							  labels: {{ labels | safe }},
-							  datasets: [
-								  {
-									  label: "Assignments by Emergency, All Time",
-									  data: {{ values | safe }},
-									  fill: true,
-									  borderColor: "#000000"
-								  }	
-							  ]
+							  datasets: [{
+								  label: "Assignments by Emergency, All Time",
+								  data: {{ values | safe }},
+								  fill: true,
+								  backgroundColor: "#505050"
+							  }]
 						  },
 						  options: {
 							  responsive: true,
@@ -74,6 +72,8 @@
 			  <div class="tab-pane fade" id="assignments-ns" role="tabpanel" aria-labelledby="assignments-ns-tab">Coming soon!</div>
 			  <div class="tab-pane fade" id="products-emergency" role="tabpanel" aria-labelledby="products-emergency-tab">Coming soon!</div>
 			</div>
+		</div>
+		<div class='row my-5'>
 			<div class="col-md-8">
 				{% if count_active_assignments == 0 %}
 					<h3 class="mt-5">No Active Assignments</h3>

@@ -12,7 +12,7 @@ emergencies = Blueprint('emergencies', __name__)
 def new_emergency():
 	form = NewEmergencyForm()
 	if form.validate_on_submit():
-		emergency = Emergency(emergency_name=form.emergency_name.data, emergency_location_id=form.emergency_location_id.data.ns_go_id, emergency_type_id=form.emergency_type_id.data.id, emergency_glide=form.emergency_glide.data, emergency_go_id=form.emergency_go_id.data, activation_details=form.activation_details.data, slack_channel=form.slack_channel.data, dropbox_url=form.dropbox_url.data, trello_url=form.trello_url.data)
+		emergency = Emergency(emergency_name=form.emergency_name.data, emergency_location_id=form.emergency_location_id.data.ns_go_id, emergency_type_id=form.emergency_type_id.data.emergency_type_go_id, emergency_glide=form.emergency_glide.data, emergency_go_id=form.emergency_go_id.data, activation_details=form.activation_details.data, slack_channel=form.slack_channel.data, dropbox_url=form.dropbox_url.data, trello_url=form.trello_url.data)
 		db.session.add(emergency)
 		db.session.commit()
 		flash('New emergency successfully created.', 'success')
@@ -32,6 +32,7 @@ def view_emergency(id):
 def edit_emergency(id):
 	form = UpdateEmergencyForm()
 	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
+	# emergency_info = db.session.query(Emergency, EmergencyType).join(EmergencyType, EmergencyType.emergency_type_go_id==Emergency.emergency_type_id).filter(Emergency.id==id).first()
 	if form.validate_on_submit():
 		emergency_info.emergency_name = form.emergency_name.data
 		try: 
@@ -39,25 +40,30 @@ def edit_emergency(id):
 		except:
 			pass
 		try:
-			emergency_info.emerency_type_id = form.emergency_type_id.data.id
+			selected_id = form.emergency_type_id.data.emergency_type_go_id
+			db.session.query(Emergency).filter(Emergency.id==id).update({'emergency_type_id':selected_id})
 		except:
 			pass
-		emergency_info.emergency_glide = form.emergency_glide.data
 		try: 
 			emergency_info.emergency_go_id = form.emergency_go_id.data
 		except:
 			pass
+		emergency_info.emergency_glide = form.emergency_glide.data
 		emergency_info.activation_details = form.activation_details.data
 		emergency_info.slack_channel = form.slack_channel.data
 		emergency_info.dropbox_url = form.dropbox_url.data
 		emergency_info.trello_url = form.trello_url.data
+		# print(emergency_info.emergency_type_id)
+		# print(type(emergency_info.emergency_type_id))
+		print(type(emergency_info.emergency_type_id))
 		db.session.commit()
 		flash('Emergency record updated!', 'success')
+		print(form.emergency_type_id.data.emergency_type_go_id)
 		return redirect(url_for('main.dashboard'))
 	elif request.method == 'GET':
 		form.emergency_name.data = emergency_info.emergency_name
 		form.emergency_glide.data = emergency_info.emergency_glide
-		form.emergency_type_id.data = db.session.execute("SELECT emergencytype.id FROM emergencytype JOIN emergency ON emergency.emergency_type_id == emergencytype.id WHERE emergency.id = 1").first()[0]
+
 		form.emergency_go_id.data = emergency_info.emergency_go_id
 		form.activation_details.data = emergency_info.activation_details
 		form.slack_channel.data = emergency_info.slack_channel

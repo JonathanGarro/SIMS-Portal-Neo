@@ -30,26 +30,23 @@ def register():
 			db.session.commit()
 			flash('Your account has been created.', 'success')
 			return redirect(url_for('users.login'))
-		# else:
-		# 	flash('There are errors in your registration details. Please correct them.', 'danger')
-		# 	return redirect('/register')
 		return render_template('register.html', title='Register for SIMS', form=form)
 	
 @users.route('/login', methods=['GET', 'POST'])
 def login():
+	form = LoginForm()
 	if current_user.is_authenticated:
 		return redirect(url_for('main.dashboard'))
-	form = LoginForm()
+	if request.method == 'GET':
+		return render_template('login.html', title='Log into SIMS', form=form)
 	if form.validate_on_submit():
 		user = User.query.filter_by(email=form.email.data).first()
 		if user and bcrypt.check_password_hash(user.password, form.password.data):
 			login_user(user, remember=form.remember.data)
 			next_page = request.args.get('next')
-			# if request.method == 'POST':
-			# 	flash('You have been logged in.', 'success')
 			return redirect(next_page) if next_page else redirect(url_for('main.dashboard'))
-		else:
-			flash('Login failed. Please check email and password', 'danger')
+	else:
+		flash('Login failed. Please check email and password', 'danger')
 	return render_template('login.html', title='Log into SIMS', form=form)
 
 @users.route('/logout')
@@ -147,13 +144,10 @@ def update_specified_profile(id):
 	if current_user.is_admin == 1:
 		form = UpdateAccountForm()
 		this_user = db.session.query(User).filter(User.id==id).first()
-		
 		try:
 			ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==id).with_entities(NationalSociety.ns_name).first()[0]	
 		except:
 			ns_association = 'None'
-		
-		
 		if form.validate_on_submit():
 			if form.picture.data:
 				picture_file = save_picture(form.picture.data)

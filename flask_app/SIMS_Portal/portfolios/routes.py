@@ -38,7 +38,6 @@ def new_portfolio():
 def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 	form = PortfolioUploadForm()
 	if form.validate_on_submit():
-		print('valid!')
 		if form.file.data:
 			file = save_portfolio(form.file.data)
 		if form.external.data == True:
@@ -52,7 +51,9 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 		db.session.add(product)
 		db.session.commit()
 		flash('New product successfully uploaded.', 'success')
-		return redirect(url_for('users.profile'))
+		# return redirect(url_for('users.profile'))
+		redirect_url = '/assignment/{}'.format(assignment_id)
+		return redirect(redirect_url)
 	return render_template('create_portfolio_from_assignment.html', title='Upload New SIMS Product', form=form)
 
 @portfolios.route('/portfolio/view/<int:id>')
