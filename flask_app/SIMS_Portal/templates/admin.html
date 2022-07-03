@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class='row my-5'>
+		<h1 class='text-danger'>Admin Area</h1>
+		<h3 class="text-secondary my-3">All Members</h3>
+		<table class='table'>
+			<thead>
+				<tr>
+					<th>Member</th>
+					<th>Status</th>
+					<th>National Society</th>
+					<th>Email</th>
+					<th>Job</th>
+					<th>Twitter</th>
+					<th>Github</th>
+					<th>Admin</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in all_users %}
+					<tr>
+						<td>{{user.first}} {{user.lastname}}</td>
+						<td>{{user.status}}</td>
+						<td>{{user.ns_id}}</td>
+						<td>{{user.email}}</td>
+						<td>{{user.job_title}}</td>
+						<td>{{user.twitter}}</td>
+						<td>{{user.github}}</td>
+						<td>
+						<form action="" method="POST" class="" novalidate>
+							{{ form.hidden_tag() }}
+						<div class="form-group pb-4">
+							{% if form.is_admin.errors %}
+								{{ form.is_admin(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.is_admin.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.is_admin(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+						
+						
+							{{user.is_admin}}
+						
+						
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock content %}

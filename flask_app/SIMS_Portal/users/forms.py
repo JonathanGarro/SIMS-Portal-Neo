@@ -34,14 +34,14 @@ class UpdateAccountForm(FlaskForm):
 	email = StringField('Email', validators=[DataRequired(), Email()])
 	job_title = StringField('Job Title')
 	ns_id = QuerySelectField('National Society Country', query_factory=lambda:NationalSociety.query.all(), get_label='country_name', allow_blank=True)
-	bio = TextAreaField('Short Bio', render_kw={'style':'height: 200px'})
+	bio = TextAreaField('Short Bio (Supports Markdown)', render_kw={'style':'height: 200px'})
 	birthday = DateField('Birthday')
 	molnix_id = IntegerField('Molnix ID')
 	twitter = StringField('Twitter Handle')
 	github = StringField('Github Username')
 	roles = StringField('SIMS Roles')
-	languages = SelectMultipleField('Languages', choices=lambda:[language.name for language in Language.query.all()])
-	skills = SelectMultipleField('Skills', choices=lambda:[skill.name for skill in Skill.query.all()])
+	languages = SelectMultipleField('Languages', choices=lambda:[language.name for language in Language.query.order_by(Language.name).all()], render_kw={'style':'height: 200px'})
+	skills = SelectMultipleField('Skills', choices=lambda:[skill.name for skill in Skill.query.all()], render_kw={'style':'height: 200px'})
 	submit = SubmitField('Update Profile')
 	
 	def validate_email(self, email):

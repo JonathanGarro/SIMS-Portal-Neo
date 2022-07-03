@@ -8,12 +8,12 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:Bold|Montserrat:Bold">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:Bold|Montserrat:Bold|Oswald">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 	<title>SIMS</title>
 </head>
 <body class="d-flex flex-column min-vh-100" data-spy="scroll" data-target=".card" data-offset="50">
 	<header>
-
 	<nav id="navbar_top" class="navbar navbar-expand-md navbar-dark bg-danger navbar-static-top py-3">
 	 <div class="container">
 		 <img src='/static/assets/img/SIMS-Logo-Dark.png' height='50px'>&nbsp &nbsp
@@ -29,31 +29,31 @@
 		<ul class="navbar-nav ms-auto">
 			{% if current_user.is_authenticated %}
 				{% if request.path == '/dashboard' %}
-					<li class="nav-item px-3"><button type="button" class="btn btn-light">Dashboard</button></li>
+					<li class="nav-item px-3"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Dashboard</button></li>
 				{% else %}
-					<li class="nav-item px-3"><a class="nav-link text-light" href="/dashboard"> Dashboard </a></li>
+					<li class="nav-item px-3"><a class="nav-link text-light" href="/dashboard" style="font-family: 'Montserrat';"> Dashboard </a></li>
 				{% endif %}
 				{% if '/profile_edit/' in request.path %}
 				<li class="nav-item px-3"> </li>
 				
 				{% elif request.path == '/profile' %}
-					<li class="nav-item px-3"><button type="button" class="btn btn-light">{{ current_user.firstname }}'s Profile</button></li>
+					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">{{ current_user.firstname }}'s Profile</button></li>
 
 
 				{% else %}
-				<li class="nav-item px-3"><a class="nav-link text-light" href="/profile"> {{ current_user.firstname }}'s Profile </a></li>
+				<li class="nav-item px-2"><a class="nav-link text-light" href="/profile" style="font-family: 'Montserrat';"> {{ current_user.firstname }}'s Profile </a></li>
 
 				{% endif %}
 				
 				
 
-				<li class="nav-item px-3"><a class="nav-link text-light" href="/logout"> Logout </a></li>
+				<li class="nav-item ps-2"><a class="nav-link text-light" href="/logout" style="font-family: 'Montserrat';"> Logout </a></li>
 			{% else %}
-				<li class="nav-item px-3"><a class="nav-link text-light" href="/about"> About </a></li>	
-				<li class="nav-item px-3"><a class="nav-link text-light" href="#"> Resources </a></li>
-				<li class="nav-item px-3"><a class="nav-link text-light" href="/portfolio"> Portfolio </a></li>
-				<li class="nav-item px-3"><a class="nav-link text-light" href="/members"> Members </a></li>
-				<li class="nav-item px-3"><a class="" href="/login"><button type="button" class="btn btn-outline-light">Login</button></a></li>
+				<li class="nav-item px-2"><a class="nav-link text-light" href="/about" style="font-family: 'Montserrat';"> About </a></li>	
+				<li class="nav-item px-2"><a class="nav-link text-light" href="#" style="font-family: 'Montserrat';"> Resources </a></li>
+				<li class="nav-item px-2"><a class="nav-link text-light" href="/portfolio" style="font-family: 'Montserrat';"> Portfolio </a></li>
+				<li class="nav-item px-2"><a class="nav-link text-light" href="/members" style="font-family: 'Montserrat';"> Members </a></li>
+				<li class="nav-item ps-2"><a class="" href="/login"><button type="button" class="btn btn-outline-light" style="font-family: 'Montserrat';">Login</button></a></li>
 			{% endif %}
 		</ul>
 	  </div> 
@@ -66,16 +66,19 @@
 		</button>
 	  <div class="collapse navbar-collapse" id="main_nav">
 			<ul class="navbar-nav ms-auto">
-				<li class="nav-item px-3"><a class="nav-link text-light" href="#">Learning & Development</a></li>
+				{% if current_user.is_admin == 1 %}
+					<li class="nav-item px-2"><a class="nav-link text-light" href="/admin" style="font-family: 'Montserrat';">Admin Portal</a></li>
+				{% endif %}
+				<li class="nav-item px-2"><a class="nav-link text-light" href="#" style="font-family: 'Montserrat';">Learning & Development</a></li>
 				{% if '/resources' in request.path %}
-					<li class="nav-item px-3"><button type="button" class="btn btn-danger">Doctrine & Resources</button></li>
+					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Doctrine & Resources</button></li>
 				{% else %}
-					<li class="nav-item px-3"><a class="nav-link text-light" href="{{ url_for('main.resources')}}">Doctrine & Resources</a></li>
+					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('main.resources')}}" style="font-family: 'Montserrat';">Doctrine & Resources</a></li>
 				{% endif %}
 				
 				{# 
-				<li class="nav-item dropdown px-3">
-					<a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">View National Society</a>
+				<li class="nav-item dropdown px-2">
+					<a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Montserrat';">View National Society</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					{% for country in countries %}
 						<a class="dropdown-item" href="{{ url_for('ns_profile', id=country.ns_go_id) }}">{{country.country}}</a>
@@ -85,7 +88,7 @@
 				#}
 				
 				<li class="nav-item dropdown pl-3">
-					<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Create Record</a>
+					<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Montserrat';">Create Record</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					  	<a class="dropdown-item" href="{{ url_for('emergencies.new_emergency') }}">New Emergency</a>
 					  	<a class="dropdown-item" href="{{ url_for('assignments.new_assignment') }}">New Assignment</a>
@@ -104,7 +107,7 @@
 
 	{% block content %}{% endblock %}
 	
-	<footer class="bg-dark text-white text-center text-lg-start mt-auto">
+	<footer class="text-white text-center text-lg-start mt-auto" style='background: #505050'>
 	  <!-- Grid container -->
 	  <div class="container p-4">
 		<!--Grid row-->

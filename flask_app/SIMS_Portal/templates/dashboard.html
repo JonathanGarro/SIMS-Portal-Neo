@@ -88,7 +88,7 @@
 							<th>Member</th>
 							<th>Emergency</th>
 							<th>Assignment</th>
-							<th>Start</th>
+
 							<th>End</th>
 						</tr>
 					</thead>
@@ -98,7 +98,7 @@
 								<td class="fw-bold"><a href="/profile/view/{{assignment.Assignment.user_id}}" class='link-danger'>{{assignment.User.firstname}} {{assignment.User.lastname}}</a></td>
 								<td><a href="/emergency/{{assignment.Assignment.emergency_id}}" class='link-danger'>{{assignment.Emergency.emergency_name}}</a></td>
 								<td><a href='/assignment/{{assignment.Assignment.id}}'>{{assignment.Assignment.role}}</a></td>
-								<td>{{assignment.Assignment.start_date}}</td>
+
 								<td>{{assignment.Assignment.end_date}}</td>
 							</tr>
 						{% endfor %}

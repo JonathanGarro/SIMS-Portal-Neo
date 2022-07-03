@@ -11,7 +11,7 @@ users = Blueprint('users', __name__)
 
 @users.route('/members')
 def members():
-	members = db.engine.execute("SELECT user.id AS user_id, user.ns_id AS user_ns_id, user.firstname, user.lastname, nationalsociety.ns_go_id, user.image_file, user.job_title, nationalsociety.ns_name FROM user JOIN nationalsociety ON nationalsociety.ns_go_id = user.ns_id WHERE status = 'Active'")
+	members = db.engine.execute("SELECT user.id AS user_id, user.ns_id AS user_ns_id, user.firstname, user.lastname, nationalsociety.ns_go_id, user.image_file, user.job_title, nationalsociety.ns_name FROM user LEFT OUTER JOIN nationalsociety ON nationalsociety.ns_go_id = user.ns_id WHERE status = 'Active'")
 
 	return render_template('members.html', members=members)
 

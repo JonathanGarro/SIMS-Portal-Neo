@@ -13,7 +13,8 @@ def index():
 	
 @main.route('/staging') 
 def staging(): 
-	return render_template('visualization.html')
+	mkd_text = "## Your Markdown Here \n **bold**"
+	return render_template('visualization.html', mkd_text=mkd_text)
 
 @main.route('/resources')
 def resources():

@@ -58,9 +58,12 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 
 @portfolios.route('/portfolio/view/<int:id>')
 def view_portfolio(id):
-	product = db.session.query(Portfolio, User, Emergency).join(User, User.id == Portfolio.creator_id).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id==id).first()
-	print(product)
-	return render_template('portfolio_view.html', product=product)
+	try:
+		product = db.session.query(Portfolio, User, Emergency).join(User, User.id == Portfolio.creator_id).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id==id).first()
+		print(product)
+		return render_template('portfolio_view.html', product=product)
+	except:
+		return redirect('error404')
 
 @portfolios.route('/portfolio/delete/<int:id>')
 @login_required
