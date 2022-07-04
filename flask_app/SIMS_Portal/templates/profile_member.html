@@ -55,6 +55,19 @@
 					</div>
 				</div>
 				
+				<div class="row">
+					<div>
+					<h5 class="text-secondary mt-4">Contact</h5>
+					<a href="mailto: {{user_info.email}}"'><img src='/static/assets/img/profile-email.png' height='50px'></a>
+					{% if user_info.twitter %}
+						<a href='https://twitter.com/{{user_info.twitter}}'><img src='/static/assets/img/profile-twitter.png' height='50px'></a>
+					{% endif %}
+					{% if user_info.github %}
+						<a href='https://github.com/{{user_info.github}}'><img src='/static/assets/img/profile-github.png' height='50px'></a>
+					{% endif %}
+					</div>
+				</div>
+				
 				{% if current_user.is_admin == 1 or current_user.id == user_info.id %}
 				<div class="list-group mt-5">
 					  <a href="{{ url_for('users.update_profile') }}" class="list-group-item list-group-item-action text-secondary">Update Profile</a>

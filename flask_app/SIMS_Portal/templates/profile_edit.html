@@ -123,7 +123,7 @@
 					<h4 class="text-secondary py-3">Optional Fields</h4>
 					<div class="col-md-6">
 						<div class="form-group pb-4">
-							{{ form.job_title.label(class="form-control-label pb-2 text-danger") }}
+							{{ form.job_title.label(class="form-control-label pb-2 text-secondary") }}
 							
 							{% if form.job_title.errors %}
 								{{ form.job_title(class="form-control form-control-lg is-invalid") }}
@@ -144,7 +144,7 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group pb-4">
-							{{ form.twitter.label(class="form-control-label pb-2 text-danger") }}
+							{{ form.twitter.label(class="form-control-label pb-2 text-secondary") }}
 							
 							{% if form.twitter.errors %}
 								{{ form.twitter(class="form-control form-control-lg is-invalid") }}
@@ -160,7 +160,7 @@
 					</div>
 					<div class="col">
 						<div class="form-group pb-4">
-							{{ form.github.label(class="form-control-label pb-2 text-danger") }}
+							{{ form.github.label(class="form-control-label pb-2 text-secondary") }}
 							
 							{% if form.github.errors %}
 								{{ form.github(class="form-control form-control-lg is-invalid") }}
@@ -178,7 +178,7 @@
 				<div class="row">
 
 						<div class="form-group pb-4">
-							{{ form.bio.label(class="form-control-label pb-2 text-danger" ) }}
+							{{ form.bio.label(class="form-control-label pb-2 text-secondary" ) }}
 							
 							{% if form.bio.errors %}
 								{{ form.bio(class="form-control form-control-lg is-invalid") }}
@@ -199,7 +199,7 @@
 					<p class='text-secondary'>Hold Command/Control Key to Select Multiple Skills or Languages</p>
 					<div class="col-md-6">
 						<div class="form-group pb-4">
-							{{ form.skills.label(class="form-control-label pb-2 text-danger") }}
+							{{ form.skills.label(class="form-control-label pb-2 text-secondary") }}
 							
 							{% if form.skills.errors %}
 								{{ form.skills(class="form-control form-control-lg is-invalid") }}
@@ -215,7 +215,7 @@
 					</div>
 					<div class="col">
 						<div class="form-group pb-4">
-							{{ form.languages.label(class="form-control-label pb-2 text-danger") }}
+							{{ form.languages.label(class="form-control-label pb-2 text-secondary") }}
 							
 							{% if form.languages.errors %}
 								{{ form.languages(class="form-control form-control-lg is-invalid") }}
@@ -234,7 +234,7 @@
 				<div class="row">
 
 					<div>
-					  {{ form.picture.label(class="form-control-label pb-2 text-danger") }}
+					  {{ form.picture.label(class="form-control-label pb-2 text-secondary") }}
 					  <input class="form-control" id="{{ form.picture }}" type="file">
 					</div>
 				</div>
