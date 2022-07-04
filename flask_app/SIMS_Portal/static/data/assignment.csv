@@ -1,3 +1,11 @@
-id,role,start_date,end_date,remote,assignment_details,user_id,emergency_id,created_at,updated_at
-1,Information Management Coordinator,3/3/22,4/14/22,0,"Jonathan served as the Humanitarian Information Analysis Coordinator, based in Budapest.",1,4,2022-06-04 17:05:50,NULL
-2,Remote IM Support,6/3/22,11/2/22,1,"Providing remote support to the operation, focusing on maps and infographics.",4,1,2022-06-04 17:05:50,NULL
+id,role,start_date,end_date,remote,assignment_details,assignment_status,user_id,emergency_id,created_at,updated_at
+1,Information Management Coordinator,2022-03-03,2022-04-14,0,"Jonathan served as the Humanitarian Information Analysis Coordinator, based in Budapest.",Active,1,4,2022-06-04 17:05:50,NULL
+2,Remote IM Support,2022-06-03,2022-11-02,1,"Providing remote support to the operation, focusing on maps and infographics.",Removed,4,1,2022-06-04 17:07:45,2022-06-30 18:34:40
+3,Remote IM Support,2022-06-28,2022-07-07,1,Sarah is doing a lot of cool stuff.,Removed,3,1,2022-06-29 15:45:26,2022-06-29 15:48:31
+4,Information Analyst,2022-04-03,2022-04-29,0,Samantha deployed as second round IM analyst to Port-au-Prince.,Active,6,3,2022-06-30 00:40:39,NULL
+5,Remote IM Support,2022-06-29,2022-07-30,0,Chanthou is providing infographic support.,Active,4,2,2022-06-30 18:34:31,2022-06-30 18:58:50
+6,SIMS Remote Coordinator,2022-06-26,2022-08-26,1,"Jonathan is serving as SIMS Coordinator, round 1.",Active,1,1,2022-06-30 19:49:17,NULL
+7,Information Management Coordinator,2022-05-09,2022-06-27,0,Chanthou deployed to Ottowa to serve in the CanX headquarters.,Active,4,1,2022-06-30 20:16:38,NULL
+8,Remote IM Support,2022-07-01,2022-07-31,1,Jonathan is providing remote support for infographics and other design requests.,Active,1,5,2022-07-01 14:09:48,NULL
+9,Remote IM Support,2022-07-01,2022-07-16,1,Samantha is providing remote support for GIS.,Removed,6,7,2022-07-01 17:50:52,2022-07-01 17:53:00
+10,Primary Data Collection Officer,2022-07-01,2022-07-16,0,Deploying to support the assessment phase of the operation.,Active,6,1,2022-07-02 12:22:14,NULL

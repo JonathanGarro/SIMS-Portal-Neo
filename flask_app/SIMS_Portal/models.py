@@ -31,6 +31,11 @@ user_badge = db.Table('user_badge',
 	db.Column('badge_id', db.Integer, db.ForeignKey('badge.id'))
 )
 
+user_workinggroup = db.Table('user_workinggroup',
+	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+	db.Column('workinggroup_id', db.Integer, db.ForeignKey('workinggroup.id'))
+)
+
 class Skill(db.Model):
 	__tablename__ = 'skill'
 	
@@ -60,6 +65,7 @@ class NationalSociety(db.Model):
 	ns_name = db.Column(db.String(120), nullable=False)
 	country_name = db.Column(db.String(120), nullable=False)
 	ns_go_id = db.Column(db.Integer)
+	iso3 = db.Column(db.String(3))
 	
 	users = db.relationship('User', backref='national_society', lazy=True)
 	
@@ -82,6 +88,7 @@ class User(db.Model, UserMixin):
 	password = db.Column(db.String(60), nullable=False)
 	molnix_id = db.Column(db.Integer)
 	job_title = db.Column(db.String(120))
+	unit = db.Column(db.String(120))
 	bio = db.Column(db.Text)
 	is_admin = db.Column(db.Boolean, default=False)
 	roles = db.Column(db.String(1000))
@@ -90,6 +97,7 @@ class User(db.Model, UserMixin):
 	twitter = db.Column(db.String(120))
 	slack_id = db.Column(db.String(120))
 	github = db.Column(db.String(120))
+	linked_in = db.Column(db.String(120))
 	messaging_number_country_code = db.Column(db.Integer)
 	messaging_number = db.Column(db.Integer)
 	
@@ -100,6 +108,7 @@ class User(db.Model, UserMixin):
 	skills = db.relationship('Skill', secondary='user_skill', backref='members_with_skill')
 	languages = db.relationship('Language', secondary='user_language', backref='members_with_language')
 	badges = db.relationship('Badge', secondary='user_badge', backref='members_with_badge')
+	working_groups = db.relationship('WorkingGroup', secondary='user_workinggroup', backref='members_with_workinggroup')
 	
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
@@ -149,12 +158,26 @@ class Assignment(db.Model):
 		return f"Assignment('{self.role}','{self.start_date}','{self.end_date}','{self.remote}','{self.assignment_details}')"
 
 class Learning(db.Model):
-		__tablename__ = 'learning'
-		
-		id = db.Column(db.Integer, primary_key=True)
-		overall = db.Column(db.String, nullable=False)
-		
-		assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'), unique=True)
+	__tablename__ = 'learning'
+	
+	id = db.Column(db.Integer, primary_key=True)
+	
+	overall = db.Column(db.String, nullable=False)
+	
+	assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'), unique=True)
+
+class WorkingGroup(db.Model):
+	__tablename__ = 'workinggroup'
+	
+	id = db.Column(db.Integer, primary_key=True)
+	
+	wg_name = db.Column(db.String, nullable=False)
+	wg_description = db.Column(db.Text)
+	wg_url = db.Column(db.String)
+	wg_external = db.Column(db.Boolean)
+	
+	created_at = db.Column(db.DateTime, server_default=func.now())
+	updated_at = db.Column(db.DateTime, onupdate=func.now())
 
 class Emergency(db.Model):
 	__tablename__ = 'emergency'
