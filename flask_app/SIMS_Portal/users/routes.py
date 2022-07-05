@@ -73,7 +73,7 @@ def profile():
 	languages_list = db.engine.execute("SELECT * FROM user JOIN user_language ON user.id = user_language.user_id JOIN language ON language.id = user_language.language_id WHERE user.id=:current_user", {'current_user': current_user.id})
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
 	
-	badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=:current_user", {'current_user': current_user.id})
+	badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=:current_user ORDER BY name", {'current_user': current_user.id})
 
 	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list, badges=badges)
 	
@@ -94,7 +94,7 @@ def view_profile(id):
 	languages_list = db.engine.execute("SELECT * FROM user JOIN user_language ON user.id = user_language.user_id JOIN language ON language.id = user_language.language_id WHERE user.id=:member_id", {'member_id': id})
 	profile_picture = url_for('static', filename='assets/img/avatars/' + user_info.image_file)
 	
-	badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=:id", {'id': id})
+	badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=:id ORDER BY name", {'id': id})
 	
 	return render_template('profile_member.html', title='Member Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list, badges=badges)
 

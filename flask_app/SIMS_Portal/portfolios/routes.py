@@ -61,8 +61,12 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 def view_portfolio(id):
 	try:
 		product = db.session.query(Portfolio, User, Emergency).join(User, User.id == Portfolio.creator_id).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id==id).first()
-		print(product)
-		return render_template('portfolio_view.html', product=product)
+
+		# put a placeholder thumbnail inside portfolio folder to handle pdf previews
+		if '.pdf' in product.Portfolio.final_file_location:
+			alt_thumbnail = 'placeholder.png'
+
+		return render_template('portfolio_view.html', product=product, alt_thumbnail=alt_thumbnail)
 	except:
 		return redirect('error404')
 

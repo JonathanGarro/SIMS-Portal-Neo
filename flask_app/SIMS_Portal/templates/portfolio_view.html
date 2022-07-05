@@ -6,7 +6,7 @@
 			<div class="card border-0 p-4 bg-light">
 				<div class="row">
 
-					<h2 class="text-danger mb-5">{{ product.Portfolio.title }}</h2>
+					<h3 class="text-danger mb-5" id='portfolio-title'>{{ product.Portfolio.title }}</h3>
 				</div>
 				<div class="row">
 					<h5 class="text-secondary mt-4">Creator</h5>
@@ -26,10 +26,12 @@
 					<h5 class="text-secondary mt-4">Final Product</h5>
 					<p><a href='/portfolio/download/{{product.Portfolio.id}}' class="btn btn-sm btn-danger mt-1" id="override-link-color">Download</a></p>
 				</div>
+				{% if product.Portfolio.asset_file_location and current_user.is_authenticated %}
 				<div class="row">
 					<h5 class="text-secondary mt-4">Source Files</h5>
-					<p>Download on Dropbox</p>
+					<p><a href='https://{{product.Portfolio.asset_file_location}}' class="btn btn-sm btn-danger mt-1" id="override-link-color">Access</a></p>
 				</div>
+				{% endif %}
 				{% if current_user.is_admin == 1 or current_user.id == product.User.id %}
 				<div class="list-group mt-5">
 					  <a href="#" class="list-group-item list-group-item-action text-danger" data-toggle="modal" data-target="#confirm-delete">Delete Product</a>
@@ -59,7 +61,11 @@
 		</div>
 		<div class="col mx-4">
 			<div class='mb-5'>
+				{% if alt_thumbnail %}
+				<img src='/static/assets/portfolio/{{alt_thumbnail}}' width='100%'>
+				{% else %}
 				<img src='/static/assets/portfolio/{{product.Portfolio.final_file_location}}' width='100%'>
+				{% endif %}
 			</div>
 		</div>
 	</div>

@@ -77,6 +77,10 @@ p {
   background: lightgray !important;
 }
 
+#portfolio-title {
+	font-family: 'Montserrat';
+}
+
 #navbar_top_login {
 	background: #505050 !important;
 }
