@@ -65,6 +65,9 @@
 					{% if user_info.github %}
 						<a href='https://github.com/{{user_info.github}}'><img src='/static/assets/img/profile-github.png' height='50px'></a>
 					{% endif %}
+					{% if user_info.linked_in %}
+						<a href='https://www.linkedin.com/in/{{user_info.linked_in}}'><img src='/static/assets/img/profile-linkedin.png' height='50px'></a>
+					{% endif %}
 					</div>
 				</div>
 				

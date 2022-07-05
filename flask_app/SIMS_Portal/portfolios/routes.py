@@ -1,10 +1,11 @@
-from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
+from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint, current_app, send_file
 from SIMS_Portal import db
 from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill, user_language, Badge, Alert
 from SIMS_Portal.portfolios.forms import PortfolioUploadForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
 from SIMS_Portal.portfolios.utils import save_portfolio
+import os
 
 portfolios = Blueprint('portfolios', __name__)
 
@@ -64,6 +65,12 @@ def view_portfolio(id):
 		return render_template('portfolio_view.html', product=product)
 	except:
 		return redirect('error404')
+
+@portfolios.route('/portfolio/download/<int:id>')
+def download_portfolio(id):
+	product = db.session.query(Portfolio).filter(Portfolio.id==id).first()
+	path = os.path.join(current_app.root_path, 'static/assets/portfolio', product.final_file_location)
+	return send_file(path, as_attachment=True)
 
 @portfolios.route('/portfolio/delete/<int:id>')
 @login_required

@@ -22,27 +22,24 @@
 				<button class="nav-link active text-danger" id="assignments-emergency-tab" data-bs-toggle="tab" data-bs-target="#assignments-emergency" type="button" role="tab" aria-controls="assignments-emergency" aria-selected="true">Assignments by Emergency</button>
 			  </li>
 			  <li class="nav-item" role="presentation">
-				<button class="nav-link text-danger" id="assignments-ns-tab" data-bs-toggle="tab" data-bs-target="#assignments-ns" type="button" role="tab" aria-controls="assignments-ns" aria-selected="false">Assignments by National Society</button>
-			  </li>
-			  <li class="nav-item" role="presentation">
 				<button class="nav-link text-danger" id="products-emergency-tab" data-bs-toggle="tab" data-bs-target="#products-emergency" type="button" role="tab" aria-controls="products-emergency" aria-selected="false">Products by Emergency</button>
 			  </li>
 			</ul>
 			<div class="tab-content" id="dashboardContent">
 			  <div class="tab-pane fade show active" id="assignments-emergency" role="tabpanel" aria-labelledby="assignments-emergency-tab">
 				  <br>
-				  <canvas id='barChart' width='1200' height='300'></canvas>
+				  <canvas id='barChartAssignments' width='1200' height='300'></canvas>
 				  <script>
-					  var ctx = document.getElementById('barChart').getContext('2d');
+					  var ctx = document.getElementById('barChartAssignments').getContext('2d');
 					  var lineChart = new Chart(ctx, {
 						  type: 'bar',
 						  data: {
-							  labels: {{ labels | safe }},
+							  labels: {{ labels_for_assignment | safe }},
 							  datasets: [{
 								  label: "Assignments by Emergency, All Time",
-								  data: {{ values | safe }},
+								  data: {{ values_for_assignment | safe }},
 								  fill: true,
-								  backgroundColor: "#505050"
+								  backgroundColor: "#dc3545"
 							  }]
 						  },
 						  options: {
@@ -69,8 +66,46 @@
 				  </script>
 				  
 			  </div>
-			  <div class="tab-pane fade" id="assignments-ns" role="tabpanel" aria-labelledby="assignments-ns-tab">Coming soon!</div>
-			  <div class="tab-pane fade" id="products-emergency" role="tabpanel" aria-labelledby="products-emergency-tab">Coming soon!</div>
+			  <div class="tab-pane fade" id="products-emergency" role="tabpanel" aria-labelledby="products-emergency-tab">
+				  <br>
+					<canvas id='barChartProducts' width='1200' height='300'></canvas>
+					<script>
+						var ctx = document.getElementById('barChartProducts').getContext('2d');
+						var lineChart = new Chart(ctx, {
+							type: 'bar',
+							data: {
+								labels: {{ labels_for_product | safe }},
+								datasets: [{
+									label: "Products by Emergency, All Time",
+									data: {{ values_for_product | safe }},
+									fill: true,
+									backgroundColor: "#dc3545"
+								}]
+							},
+							options: {
+								responsive: true,
+								scales: {
+									y: {
+										ticks: {
+											stepSize: 1
+										},
+										grid: {
+											display: false
+										}
+										
+									},
+									x: {
+										grid: {
+											display: false
+										}
+									}
+									
+								}
+							}
+						})
+					</script>
+				  
+			  </div>
 			</div>
 		</div>
 		<div class='row my-5'>
