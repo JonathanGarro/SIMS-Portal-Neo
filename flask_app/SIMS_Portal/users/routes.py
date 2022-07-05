@@ -1,6 +1,6 @@
 from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
 from SIMS_Portal import db, bcrypt, mail
-from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill, user_language, Badge, Alert
+from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill, user_language, Badge, Alert, user_badge
 from SIMS_Portal.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from SIMS_Portal.users.utils import save_picture, send_reset_email
 from flask_sqlalchemy import SQLAlchemy
@@ -72,7 +72,10 @@ def profile():
 	skills_list = db.engine.execute("SELECT * FROM user JOIN user_skill ON user.id = user_skill.user_id JOIN skill ON skill.id = user_skill.skill_id WHERE user.id=:current_user", {'current_user': current_user.id})
 	languages_list = db.engine.execute("SELECT * FROM user JOIN user_language ON user.id = user_language.user_id JOIN language ON language.id = user_language.language_id WHERE user.id=:current_user", {'current_user': current_user.id})
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
-	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list)
+	
+	badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=:current_user", {'current_user': current_user.id})
+
+	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list, badges=badges)
 	
 @users.route('/profile/view/<int:id>')
 def view_profile(id):

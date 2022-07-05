@@ -164,23 +164,16 @@
 			</div>
 			<div class='mb-3'>
 			<h3 class="mb-5 text-danger">Achievements</h3>
-			<div class="row">
-				<div class="col">
-					<img src='/static/assets/img/badges/Maiden-Voyage.png' class="img-fluid">
-				</div>
-				<div class="col">
-					<img src='/static/assets/img/badges/Fast-Turnaround.png' class="img-fluid">
-				</div>
-				<div class="col">
-					<img src='/static/assets/img/badges/Self-Promoter.png' class="img-fluid">
-				</div>
-				<div class="col">
-					<img src='/static/assets/img/badges/World-Traveler.png' class="img-fluid">
-				</div>
-			</div>
+					<div class="row row-cols-3 row-cols-md-3 g-4 mt-4">
+					{% for badge in badges %}
+						<div class="col d-flex align-items-stretch">
+						  	<img src="{{badge.badge_url}}" class="img-fluid" alt="...">
+					  	</div>
+					{% endfor %}
+					</div>
 			</div>
 		</div>
-		
 	</div>
 </div>
+
 {% endblock content %}
