@@ -69,11 +69,25 @@
 				{% if current_user.is_admin == 1 %}
 					<li class="nav-item px-2"><a class="nav-link text-light" href="/admin" style="font-family: 'Montserrat';">Admin Portal</a></li>
 				{% endif %}
-				<li class="nav-item px-2"><a class="nav-link text-light" href="#" style="font-family: 'Montserrat';">Learning & Development</a></li>
-				{% if '/resources' in request.path %}
-					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Doctrine & Resources</button></li>
+				{% if '/emergencies' in request.path %}
+					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Emergencies</button></li>
 				{% else %}
-					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('main.resources')}}" style="font-family: 'Montserrat';">Doctrine & Resources</a></li>
+					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('main.emergencies')}}" style="font-family: 'Montserrat';">Emergencies</a></li>
+				{% endif %}
+				{% if '/all_products' in request.path %}
+					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Portfolio</button></li>
+				{% else %}
+					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('portfolios.all_products')}}" style="font-family: 'Montserrat';">Portfolio</a></li>
+				{% endif %}
+				{% if '/learning' in request.path %}
+					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Learning</button></li>
+				{% else %}
+					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('main.learning')}}" style="font-family: 'Montserrat';">Learning</a></li>
+				{% endif %}
+				{% if '/resources' in request.path %}
+					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Resources</button></li>
+				{% else %}
+					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('main.resources')}}" style="font-family: 'Montserrat';">Resources</a></li>
 				{% endif %}
 				
 				{# 
@@ -85,7 +99,6 @@
 					{% endfor %}
 					</div>
 				</li>
-				#}
 				
 				<li class="nav-item dropdown pl-3">
 					<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Montserrat';">Create Record</a>
@@ -95,6 +108,13 @@
 					  	<a class="dropdown-item" href="#">New Review</a>
 						</div>
 				</li>
+				#}
+				
+				{% if '/search' in request.path %}
+					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Search</button></li>
+				{% else %}
+					<li class="nav-item ps-2"><a class="nav-link text-light" href="{{ url_for('main.search')}}" style="font-family: 'Montserrat';">Search</a></li>
+				{% endif %}
 			</ul>
 			
 		</div>

@@ -74,7 +74,7 @@ def profile():
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
 	
 	badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=:current_user ORDER BY name", {'current_user': current_user.id})
-
+	
 	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list, badges=badges)
 	
 @users.route('/profile/view/<int:id>')

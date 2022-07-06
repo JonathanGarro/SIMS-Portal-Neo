@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class="row my-5">
+		<div class="card border-0 p-4 bg-light pb-3">
+		{% if query_by_name == 'None' %}
+		
+		{% else %}
+		<h3 class="text-danger mb-4">Search for Name: <span id='sims-blue'>{{name_search}}</span></h3>
+		<table class="table">
+  			<thead class="">
+				<tr>
+	  			<th>Member</th>
+			  	<th>Title</th>
+	  			<th>Email</th>
+				<th>Slack</th>
+				</tr>
+  			</thead>
+  			<tbody>
+	  			{% for result in query_by_name %}
+	  			<tr>
+					<td class="fw-bold"><a href="/profile/view/{{result.id}}" class="link-danger">{{result.firstname}} {{result.lastname}}</a></td>
+					<td>{{result.job_title}}</td>
+					<td>{{result.email}}</td>
+					{% if result.slack_id %}
+						<td><a href='https://sims-ifrc.slack.com/team/{{result.slack_id}}'>Message</td> 
+						{% else %}
+						<td> </td> 
+					{% endif %}
+	  			</tr>
+	  			{% endfor %}
+  			</tbody>
+		</table>
+		{% endif %}
+
+
+		{% if query_by_skill == 'None' %}
+		
+		{% else %}
+
+		<h3 class="text-danger my-4">Search for Skill: <span id='sims-blue'>{{skill_search_name}}</span></h3>
+		<table class="table">
+			  <thead class="">
+				<tr>
+				  <th>Member</th>
+				  <th>Title</th>
+				  <th>Email</th>
+				<th>Slack</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				  {% for result in query_by_skill %}
+				  <tr>
+					<td class="fw-bold"><a href="/profile/view/{{result.id}}" class="link-danger">{{result.firstname}} {{result.lastname}}</a></td>
+					<td>{{result.job_title}}</td>
+					<td>{{result.email}}</td>
+					{% if result.slack_id %}
+						<td><a href='https://sims-ifrc.slack.com/team/{{result.slack_id}}'>Message</td> 
+						{% else %}
+						<td> </td> 
+					{% endif %}
+				  </tr>
+				  {% endfor %}
+			  </tbody>
+		</table>
+		{% endif %}
+
+
+		{% if query_by_language == 'None' %}
+		
+		{% else %}
+
+		<h3 class="text-danger my-4">Search for Language: <span id='sims-blue'>{{language_search_name}}</span></h3>
+		<table class="table">
+			  <thead class="">
+				<tr>
+				  <th>Member</th>
+				  <th>Title</th>
+				  <th>Email</th>
+				<th>Slack</th>
+				</tr>
+			  </thead>
+			  <tbody>
+				  {% for result in query_by_language %}
+				  <tr>
+					<td class="fw-bold"><a href="/profile/view/{{result.id}}" class="link-danger">{{result.firstname}} {{result.lastname}}</a></td>
+					<td>{{result.job_title}}</td>
+					<td>{{result.email}}</td>
+					{% if result.slack_id %}
+						<td><a href='https://sims-ifrc.slack.com/team/{{result.slack_id}}'>Message</td> 
+						{% else %}
+						<td> </td> 
+					{% endif %}
+				  </tr>
+				  {% endfor %}
+			  </tbody>
+		</table>
+		{% endif %}
+
+
+
+		</div>
+	</div>
+</div>
+{% endblock content %}

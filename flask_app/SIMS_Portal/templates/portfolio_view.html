@@ -5,7 +5,6 @@
 		<div class="col col-md-4 rounded rounded-3">
 			<div class="card border-0 p-4 bg-light">
 				<div class="row">
-
 					<h3 class="text-danger mb-5" id='portfolio-title'>{{ product.Portfolio.title }}</h3>
 				</div>
 				<div class="row">
@@ -61,8 +60,8 @@
 		</div>
 		<div class="col mx-4">
 			<div class='mb-5'>
-				{% if alt_thumbnail %}
-				<img src='/static/assets/portfolio/{{alt_thumbnail}}' width='100%'>
+				{% if '.pdf' in product.Portfolio.final_file_location %}
+				<img src='/static/assets/portfolio/placeholder.png' width='100%'>
 				{% else %}
 				<img src='/static/assets/portfolio/{{product.Portfolio.final_file_location}}' width='100%'>
 				{% endif %}

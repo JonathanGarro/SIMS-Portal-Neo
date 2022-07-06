@@ -13,6 +13,12 @@ portfolios = Blueprint('portfolios', __name__)
 def portfolio():
 	public_portfolio = db.session.query(Portfolio).filter(Portfolio.external==1, Portfolio.product_status=='Active').all()
 	return render_template('portfolio_public.html', title="SIMS Products", public_portfolio=public_portfolio)
+	
+@portfolios.route('/all_products')
+@login_required
+def all_products():
+	full_portfolio = db.session.query(Portfolio).filter(Portfolio.product_status=='Active').all()
+	return render_template('all_products.html', title="SIMS Products", full_portfolio=full_portfolio)
 
 @portfolios.route('/portfolio/new', methods=['GET', 'POST'])
 @login_required
@@ -62,11 +68,7 @@ def view_portfolio(id):
 	try:
 		product = db.session.query(Portfolio, User, Emergency).join(User, User.id == Portfolio.creator_id).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id==id).first()
 
-		# put a placeholder thumbnail inside portfolio folder to handle pdf previews
-		if '.pdf' in product.Portfolio.final_file_location:
-			alt_thumbnail = 'placeholder.png'
-
-		return render_template('portfolio_view.html', product=product, alt_thumbnail=alt_thumbnail)
+		return render_template('portfolio_view.html', product=product)
 	except:
 		return redirect('error404')
 

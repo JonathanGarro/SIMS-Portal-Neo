@@ -83,11 +83,11 @@
 		</div>
 		<div class="col mx-4">
 			<div class='mb-5'>
-				<h4 class="mb-3 text-danger">About {{ user_info.firstname }}</h4>
+				<h3 class="mb-3 text-danger">About {{ user_info.firstname }}</h3>
 				<p style="white-space: pre-line">{{ user_info.bio|markdown}}</p>
 			</div>
 			<div class='mb-5'>
-				<h4 class="mb-3 text-danger">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h4>
+				<h3 class="mb-3 text-danger">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h3>
 				{% if deployment_history_count == 0 %}
 					No deployments or remote support provided yet.
 				{% else %}
@@ -113,7 +113,7 @@
 				{% endif %}
 			</div>
 			<div class='mb-5'>
-				<h4 class="mb-3 text-danger">Portfolio Highlights</h4>
+				<h3 class="mb-3 text-danger">Portfolio Highlights</h3>
 				<div class="row row-cols-3 row-cols-md-3 g-4 mt-4">
 				{% for product in user_portfolio %}
 					<div class="col d-flex align-items-stretch">
@@ -135,7 +135,7 @@
 			</div>
 			<div class='mb-3'>
 
-				<h4 class="mb-2 text-danger">Badges</h4>
+				<h3 class="mb-2 text-danger">Badges</h3>
 				<div class="row row-cols-4 row-cols-md-4 g-4 mt-2">
 				{% for badge in badges %}
 					<div class="col d-flex align-items-stretch">
