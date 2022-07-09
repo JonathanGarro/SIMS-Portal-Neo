@@ -37,6 +37,7 @@ class UpdateAccountForm(FlaskForm):
 	bio = TextAreaField('Short Bio (Supports Markdown)', render_kw={'style':'height: 200px'})
 	birthday = DateField('Birthday')
 	molnix_id = IntegerField('Molnix ID')
+	slack_id = StringField('SIMS Slack ID')
 	twitter = StringField('Twitter Handle')
 	github = StringField('Github Username')
 	roles = StringField('SIMS Roles')

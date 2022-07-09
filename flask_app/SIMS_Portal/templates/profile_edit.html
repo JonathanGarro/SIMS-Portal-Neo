@@ -138,7 +138,20 @@
 						</div>
 					</div>
 					<div class="col">
-
+						<div class="form-group pb-4">
+						{{ form.slack_id.label(class="form-control-label pb-2 text-secondary") }}
+						
+						{% if form.slack_id.errors %}
+							{{ form.slack_id(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in form.slack_id.errors %}
+										<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+						{% else %}
+							{{ form.slack_id(class="form-control form-control-lg") }}
+						{% endif %}
+					</div>
 					</div>
 				</div>
 				<div class="row">

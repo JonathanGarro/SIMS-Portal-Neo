@@ -120,6 +120,7 @@ def update_profile():
 			pass
 		current_user.bio = form.bio.data
 		current_user.twitter = form.twitter.data
+		current_user.slack_id = form.slack_id.data
 		current_user.github = form.github.data
 		for skill in form.skills.data:
 			current_user.skills.append(Skill.query.filter(Skill.name==skill).one())
@@ -136,6 +137,7 @@ def update_profile():
 		form.job_title.data = current_user.job_title
 		form.ns_id.data = current_user.ns_id
 		form.bio.data = current_user.bio
+		form.slack_id.data = current_user.slack_id
 		form.github.data = current_user.github
 		form.twitter.data = current_user.twitter
 		# form.ns_id.data = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id == current_user.id).with_entities(NationalSociety.ns_name).first()[0]

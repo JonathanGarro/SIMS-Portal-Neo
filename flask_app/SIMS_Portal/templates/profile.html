@@ -57,6 +57,9 @@
 					{% if user_info.github %}
 						<a href='https://github.com/{{user_info.github}}'><img src='/static/assets/img/profile-github.png' height='50px'></a>
 					{% endif %}
+					{% if user_info.slack_id %}
+						<a href='https://sims-ifrc.slack.com/team/{{user_info.slack_id}}'><img src='/static/assets/img/profile-slack.png' height='50px'></a>
+					{% endif %}
 					</div>
 				</div>
 			

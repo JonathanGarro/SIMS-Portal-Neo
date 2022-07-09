@@ -28,10 +28,19 @@ def admin_landing():
 		return render_template('admin_landing.html', pending_users=pending_users, all_users=all_users, badge_form=badge_form, assigned_badges=assigned_badges)
 	elif request.method == 'POST': 
 		user_id = badge_form.user_name.data.id
-		print(user_id)
 		badge_id = badge_form.badge_name.data.id
-		print(badge_id)
-		return redirect(url_for('main.badge_assignment', user_id=user_id, badge_id=badge_id))
+		# get list of assigned badges, create column that concats user_id and badge_id to create unique identifier
+		badge_ids = db.engine.execute("SELECT user_id || badge_id as unique_code FROM user_badge")
+		# convert to list 
+		list_to_check = []
+		for id in badge_ids:
+			list_to_check.append(id[0])
+		# check list against the values we're trying to save, and proceed if user doesn't already have that badge
+		if (str(user_id) + str(badge_id)) not in list_to_check:
+			return redirect(url_for('main.badge_assignment', user_id=user_id, badge_id=badge_id))
+		else:
+			flash('Cannot add badge - user already has it.', 'danger')
+			return redirect(url_for('main.admin_landing'))
 	else:
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
