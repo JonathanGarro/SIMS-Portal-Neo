@@ -67,7 +67,11 @@
 	  <div class="collapse navbar-collapse" id="main_nav">
 			<ul class="navbar-nav ms-auto">
 				{% if current_user.is_admin == 1 %}
-					<li class="nav-item px-2"><a class="nav-link text-light" href="/admin" style="font-family: 'Montserrat';">Admin Portal</a></li>
+					{% if '/admin_landing' in request.path %}
+					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Admin Portal</button></li>
+					{% else %}
+					<li class="nav-item px-2"><a class="nav-link text-light" href="/admin_landing" style="font-family: 'Montserrat';">Admin Portal</a></li>
+					{% endif %}
 				{% endif %}
 				{% if '/emergencies' in request.path %}
 					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Emergencies</button></li>
@@ -110,15 +114,17 @@
 				</li>
 				#}
 				
-				{% if '/search' in request.path %}
-					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Search</button></li>
-				{% else %}
-					<li class="nav-item ps-2"><a class="nav-link text-light" href="{{ url_for('main.search')}}" style="font-family: 'Montserrat';">Search</a></li>
-				{% endif %}
+
+					<li class="nav-item dropdown ps-2 pl-3">
+						<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Montserrat';">Search</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							  <a class="dropdown-item" href="/search/members">Members</a>
+							  <a class="dropdown-item" href="/search/emergencies">Emergencies</a>
+							  <a class="dropdown-item" href="#">Products</a>
+							</div>
+					</li>
 			</ul>
-			
 		</div>
-		
 	  </div> 
 	 </div>
 	</nav>

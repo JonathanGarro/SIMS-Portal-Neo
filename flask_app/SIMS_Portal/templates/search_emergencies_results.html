@@ -7,23 +7,22 @@
 		<table class="table">
 			  <thead class="">
 				<tr>
-				  <th>Member</th>
-				  <th>Title</th>
-				  <th>Email</th>
-				  <th>Slack</th>
+				  <th>Emergency</th>
+				  <th>Status</th>
+				  <th>Type</th>
+				  <th>Location</th>
+				  <th>GLIDE</th>
+
 				</tr>
 			  </thead>
 			  <tbody>
 				  {% for result in master_search %}
 				  <tr>
-					<td class="fw-bold"><a href="/profile/view/{{result.id}}" class="link-danger">{{result.firstname}} {{result.lastname}}</a></td>
-					<td>{{result.job_title}}</td>
-					<td>{{result.email}}</td>
-					{% if result.slack_id %}
-						<td><a href='https://sims-ifrc.slack.com/team/{{result.slack_id}}'>Message</td> 
-						{% else %}
-						<td> </td> 
-					{% endif %}
+					<td class="fw-bold"><a href="/emergency/{{result.id}}" class="link-danger">{{result.emergency_name}}</a></td>
+					<td>{{result.emergency_status}}</td>
+					<td>{{result.emergency_type_name}}</td>
+					<td>{{result.country_name}}</td>
+					<td>{{result.emergency_glide}}</td>
 				  </tr>
 				  {% endfor %}
 			  </tbody>

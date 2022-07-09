@@ -221,10 +221,25 @@ def reset_token(token):
 		return redirect(url_for('users.login'))
 	return render_template('reset_token.html', title='Reset Password', form=form)
 
+@users.route('/user/approve/<int:id>')
+@login_required
+def approve_user(id):
+	if current_user.is_admin == 1:
+		try:
+			db.session.query(User).filter(User.id==id).update({'status':'Active'})
+			db.session.commit()
+			flash("Account approved.", 'success')
+		except:
+			flash("Error approving user. Check that the user ID exists.")
+		return redirect(url_for('main.admin_landing'))
+	else:
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
+
 @users.route('/user/delete/<int:id>')
 @login_required
 def delete_user(id):
-	if current_user.is_admin == 1 or current_user.id == id:
+	if current_user.id == id:
 		try:
 			db.session.query(User).filter(User.id==id).update({'status':'Removed'})
 			db.session.commit()
@@ -232,6 +247,14 @@ def delete_user(id):
 		except:
 			flash("Error deleting user. Check that the user ID exists.")
 		return redirect(url_for('users.logout'))
+	elif current_user.is_admin == 1:
+		try:
+			db.session.query(User).filter(User.id==id).update({'status':'Removed'})
+			db.session.commit()
+			flash("Account deleted.", 'success')
+		except:
+			flash("Error deleting user. Check that the user ID exists.")
+		return redirect(url_for('main.admin_landing'))
 	else:
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403

@@ -24,11 +24,14 @@ from SIMS_Portal import models
 
 # AdminView inherits from ModelView to only show tables in the admin page if user is logged in AND is listed as an admin
 class AdminView(ModelView):
-	column_exclude_list = ('birthday', 'password', 'molnix_id', 'job_title', 'bio', 'roles', 'image_file', 'twitter', 'slack_id', 'github', 'created_at', 'updated_at', 'messaging_number_country_code', 'messaging_number')
+	column_exclude_list = ('birthday', 'password', 'molnix_id', 'job_title', 'bio', 'roles', 'image_file', 'twitter', 'slack_id', 'github', 'created_at', 'updated_at', 'linked_in', 'messaging_number_country_code', 'messaging_number')
 	column_hide_backrefs = False
 	def is_accessible(self):
-		if current_user.is_admin == 1:
-			return current_user.is_authenticated
+		try:
+			if current_user.is_admin == 1:
+				return current_user.is_authenticated
+		except:
+			pass
 	
 	def inaccessible_callback(self, name, **kwargs):
 		return render_template('errors/403.html'), 403
