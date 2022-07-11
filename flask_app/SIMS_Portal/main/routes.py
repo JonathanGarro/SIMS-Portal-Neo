@@ -24,14 +24,13 @@ def admin_landing():
 	if request.method == 'GET' and current_user.is_admin == 1:
 		pending_users = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id==User.ns_id).filter(User.status=='Pending').all()
 		all_users = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.status == 'Active').order_by(User.firstname).all()
-		assigned_badges = db.engine.execute("SELECT u.id, u.firstname, u.lastname, GROUP_CONCAT(b.name, ', ') as badges FROM user u JOIN user_badge ub ON ub.user_id = u.id JOIN badge b ON b.id = ub.badge_id GROUP BY u.id ORDER BY u.firstname")
+		assigned_badges = db.engine.execute("SELECT u.id, u.firstname, u.lastname, GROUP_CONCAT(b.name, ', ') as badges FROM user u JOIN user_badge ub ON ub.user_id = u.id JOIN badge b ON b.id = ub.badge_id WHERE u.status = 'Active' GROUP BY u.id ORDER BY u.firstname")
 		return render_template('admin_landing.html', pending_users=pending_users, all_users=all_users, badge_form=badge_form, assigned_badges=assigned_badges)
 	elif request.method == 'POST': 
 		user_id = badge_form.user_name.data.id
 		badge_id = badge_form.badge_name.data.id
 		# get list of assigned badges, create column that concats user_id and badge_id to create unique identifier
 		badge_ids = db.engine.execute("SELECT user_id || badge_id as unique_code FROM user_badge")
-		# convert to list 
 		list_to_check = []
 		for id in badge_ids:
 			list_to_check.append(id[0])
@@ -78,6 +77,10 @@ def resources():
 @main.route('/resources/colors')
 def resources_colors():
 	return render_template('resources_colors.html')
+	
+@main.route('/resources/sims_portal')
+def resources_sims_portal():
+	return render_template('sims_portal.html')
 
 @main.route('/search/members', methods=['GET', 'POST'])
 def search_members():

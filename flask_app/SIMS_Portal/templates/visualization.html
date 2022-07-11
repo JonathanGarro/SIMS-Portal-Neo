@@ -1,8 +1,52 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container">
-	<div class='col-8'>
-		{{ mkd_text|markdown }}
+<!-- <div class='container'>
+	<img src='/static/assets/img/ukr-banner.jpg' class='img-fluid mt-3'>
+	<figcaption class="figure-caption">Volunteers from the Polish Red Cross prepare for registration of cash recipients.</figcaption>
+	<h2 class='text-danger my-5'>Ukraine and Impacted Countries Crisis</h2>
+	<p>Text here.</p>
+</div> -->
+<div class='container'>
+	<div class="wrapper">
+		<img src="/static/assets/img/ukr-banner.jpg" class='img-fluid'  alt="" />
+		<div class="overlay">
+			<h2 class="header">Ukraine and Impacted Countries Crisis</h2>
+		</div>
 	</div>
+	<figcaption class="figure-caption">Volunteers from the Polish Red Cross prepare for registration of cash recipients.</figcaption>
+	
+	<div class='card px-5 py-4 bg-light my-5 border-0 rounded'>
+		<div class="row g-5 row-cols-1 row-cols-lg-3 ">
+		  	<div class="feature col">
+				<img src="/static/assets/img/members.png" width="75" height="75" class="img-fluid mb-4" alt="Responsive image">
+				<h4 class='text-danger'>17 Members</h4>
+				<p class='lead'>provided support to the response</p>
+		  	</div>
+		  	<div class="feature col">
+				<img src="/static/assets/img/activate.png" width="75" height="75" class="img-fluid mb-4" alt="Activations">
+				<h4 class='text-danger'>696 Days</h4>
+				<p class='lead'>of remote and deployed support time</p>
+		  	</div>
+		  	<div class="feature col">
+			  	<img src="/static/assets/img/activate.png" width="75" height="75" class="img-fluid mb-4" alt="Activations">
+			  	<h4 class='text-danger'>19 Products</h4>
+			  	<p class='lead'>created and publicly available</p>
+				</div>
+		</div>
+	</div>
+	
+	<div class='row mb-4'>
+	<h2 class='text-danger my-3'>Activation Overview</h2>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec interdum elit eget scelerisque vehicula. Praesent scelerisque odio nec velit varius eleifend. Suspendisse auctor euismod lectus, id lobortis nisi vulputate eu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc bibendum mollis nunc, sit amet hendrerit purus vulputate ut. Phasellus rutrum faucibus iaculis. Duis venenatis orci sed leo egestas aliquam. Ut interdum sagittis erat eu condimentum. Maecenas vestibulum turpis eu turpis efficitur eleifend nec ac massa. Phasellus interdum faucibus lorem nec rutrum. Nulla bibendum lectus nec tempus condimentum. In a eleifend ex, vitae pellentesque tortor. Quisque sit amet eros ornare nisi tincidunt consectetur consequat ac urna.</p>
+		
+	<p>Nulla quis arcu pulvinar, ornare ligula vel, vulputate arcu. Etiam aliquet lacus vel turpis pellentesque elementum. Nullam dignissim, nisi at porttitor faucibus, sem justo lobortis dolor, vel finibus odio nibh sit amet tellus. Sed ante elit, scelerisque at tincidunt a, euismod sit amet magna. Sed dictum id est eu suscipit. Vestibulum diam dui, eleifend tempor dolor non, porta dignissim arcu. Morbi vulputate urna quis molestie aliquam. Phasellus quis laoreet tellus. Ut ut sem pellentesque, luctus magna non, congue leo. Nullam fringilla justo tellus, et sodales dui suscipit a. Pellentesque pulvinar eu massa in interdum.</p>
+	
+	<p>Vestibulum et tristique nibh, eu tristique nunc. Duis a ante vel lacus maximus tincidunt. Morbi diam diam, tempor condimentum venenatis sed, ultricies non neque. Nulla pretium ut odio in lobortis. Morbi suscipit congue nisi sit amet porttitor. Fusce et mattis risus. Cras eget erat urna.</p>
+	
+	<p>Mauris faucibus, nunc quis pellentesque dignissim, felis sem semper ligula, sit amet ultrices velit leo a velit. Phasellus eu consectetur ex. Ut malesuada erat sed mauris ornare congue. Sed metus est, tempus id metus sit amet, dictum consequat massa. Nulla facilisi. Vestibulum sed magna sit amet metus dapibus fermentum. Vivamus arcu augue, placerat accumsan fermentum vestibulum, facilisis ac neque. Praesent pharetra nulla at ante hendrerit elementum. Donec et diam lacus. Nam elementum congue semper. Maecenas vestibulum, nulla quis mattis sollicitudin, augue mauris blandit sem, vestibulum ornare sapien turpis eget est. Praesent velit nisi, rhoncus non magna sed, faucibus eleifend tellus. Phasellus quis facilisis leo, bibendum porttitor velit. Maecenas a ultrices nisi.</p>
+	
+	<p>Aenean pharetra mauris sed dui tempor blandit. Duis lobortis quis purus non facilisis. Sed imperdiet magna eu metus imperdiet, laoreet ullamcorper enim molestie. Morbi molestie risus nulla, et consectetur ex euismod quis. Nulla a erat a arcu facilisis consectetur. Curabitur laoreet risus mollis lacinia accumsan. Praesent pulvinar elit semper orci aliquam, sit amet fringilla libero convallis. Sed ut erat vitae ante pulvinar varius. Donec hendrerit vel quam et blandit. Praesent eu tincidunt arcu. Morbi pellentesque luctus orci id euismod. Aliquam placerat diam sed magna elementum, vel placerat metus cursus. Mauris vehicula, orci vitae consequat semper, quam eros pharetra felis, vitae rutrum lorem neque bibendum augue.</p>
+	</div>
+	
 </div>
 {% endblock content %}

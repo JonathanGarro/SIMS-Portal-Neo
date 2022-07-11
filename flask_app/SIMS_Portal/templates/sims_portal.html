@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class="row my-5">
+	  <div class="col-md-3">
+		  <div class="card border-0 p-4 bg-light sticky-top">
+			  <h2 class="text-danger mb-5">SIMS Portal</h2>
+				  <div class="list-group">
+					<a href="/resources" class="list-group-item list-group-item-action text-secondary">← Resources Home</a>
+				</div>
+				<div class="list-group mt-3">
+					<a href="#data-model" class="list-group-item list-group-item-action text-secondary">Data Model Overview</a>
+					<a href="#emergencies" class="list-group-item list-group-item-action text-secondary">Emergencies</a>
+					<a href="#assignments" class="list-group-item list-group-item-action text-secondary">Assignments</a>
+					<a href="#learnings" class="list-group-item list-group-item-action text-secondary">Learnings</a>
+					<a href="#members" class="list-group-item list-group-item-action text-secondary">Members</a>
+					<a href="#products" class="list-group-item list-group-item-action text-secondary">Products</a>
+					<a href="#badges" class="list-group-item list-group-item-action text-secondary">Badges</a>
+					<a href="#admin-powers" class="list-group-item list-group-item-action text-secondary">Admin Powers</a>
+				</div>
+			</div>
+	  </div>
+	  <div class="col">
+			<h2 class='my-4 text-danger' id='data-model'>Data Model Overview</h2>
+			<p>The SIMS Portal manages data at several interconnected levels. Each of the following have their own extensible tables within the database, so that we can continue to capture not only greater volumes of data (e.g. more emergency responses) but also greater scopes of it (e.g. tracking additional data points related to our work). </p>
+			<ol>
+				<li>Emergency</li>
+				<li>Assignment</li>
+				<li>Learning</li>
+				<li>Members</li>
+				<li>Products</li>
+				<li>Badges</li>
+			</ol>
+			<p>In addition to these dynamic tables, there are also reference tables in the database that help serve as the glue for many of these data points. For example, the <span class='fw-bold'>National Society</span> table contains the iso3 code, GO country ID, and national society name, all of which help serve information on several views within the portal. As the site continues to grow and our data management needs evolve, the diagram below will change too. But the general structure outlined below captures the majority of the site's functionality at launch.</p>
+			
+			<img src='/static/assets/img/SIMS_Portal_Data_Model.jpg' class='img-fluid'>
+			
+			<h2 class='my-4 text-danger' id='emergencies'>Emergencies</h2>
+			<p>The emergency page serves as the record to reflect the work that SIMS is doing in response to a specific event. It is not meant to capture much additional information about the event itself, instead using the GLIDE number to allow future connections with other databases, should there be a desire for that. The data points stored within the portal on the emergency record are designed to help us query the database for insights. For instance, we might want to see other events that we've responded to in that same country, or review all of our responses to a specific type of event.</p>
+			
+			<p>The page allows us to link to the tools we commonly use: the Trello board that manages tasks, the Slack channel where communication occurs, and the Dropbox where files are shared. It also connects the assignments that are associated with this event via a <span class='fw-bold'>one-to-many</span> relationship (one emergency can have many assignments, but each assignment can only connect to a single emergency).</p>
+			
+			<ul>
+				<li><span class='fw-bold'>Activation Details:</span> Capture a few sentences explaining the steps that led to SIMS being activated. Provide an overview of how SIMS responded and with what sort of support. Offer a look at the transition process and key learnings gleaned from the experience.</li>
+				<li><span class='fw-bold'>Member Support:</span> An automatically-updated table that shows which SIMS members provided support, either in the form of field-deployments or remote support. Clicking on the assignment in the table brings you to a dedicated page for that person's work. To add people to the emergency, the SIMS Coordinator can use the "Log New Assignment" button in the left pane. </li>
+				<li><span class='fw-bold'>Response Portfolio Highlights: </span> As members that are assigned to this emergency complete items that they are proud of and want to share, they get posted to their assignment record and will appear here as an aggregated view of all assignments. Clicking on a product will bring you to a dedicated page for it, with the ability to download the final version or navigate to the Dropbox folder where the underlying assets are stored. </li>
+				<li><span class='fw-bold'>Learning Overview: </span> As members rotate out of their assignments, they are given the opportunity to contribute to the learning process. The emergency page rolls up those insights to provide at-a-glance views of what worked well and what could be improved in the future.</li>
+			</ul>
+			<h4 class='my-4 text-secondary' id='emergencies'>Logging Emergencies</h4>
+			<p>Emergencies can be created by going to the dedicated emergencies page in the top navigation bar. Records require a <span class='fw-bold'>GO Platform identifier</span> for the equivalent emergency record stored there. This can be taken from the URL of that page in GO. These addresses look like this: <span class='fw-bold'>https://go.ifrc.org/emergencies/5854</span> - in this case, the ID is <span class='fw-bold'> 5854</span>.</p>
+			
+			<p>The <span class='fw-bold'>GLIDE number</span> is typically available in the GO Platform as well. If you don't see it on the emergency page in GO or on any of the accompanying documents like Emergency Appeals, try <a href='https://glidenumber.net'> the official GLIDE page</a>. GLIDE numbers help us connect the data in the SIMS Portal with other databases like ReliefWeb, HDX, and more.
+			
+			<p>To get the <span class='fw-bold'>Trello</span> link, go to the board and click on "Share", then use the link generator with the setting "Can join as member."</p>
+			
+			<p>To get the <span class='fw-bold'>Slack ID</span>, open the SIMS Slack account in your desktop app, navigate to the relevant channel, click on the channel name at the top of the window, then scroll all the way to the bottom of the window that pops up.</p>
+			
+			<img src='/static/assets/img/dropbox-share.png' class='img-fluid mt-3 mb-5'>
+			
+			<p>To get the <span class='fw-bold'>Slack ID</span>, open the SIMS Slack account in your desktop app, navigate to the relevant channel, click on the channel name at the top of the window, then scroll all the way to the bottom of the window that pops up.</p>
+			
+			<img src='/static/assets/img/get-slack-id.png' class='img-fluid mt-3 mb-5'>
+			
+			<div class="alert alert-warning d-flex align-items-center" role="alert">
+			  <div>
+				<h5>Closing Out and Deleting Emergencies - Admin Access Required</h5>
+			<p>Administrators will see two additional buttons on emergency pages. When closing out an emergency, the status is set to "Closed" and additional assignments are no longer accepted. Closing an emergency helps organize our portfolio of operations and improves search speeds.</p>
+			
+			<p>Deleting emergency records toggles the status to "Removed", but maintains the row in the database. Because emergency records may have assignments associated with them, conflicts can occur with certain queries if the record is fully removed. Only use this feature when there is an emergency that was created that we did not end up responding to, is a duplicate, or was otherwise not supposed to be in the system. </p>
+			  </div>
+			</div>
+			
+			<h2 class='my-4 text-danger' id='assignments'>Assignments</h2>
+			<p>The Assignment object has a <span class='fw-bold'>many-to-one</span> relationship with emergencies (each assignments can be tagged to a single emergency, but each emergency can have many assignments), and a <span class='fw-bold'>many-to-one</span> relationship with members (each assignment can have one member, but each member can have many assignments).</p>
+			
+			<p>Assignments are designed to provide some clarity to who is doing what within any given response. There has traditionally been more focus on the visible support provided in the form of IM field deployments and SIMS coordinators, but the strength of our network lies in the remote support from members who take on tasks and work in the background. By creating an assignment for anyone that is helping, we can better highlight their work and quantify the support being provided to the operation. </p>
+			
+			<ul>
+				<li><span class='fw-bold'>Assignment Details:</span> A sentence or two describing what the person's support looks like. If they are providing remote IM support, this might mean describing the types of products or analysis they are providing. If they have deployed, describe where they went and the role within the operation that they are filling. </li>
+				<li><span class='fw-bold'>Start and End Dates:</span> Rough estimates here to capture the time that people provided support. This can help quantify our work, and the end date is what automatically adds and removes assignments from various views within the portal.</li>
+				<li><span class='fw-bold'>Role: </span> The dropdown captures the most common roles that SIMS members have when they deploy to an operation. The "Remote Support" role is meant to capture anyone who has not deployed but is provided products or services from their home country.</li>
+				<li><span class='fw-bold'>Status: </span> The end date is what filters which assignments are currently active. This status field is only used to maintain a record of assignments that have been deleted. When deleted, the status is changed to "Removed". The row in the database is maintained to avoid conflicts, as there are other elements that link to the assignment record (including products produced). Only administrators can toggle this.</li>
+			</ul>
+			
+			<h2 class='my-4 text-danger' id='badges'>Badges</h2>
+			<p>Badges are a simple way to recognize the achievements of members as they contribute to operations and to the SIMS network. These are stored in a table within the database, which allows for easy management of them as we continually add new ones. The <span class='fw-bold'>many-to-many</span> relationship of users to badges means that each user can have many badges, and those badges are not exclusive (except for a few rare ones which are meant to serve as awards). </p>
+			<div class="alert alert-warning d-flex align-items-center" role="alert">
+			  <div>
+				<h5>Assigning Badges - Admin Access Required</h5>
+					<p>Only users with admin status are able to assign badges. Since SIMS Remote Coordinators will be in the best position to assign these given their perspective on the individual contributions being made during a response, they will temporarily receive admin status for the length of their assignment.</p>
+					
+					<p>To assign, go to the admin portal within this site and click on the "Badge Assignment" tab. First select the member, then the badge in the dropdown. Note that badges cannot be duplicated on a single user, and you will receive an error if you try to assign a badge to a user than already has it.</p>
+			  </div>
+			</div>
+			
+			
+			
+			
+	  </div>
+	  </div>
+</div>
+{% endblock content %}

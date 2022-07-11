@@ -26,6 +26,6 @@ class ProductSearchForm(FlaskForm):
 	submit = SubmitField('Search Products')
 	
 class BadgeAssignmentForm(FlaskForm):
-	user_name = QuerySelectField('Member', query_factory=lambda:User.query.order_by(User.firstname).all(), get_label='fullname', allow_blank=True)
+	user_name = QuerySelectField('Member', query_factory=lambda:User.query.order_by(User.firstname).filter(User.status == 'Active').all(), get_label='fullname', allow_blank=True)
 	badge_name = QuerySelectField('Badge', query_factory=lambda:Badge.query.order_by(Badge.name).all(), get_label='name', allow_blank=True)
 	submit = SubmitField('Assign')

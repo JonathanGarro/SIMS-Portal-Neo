@@ -36,7 +36,7 @@
 					<h5 class="text-secondary mt-4">National Society</h5>
 					<h4>{{ ns_association }}</h4>
 				</div>
-				
+
 				<div class="row">
 					<div>
 					<h5 class="text-secondary mt-4">Skills</h5>
@@ -45,7 +45,7 @@
 					{% endfor %}
 					</div>
 				</div>
-				
+
 				<div class="row">
 					<div>
 					<h5 class="text-secondary mt-4">Languages</h5>
@@ -54,7 +54,7 @@
 					{% endfor %}
 					</div>
 				</div>
-				
+
 				<div class="row">
 					<div>
 					<h5 class="text-secondary mt-4">Contact</h5>
@@ -84,7 +84,11 @@
 		<div class="col mx-4">
 			<div class='mb-5'>
 				<h3 class="mb-3 text-danger">About {{ user_info.firstname }}</h3>
+				{% if user_info.bio %}
 				<p style="white-space: pre-line">{{ user_info.bio|markdown}}</p>
+				{% else %}
+				No information shared yet.
+				{% endif %}
 			</div>
 			<div class='mb-5'>
 				<h3 class="mb-3 text-danger">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h3>
