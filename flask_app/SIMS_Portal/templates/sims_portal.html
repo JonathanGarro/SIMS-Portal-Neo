@@ -40,6 +40,7 @@
 			
 			<p>The page allows us to link to the tools we commonly use: the Trello board that manages tasks, the Slack channel where communication occurs, and the Dropbox where files are shared. It also connects the assignments that are associated with this event via a <span class='fw-bold'>one-to-many</span> relationship (one emergency can have many assignments, but each assignment can only connect to a single emergency).</p>
 			
+			
 			<ul>
 				<li><span class='fw-bold'>Activation Details:</span> Capture a few sentences explaining the steps that led to SIMS being activated. Provide an overview of how SIMS responded and with what sort of support. Offer a look at the transition process and key learnings gleaned from the experience.</li>
 				<li><span class='fw-bold'>Member Support:</span> An automatically-updated table that shows which SIMS members provided support, either in the form of field-deployments or remote support. Clicking on the assignment in the table brings you to a dedicated page for that person's work. To add people to the emergency, the SIMS Coordinator can use the "Log New Assignment" button in the left pane. </li>
@@ -47,7 +48,13 @@
 				<li><span class='fw-bold'>Learning Overview: </span> As members rotate out of their assignments, they are given the opportunity to contribute to the learning process. The emergency page rolls up those insights to provide at-a-glance views of what worked well and what could be improved in the future.</li>
 			</ul>
 			<h4 class='my-4 text-secondary' id='emergencies'>Logging Emergencies</h4>
-			<p>Emergencies can be created by going to the dedicated emergencies page in the top navigation bar. Records require a <span class='fw-bold'>GO Platform identifier</span> for the equivalent emergency record stored there. This can be taken from the URL of that page in GO. These addresses look like this: <span class='fw-bold'>https://go.ifrc.org/emergencies/5854</span> - in this case, the ID is <span class='fw-bold'> 5854</span>.</p>
+			<div class="alert alert-warning d-flex align-items-center" role="alert">
+			  <div>
+				<h5>Creating New Emergencies - Admin Access Required</h5>
+					<p>Only users with admin status are able to create new emergency records. To create one, go to <span class='fw-bold'>Emergencies</span> in the top nav bar. If you are logged in as admin, you will see a red button to create a new emergency at the top right.</p>
+			  </div>
+			</div>
+			<p>Records require a <span class='fw-bold'>GO Platform identifier</span> for the equivalent emergency record stored there. This can be taken from the URL of that page in GO. These addresses look like this: <span class='fw-bold'>https://go.ifrc.org/emergencies/5854</span> - in this case, the ID is <span class='fw-bold'> 5854</span>.</p>
 			
 			<p>The <span class='fw-bold'>GLIDE number</span> is typically available in the GO Platform as well. If you don't see it on the emergency page in GO or on any of the accompanying documents like Emergency Appeals, try <a href='https://glidenumber.net'> the official GLIDE page</a>. GLIDE numbers help us connect the data in the SIMS Portal with other databases like ReliefWeb, HDX, and more.
 			

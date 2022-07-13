@@ -1,64 +1,29 @@
 {% extends "layout.html" %}
 {% block content %}
-<style>
-	a {
-		color: #CE454A
-	}
-	ul.timeline {
-		list-style-type: none;
-		position: relative;
-	}
-	ul.timeline:before {
-		content: ' ';
-		background: #d4d9df;
-		display: inline-block;
-		position: absolute;
-		left: 29px;
-		width: 2px;
-		height: 0%;
-		z-index: 400;
-	}
-	ul.timeline > li {
-		margin: 40px 0;
-		padding-left: 20px;
-	}
-	ul.timeline > li:before {
-		content: ' ';
-		background: white;
-		display: inline-block;
-		position: absolute;
-		border-radius: 50%;
-		border: 3px solid #CE454A;
-		left: 20px;
-		width: 20px;
-		height: 20px;
-		z-index: 400;
-	}
-</style>
 <div class="container">
 	<div class="row my-5">
 		<div class="col-md-4">
-			<div class="card border-0 p-4 ">
-				<h4 class="text-danger pb-1">Assignment Details</h4>
-				<ul class="timeline">
-					<li>
-						<h5 class="text-danger">Assign Member</h5>
-						<p id="sidebar-guidance">The list contains active members. If you don't see the name you're looking for, they may still be pending.</p>
-					</li>
-					<li>
-						<h5 class="text-danger">Role Type</h5>
-						<p id="sidebar-guidance">Use "Remote IM Support" for any non-deployed volunteer support being provided (except for SIMS Coordinators, which have their own option).</p>
-					</li>
-					<li>
-						<h5 class="text-danger">Start and End Date</h5>
-						<p id="sidebar-guidance">For deployments, use arrival and departure dates. For remote IM support, use general estimates. You can always come back and update the end date later.</p>
-					</li>
-					<li>
-						<h5 class="text-danger">Assignment Description</h5>
-						<p id="sidebar-guidance">Provide general overview of assignment. Mention if this is a second/third round, what this person is doing, where they deployed (if applicable), etc.</p>
-					</li>
-				</ul>
-			</div>
+			<h4 class="text-secondary mb-1">Create New</h4>
+			<h2 class="text-danger mb-4">Assignment</h2>
+			<ul class="timeline">
+				<li>
+					<h5 class="text-secondary">Assign Member</h5>
+					<p id="sidebar-guidance">The list contains active members. If you don't see the name you're looking for, they may still be pending.</p>
+				</li>
+				<li>
+					<h5 class="text-secondary">Role Type</h5>
+					<p id="sidebar-guidance">Use "Remote IM Support" for any non-deployed volunteer support being provided (except for SIMS Coordinators, which have their own option).</p>
+				</li>
+				<li>
+					<h5 class="text-secondary">Start and End Date</h5>
+					<p id="sidebar-guidance">For deployments, use arrival and departure dates. For remote IM support, use general estimates. You can always come back and update the end date later.</p>
+				</li>
+				<li>
+					<h5 class="text-secondary">Assignment Description</h5>
+					<p id="sidebar-guidance">Provide general overview of assignment. Mention if this is a second/third round, what this person is doing, where they deployed (if applicable), etc.</p>
+				</li>
+			</ul>
+
 		</div>
 		<div class="col">
 			<form action="" method="POST" class="mx-auto p-4 bg-light text-light rounded-3" novalidate>

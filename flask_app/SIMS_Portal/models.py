@@ -146,6 +146,7 @@ class Assignment(db.Model):
 	remote = db.Column(db.Boolean)
 	assignment_details = db.Column(db.String(1000))
 	assignment_status = db.Column(db.String(100), default='Active')
+	availability = db.Column(db.String)
 
 	products = db.relationship('Portfolio', backref='assignment', lazy=True)
 	learning = db.relationship('Learning', backref='assignment', uselist=False)
@@ -181,6 +182,17 @@ class WorkingGroup(db.Model):
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
 
+class Story(db.Model):
+	__tablename__ = 'story'
+	
+	id = db.Column(db.Integer, primary_key=True)
+	
+	header_image = db.Column(db.String, nullable=False, default='default-banner.jpg')
+	header_caption = db.Column(db.String, nullable=False, default='default-banner.jpg')
+	entry = db.Column(db.Text)
+	
+	emergency_id = db.Column(db.Integer, db.ForeignKey('emergency.id'), default=0)
+
 class Emergency(db.Model):
 	__tablename__ = 'emergency'
 	
@@ -201,6 +213,7 @@ class Emergency(db.Model):
 	
 	emergency_products = db.relationship('Portfolio', backref='emergency_response', lazy=True)
 	assigned_to = db.relationship('Assignment', backref='assigned_emergency', lazy=True)
+	story_id = db.relationship('Story', backref='associated_story', lazy=True)
 	
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())

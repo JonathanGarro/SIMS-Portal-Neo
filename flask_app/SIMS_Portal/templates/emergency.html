@@ -102,10 +102,11 @@
 				</div>
 				<hr class='my-5'>
 				<span class='lead text-danger'>{{emergency_info.NationalSociety.country_name}}</span>
-				<img src='https://countryflagsapi.com/png/{{emergency_info.NationalSociety.iso3}}' class='img-fluid mt-3'>
-				<div class='d-flex flex-row my-3'>
-				<a href='https://go.ifrc.org/countries/{{emergency_info.NationalSociety.ns_go_id}}'><button class='btn btn-sm btn-secondary'>View Country on GO</button></a>
-				<a href='https://reliefweb.int/country/{{emergency_info.NationalSociety.iso3}}' class='ps-3'><button class='btn btn-sm btn-secondary'>View Country on ReliefWeb</button></a>
+				<img src='https://countryflagsapi.com/png/{{emergency_info.NationalSociety.iso3}}' class='img-fluid my-5'>
+				<div class=' my-3'>
+					<a href="https://go.ifrc.org/countries/{{emergency_info.NationalSociety.ns_go_id}}" class="list-group-item list-group-item-action text-secondary">{{emergency_info.NationalSociety.country_name}} on GO</a>
+					<a href="https://reliefweb.int/country/{{emergency_info.NationalSociety.iso3}}" class="list-group-item list-group-item-action text-secondary">{{emergency_info.NationalSociety.country_name}} on ReliefWeb</a>
+					<a href="https://data.humdata.org/group/{{emergency_info.NationalSociety.iso3|lower}}" class="list-group-item list-group-item-action text-secondary">{{emergency_info.NationalSociety.country_name}} on HDX</a>
 				</div>
 			</div>
 		</div>

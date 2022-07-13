@@ -1,9 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container">
-
-		<h3 class="mt-5" style="font-family: 'Montserrat'" id='sims-blue'>All Emergencies</h3>
-		<p class="lead">Looking for a specific emergency? <a href="/search/emergencies" class="text-danger">Try the search feature</a>.</p>
+<table class="table table-sm table-borderless mt-1">
+  <tbody>
+	<tr>
+	  <td scope="row">
+		  <h3 class="mt-5" style="font-family: 'Montserrat'" id='sims-blue'>All Emergencies with Assignments</h3>
+		  <p class="lead">Looking for a specific emergency? <a href="/search/emergencies" class="text-danger">Try the search feature</a>.</p>
+	  </td>
+	  <td class="float-end">		
+		  {% if current_user.is_admin == 1 %}
+		  <a href='/emergency/new'><button class='btn btn-danger btn-lg mt-5 float-right'>New Emergency</button></a>
+		  {% endif %}
+	  </td>
+	</tr>
+  </tbody>
+</table>
+		
+		
+		
+		
 		<table class="table table-striped mt-5" id=''>
 		  <thead class="">
 			<tr>

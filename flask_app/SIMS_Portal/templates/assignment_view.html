@@ -47,12 +47,17 @@
 				<br>
 
 				<div class="list-group mt-4">
-					<a href="/portfolio/new_from_assignment/{{assignment_info.Assignment.id}}/{{assignment_info.User.id}}/{{assignment_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Upload Product</a>
-					<a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
-					<a href="#" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
-					{% if current_user.is_admin == 1 or current_user.id == assignment_info.User.id%}
-						<a href="#" class="list-group-item list-group-item-action text-secondary">Edit Assignment</a>
-						<a href="/assignment/delete/{{assignment_info.Assignment.id}}" class="list-group-item list-group-item-action text-danger">Delete Assignment</a>
+					{% if current_user.is_admin == 1 or current_user.id == assignment_info.Assignment.user_id %}
+						{% if assignment_info.Assignment.role == 'Remote IM Support' %}
+						<a href='/assignment/availability/{{assignment_info.Assignment.id}}/{{assignment_info.Assignment.start_date}}/{{assignment_info.Assignment.end_date}}' class='list-group-item list-group-item-action text-secondary'>Report Availability</a>
+						{% endif %}
+						<a href="/portfolio/new_from_assignment/{{assignment_info.Assignment.id}}/{{assignment_info.User.id}}/{{assignment_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Upload Product</a>
+						<a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
+						<a href="#" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
+						{% if current_user.is_admin == 1 or current_user.id == assignment_info.User.id%}
+							<a href="#" class="list-group-item list-group-item-action text-secondary">Edit Assignment</a>
+							<a href="/assignment/delete/{{assignment_info.Assignment.id}}" class="list-group-item list-group-item-action text-danger">Delete Assignment</a>
+						{% endif %}
 					{% endif %}
 				</div>
 
@@ -82,6 +87,29 @@
 					</div>
 				{% endfor %}
 				</div>
+				{% if available_dates %}
+					<h4 class="text-danger mt-5 mb-3">Reported Availability</h4>
+					<div id='calendar'></div>
+					<script>
+						let calendarEl = document.getElementById('calendar');
+						
+						let calendar = new FullCalendar.Calendar(calendarEl, {
+							events : [
+								{% for date in available_dates %}
+								{
+									title : 'Available',
+									start : '{{date}}',
+								},
+								{% endfor %}
+								]
+							});
+						
+						calendar.render();
+						
+						
+					</script>
+				{% endif %}
+				
 		</div>
 	</div>
 </div>

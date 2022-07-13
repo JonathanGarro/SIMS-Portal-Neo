@@ -176,3 +176,8 @@ h2.header {
 	width: 20px; 
 	height: 20px;
 }
+
+.fc-event-title-container {
+	background-color: #890000;
+	border-color: #890000;
+}
