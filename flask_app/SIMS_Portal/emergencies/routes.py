@@ -3,9 +3,17 @@ from SIMS_Portal import db
 from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, EmergencyType, Alert, Portfolio
 from SIMS_Portal.emergencies.forms import NewEmergencyForm, UpdateEmergencyForm
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 from flask_login import login_user, logout_user, current_user, login_required
 
 emergencies = Blueprint('emergencies', __name__)
+
+@emergencies.route('/emergencies/all')
+@login_required
+def view_all_emergencies():
+	emergencies = db.engine.execute("SELECT e.id, e.emergency_name, e.emergency_status, e.emergency_glide, n.country_name, t.emergency_type_name, COUNT(a.id) as count_of_assignments FROM Emergency e JOIN Assignment a ON a.emergency_id = e.id JOIN EmergencyType t ON t.emergency_type_go_id = e.emergency_type_id JOIN nationalsociety n ON n.ns_go_id = e.emergency_location_id WHERE assignment_status <> 'Removed' GROUP BY emergency_name ")
+	print(emergencies)
+	return render_template('emergencies_all.html', emergencies=emergencies)
 
 @emergencies.route('/emergency/new', methods=['GET', 'POST'])
 @login_required
@@ -24,7 +32,7 @@ def new_emergency():
 @login_required
 def view_emergency(id):
 	deployments = db.session.query(Assignment, Emergency, User, NationalSociety).join(Emergency, Emergency.id==Assignment.emergency_id).join(User, User.id==Assignment.user_id).join(NationalSociety, NationalSociety.ns_go_id==User.ns_id).filter(Emergency.id==id, Assignment.assignment_status=='Active').all()
-	emergency_info = db.session.query(Emergency, EmergencyType).join(EmergencyType, EmergencyType.emergency_type_go_id==Emergency.emergency_type_id).filter(Emergency.id==id).first()
+	emergency_info = db.session.query(Emergency, EmergencyType, NationalSociety).join(EmergencyType, EmergencyType.emergency_type_go_id==Emergency.emergency_type_id).join(NationalSociety, NationalSociety.ns_go_id == Emergency.emergency_location_id).filter(Emergency.id==id).first()
 	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id==Portfolio.emergency_id).filter(Emergency.id==id, Portfolio.product_status=='Active').all()
 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio)
 

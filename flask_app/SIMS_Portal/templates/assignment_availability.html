@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+<form method="POST" action='/assignment/availability/result'>
+		<input type='hidden' name='assignment_id' value='{{assignment_id}}'><br>
+	{% for date in date_list %}
+			<input type='checkbox' class='mb-3' name='available' value='{{date}}'>&nbsp <span class='fw-bold'>{{date[5:10]}}</span><br>
+	{% endfor %}
+	<input type="Submit">
+</form>
+</div>
+{% endblock content %}

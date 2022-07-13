@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, current_user, logout_user, login_required
 from SIMS_Portal.assignments.forms import NewAssignmentForm
 from datetime import datetime
+from datetime import date, timedelta
+import pandas as pd
 
 assignments = Blueprint('assignments', __name__)
 
@@ -57,7 +59,6 @@ def view_assignment(id):
 	print(f"assignment length value is: {assignment_length_int}")
 	
 	assingment_portfolio = db.session.query(Portfolio).filter(Portfolio.assignment_id==id, Portfolio.product_status=='Active').all()
-	print(assingment_portfolio)
 	
 	return render_template('assignment_view.html', assignment_info=assignment_info, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date, days_left_int=days_left_int, assignment_length_int=assignment_length_int, assingment_portfolio=assingment_portfolio)
 
@@ -75,3 +76,37 @@ def delete_assignment(id):
 	else:
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
+	
+@assignments.route('/assignment/availability/<int:assignment_id>/<start>/<end>', methods=['GET', 'POST'])
+@login_required
+def assignment_availability(assignment_id, start, end):
+	
+	start_date = datetime.strptime(start, "%Y-%m-%d")
+	end_date = datetime.strptime(end, "%Y-%m-%d")
+	def daterange(start_date, end_date):
+		for n in range(int((end_date - start_date).days)):
+			yield start_date + timedelta(n)
+	# start_date = date(2022, 7, 1)
+	# end_date = date(2022, 7, 5)
+	start_day_of_week = pd.Timestamp(start_date)
+	
+	date_list = []
+	for single_date in daterange(start_date, end_date):
+		date_list.append(single_date.strftime("%Y-%m-%d"))
+		
+	index_list = []
+	index = len(date_list)
+	for x in range(index):
+		index_list.append(x)
+	output = dict(list(enumerate(date_list, 1)))
+
+	return render_template('/assignment_availability.html', date_list=date_list, assignment_id=assignment_id)
+
+@assignments.route('/assignment/availability/result', methods=['GET', 'POST'])
+@login_required
+def assignment_availability_result():
+	response = request.form.getlist('available')
+	assignment_id = request.form.get('assignment_id')
+	print(assignment_id)
+	print(response)
+	return redirect(url_for('assignments.view_assignment', id=assignment_id))

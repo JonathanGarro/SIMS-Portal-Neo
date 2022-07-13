@@ -6,6 +6,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
 from SIMS_Portal.main.forms import MemberSearchForm, EmergencySearchForm, ProductSearchForm, BadgeAssignmentForm
 from collections import defaultdict
+from datetime import date, timedelta
 
 main = Blueprint('main', __name__)
 
@@ -59,12 +60,30 @@ def badge_assignment(user_id, badge_id):
 
 @main.route('/staging') 
 def staging(): 
-	mkd_text = "## Your Markdown Here \n **bold**"
-	return render_template('visualization.html', mkd_text=mkd_text)
+	def daterange(start_date, end_date):
+		for n in range(int((end_date - start_date).days)):
+			yield start_date + timedelta(n)
+			
+	start_date = date(2013, 1, 1)
+	end_date = date(2013, 1, 31)
+	
+	date_list = []
+	for single_date in daterange(start_date, end_date):
+		date_list.append(single_date.strftime("%Y-%m-%d"))
+	
+	index_list = []
+	index = len(date_list)
+	for x in range(index):
+		index_list.append(x)
 
-@main.route('/emergencies')
-def emergencies():
-	return render_template('emergencies.html')
+	output = dict(list(enumerate(date_list, 1)))
+	print(output)
+	
+	return render_template('visualization.html', output=output)
+
+@main.route('/story') 
+def story(): 
+	return render_template('story.html')
 
 @main.route('/learning')
 def learning():

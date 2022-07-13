@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+
+		<h3 class="mt-5" style="font-family: 'Montserrat'" id='sims-blue'>All Emergencies</h3>
+		<p class="lead">Looking for a specific emergency? <a href="/search/emergencies" class="text-danger">Try the search feature</a>.</p>
+		<table class="table table-striped mt-5" id=''>
+		  <thead class="">
+			<tr>
+			  <th><h4>Emergency</h4></th>
+			  <th><h4>Status</h4></th>
+			  <th><h4>Type</h4></th>
+			  <th><h4>Location</h4></th>
+			  <th><h4># of Assignments</h4></th>
+			  <th><h4>GLIDE</h4></th>
+			  
+		
+			</tr>
+		  </thead>
+		  <tbody>
+			  {% for emergency in emergencies %}
+			  <tr>
+				<td class="fw-bold"><a href="/emergency/{{emergency.id}}" class="link-danger"><h5>{{emergency.emergency_name}}</h5></a></td>
+				<td><h5>{{emergency.emergency_status}}</h5></td>
+				<td><h5>{{emergency.emergency_type_name}}</h5></td>  
+				<td><h5>{{emergency.country_name}}</h5></td> 
+				<td><h5>{{emergency.count_of_assignments}}</h5></td>  
+				<td><h5>{{emergency.emergency_glide}}</h5></td>  
+			  </tr>
+			  {% endfor %}
+		  </tbody>
+		</table>
+		
+
+</div>
+{% endblock content %}

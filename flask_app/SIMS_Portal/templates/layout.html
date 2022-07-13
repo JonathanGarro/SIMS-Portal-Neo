@@ -53,7 +53,8 @@
 				<li class="nav-item px-2"><a class="nav-link text-light" href="#" style="font-family: 'Montserrat';"> Resources </a></li>
 				<li class="nav-item px-2"><a class="nav-link text-light" href="/portfolio" style="font-family: 'Montserrat';"> Portfolio </a></li>
 				<li class="nav-item px-2"><a class="nav-link text-light" href="/members" style="font-family: 'Montserrat';"> Members </a></li>
-				<li class="nav-item ps-2"><a class="" href="/login"><button type="button" class="btn btn-outline-light" style="font-family: 'Montserrat';">Login</button></a></li>
+				<li class="nav-item px-2"><a class="nav-link text-light" href="/login" style="font-family: 'Montserrat';"> Login </a></li>
+				
 			{% endif %}
 		</ul>
 	  </div> 
@@ -73,10 +74,10 @@
 					<li class="nav-item px-2"><a class="nav-link text-light" href="/admin_landing" style="font-family: 'Montserrat';">Admin Portal</a></li>
 					{% endif %}
 				{% endif %}
-				{% if '/emergencies' in request.path %}
+				{% if '/emergencies/all' in request.path %}
 					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Emergencies</button></li>
 				{% else %}
-					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('main.emergencies')}}" style="font-family: 'Montserrat';">Emergencies</a></li>
+					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('emergencies.view_all_emergencies')}}" style="font-family: 'Montserrat';">Emergencies</a></li>
 				{% endif %}
 				{% if '/all_products' in request.path %}
 					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Portfolio</button></li>

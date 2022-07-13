@@ -86,7 +86,17 @@ li {
 }
 
 #navbar_top_login {
-	background: #505050 !important;
+	background: #5c0000 !important;
+}
+
+#large_table {
+	font-size: 20px;
+}
+
+#grayscale-img {
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+  filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
 }
 
 #sidebar-guidance {
@@ -140,7 +150,9 @@ li {
 	height:100%;
 	background-color: rgba(0,0,0,0.50);
 	font-weight: bold;
-	color:white;
+	font-size: 1vw;
+	/* font-size: min(max(1.5vw), 1vw); */
+	color: #dbdbdb
 }
 
 h2.header {
@@ -154,4 +166,13 @@ h2.header {
 	font-size: 4em;
 	font-family: 'Montserrat';
 	width: 75%;
+}
+
+#navbar_top {
+  border-bottom: 5px solid #890000;
+}
+
+#big-checkbox {
+	width: 20px; 
+	height: 20px;
 }
