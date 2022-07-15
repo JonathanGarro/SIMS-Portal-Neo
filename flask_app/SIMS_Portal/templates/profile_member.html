@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container">
+<div class="container mb-5">
 	<div class="" id="hideMe">
 		{% with messages = get_flashed_messages(with_categories=true) %}
 			   {% if messages %}
@@ -144,7 +144,7 @@
 				<div class="row row-cols-4 row-cols-md-4 g-4 mt-2">
 				{% for badge in badges %}
 					<div class="col d-flex align-items-stretch">
-				  		<img src="{{badge.badge_url}}" class="img-fluid" alt="...">
+				  		<a href='/badges#{{badge.id}}'><img src="{{badge.badge_url}}" class="img-fluid"></a>
 			  		</div>
 				{% endfor %}
 				</div>

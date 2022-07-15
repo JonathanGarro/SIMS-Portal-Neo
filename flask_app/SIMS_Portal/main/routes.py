@@ -1,11 +1,11 @@
 from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
-from SIMS_Portal.models import Assignment, User, Emergency, Alert, user_skill, user_language, user_badge, Skill, Language, NationalSociety
+from SIMS_Portal.models import Assignment, User, Emergency, Alert, user_skill, user_language, user_badge, Skill, Language, NationalSociety, Badge
 from SIMS_Portal import db
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
 from SIMS_Portal.main.forms import MemberSearchForm, EmergencySearchForm, ProductSearchForm, BadgeAssignmentForm
-from collections import defaultdict
+from collections import defaultdict, Counter
 from datetime import date, timedelta
 
 main = Blueprint('main', __name__)
@@ -45,6 +45,29 @@ def admin_landing():
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
 
+@main.route('/badges')
+def badges():
+	# badge_counts = db.session.query(user_badge, Badge).join(Badge, Badge.id == user_badge.badge_id).all()
+	badges = db.engine.execute("SELECT * FROM user_badge JOIN Badge ON Badge.id = user_badge.badge_id")
+	count_active_members = db.session.query(User).filter(User.status == 'Active').count()
+	
+	# badges = {}
+	# for badge in badges:
+	# 	if badge[1] not in badges.keys():
+	# 		new = {badge[3]: 1}
+	# 		badges.update(new)
+	# 	else: 
+	# 		badge[1] += 1
+	# print(badges)
+
+	count_list = []
+	for badge in badges:
+		count_list.append(badge[3])
+	badge_counts = Counter(count_list)
+	print(badge_counts['No Pressure'])
+	
+	return render_template('badges.html', badge_counts=badge_counts, count_active_members=count_active_members)
+
 @main.route('/badge_assignment/<int:user_id>/<int:badge_id>')
 @login_required
 def badge_assignment(user_id, badge_id):
@@ -59,6 +82,7 @@ def badge_assignment(user_id, badge_id):
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
 
 @main.route('/staging') 
+@login_required
 def staging(): 
 	def daterange(start_date, end_date):
 		for n in range(int((end_date - start_date).days)):
@@ -82,18 +106,22 @@ def staging():
 	return render_template('visualization.html', output=output)
 
 @main.route('/learning')
+@login_required
 def learning():
 	return render_template('learning.html')
 
 @main.route('/resources')
+@login_required
 def resources():
 	return render_template('resources.html')
 
 @main.route('/resources/colors')
+@login_required
 def resources_colors():
 	return render_template('resources_colors.html')
 	
 @main.route('/resources/sims_portal')
+@login_required
 def resources_sims_portal():
 	return render_template('sims_portal.html')
 
