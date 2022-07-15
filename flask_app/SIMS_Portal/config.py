@@ -12,3 +12,5 @@ class Config:
 	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 	MAIL_DEBUG = True
 	SCHEDULER_API_ENABLED = True
+	TRELLO_KEY = os.environ.get('TRELLO_KEY')
+	TRELLO_TOKEN = os.environ.get('TRELLO_TOKEN')

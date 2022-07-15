@@ -1,10 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container">
+	<div class="mt-2" id="hideMe">
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			   {% if messages %}
+				   {% for category, message in messages %}
+					   <div class="alert alert-{{ category }}">
+						   {{ message }} 
+					   </div>
+				   {% endfor %}
+			   {% endif %}
+		{% endwith %}
+	</div>
 	<div class="row my-5">
 		<div class="col col-md-4">
 			<div class="card border-0 p-4 bg-light">
-				<h2 class="text-danger mb-1">{{ emergency_info.Emergency.emergency_name}}</h2>
+				<h1 class="text-danger mb-1" id='emergency-title'>{{ emergency_info.Emergency.emergency_name}}</h1>
 				<h4 class="text-secondary mb-3">{{emergency_info.EmergencyType.emergency_type_name}}</h4>
 				
 				{% if emergency_info.Emergency.emergency_status == 'Closed' %}
@@ -20,11 +31,23 @@
 					</div>
 				</div>
 				{% endif %}
-				<div class="list-group mt-5">
+				{% if check_for_story %}
+				<hr class='my-3'>
+				<div class='row align-items-center'>
+					<div class='col-3'>
+						<a href='/story/{{emergency_info.Emergency.id}}'><img src='/static/assets/img/story-icon.png' height='100px' width='100px'></a>
+					</div>
+					<div class='col ps-4'>
+						<a href='/story/{{emergency_info.Emergency.id}}'><span class='lead' id='emergency-story-link'>Response<br> Story</span></a>
+					</div>
+				</div>
+				{% endif %}
+				<div class="list-group mt-4">
 					<a href="/assignment/new/{{emergency_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Log New Assignment</a>
 					  <a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
 					  <a href="https://go.ifrc.org/emergencies/{{ emergency_info.Emergency.emergency_go_id }}" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
 					  {% if current_user.is_admin == 1 %}
+					  	<a href="/story/create/{{emergency_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Create Response Story</a>
 					  	<a href="/emergency/edit/{{emergency_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Edit Emergency</a>
 						<a href="#" class="list-group-item list-group-item-action text-secondary" data-toggle="modal" data-target="#confirm-closeout">Closeout Emergency</a>
 					  	<a href="#" class="list-group-item list-group-item-action text-danger" data-toggle="modal" data-target="#confirm-delete">Delete Emergency</a>
@@ -101,8 +124,8 @@
 					</div>
 				</div>
 				<hr class='my-5'>
-				<span class='lead text-danger'>{{emergency_info.NationalSociety.country_name}}</span>
-				<img src='https://countryflagsapi.com/png/{{emergency_info.NationalSociety.iso3}}' class='img-fluid my-5'>
+				<h5 class='text-secondary mb-3'>{{emergency_info.NationalSociety.country_name}}</h5>
+				<img src='https://countryflagsapi.com/png/{{emergency_info.NationalSociety.iso3}}' class='img-fluid mb-3'>
 				<div class=' my-3'>
 					<a href="https://go.ifrc.org/countries/{{emergency_info.NationalSociety.ns_go_id}}" class="list-group-item list-group-item-action text-secondary">{{emergency_info.NationalSociety.country_name}} on GO</a>
 					<a href="https://reliefweb.int/country/{{emergency_info.NationalSociety.iso3}}" class="list-group-item list-group-item-action text-secondary">{{emergency_info.NationalSociety.country_name}} on ReliefWeb</a>
@@ -112,10 +135,10 @@
 		</div>
 	
 		<div class="col mx-4">
-			<h4 class="text-danger">Activation Details</h4>
+			<h3 class="text-dark mt-4" id='emergency-title'>Activation Details</h3>
 			<p class="pb-3">{{emergency_info.Emergency.activation_details}}</p>
 			<div class='mb-5'>
-				<h4 class="mb-3 text-danger">Member Support<span class='text-dark'>{{ deployment_history_count }}</span></h4>
+				<h3 class="mb-3 text-dark" id='emergency-title'>Member Support<span class='text-dark'>{{ deployment_history_count }}</span></h3>
 				{% if deployment_history_count == 0 %}
 					No deployments yet.
 				{% else %}
@@ -142,8 +165,8 @@
 				</table>
 				{% endif %}
 			</div>
-			<h4 class="mb-3 text-danger">Response Portfolio Highlights</h4>
-			<div class="row row-cols-3 row-cols-md-3 g-4 mt-4">
+			<h3 class="mb-1 text-dark" id='emergency-title'>Response Portfolio Highlights</h3>
+			<div class="row row-cols-3 row-cols-md-3 g-4 mt-3">
 			{% for product in emergency_portfolio %}
 				<div class="col d-flex align-items-stretch">
 					<a href="/portfolio/view/{{product.Portfolio.id}}">
@@ -162,6 +185,26 @@
 				</div>
 			{% endfor %}
 			</div>
+			{% if response_length %}
+			<div class='row mt-5'>
+				<h3 class="text-dark" id='emergency-title'>Trello Cards Under 'Doing' <span class="badge rounded-pill bg-danger" id="smallbadge">{{response_length}}</span></h3> 
+				<div class="row row-cols-3 row-cols-md-3 g-4 mt-3">
+				{% for card in response %}
+				<div class="col d-flex align-items-stretch">
+					<div class="card bg-light" style="width: 18rem;">
+						<div class="card-header">{{card['name']}}</div>
+				  		<div class="card-body d-flex flex-column">
+							<p class="card-text">{{ card['desc']|markdown|truncate(100) }}</p>
+				  		</div>
+				  		<div class="card-body d-flex flex-column">
+							<a href="{{card['url']}}" class="card-link mt-auto">View Card</a>
+				  		</div>
+					</div>
+				</div>
+				{% endfor %}
+				</div>
+			</div>
+			{% endif %}
 		</div>
 	</div>
 	

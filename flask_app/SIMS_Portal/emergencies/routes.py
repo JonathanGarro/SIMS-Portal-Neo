@@ -1,6 +1,7 @@
-from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
+from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint, current_app
 from SIMS_Portal import db
-from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, EmergencyType, Alert, Portfolio
+from SIMS_Portal.config import Config
+from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, EmergencyType, Alert, Portfolio, Story
 from SIMS_Portal.emergencies.forms import NewEmergencyForm, UpdateEmergencyForm
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
@@ -34,7 +35,26 @@ def view_emergency(id):
 	deployments = db.session.query(Assignment, Emergency, User, NationalSociety).join(Emergency, Emergency.id==Assignment.emergency_id).join(User, User.id==Assignment.user_id).join(NationalSociety, NationalSociety.ns_go_id==User.ns_id).filter(Emergency.id==id, Assignment.assignment_status=='Active').all()
 	emergency_info = db.session.query(Emergency, EmergencyType, NationalSociety).join(EmergencyType, EmergencyType.emergency_type_go_id==Emergency.emergency_type_id).join(NationalSociety, NationalSociety.ns_go_id == Emergency.emergency_location_id).filter(Emergency.id==id).first()
 	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id==Portfolio.emergency_id).filter(Emergency.id==id, Portfolio.product_status=='Active').all()
-	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio)
+	check_for_story = db.session.query(Story, Emergency).join(Emergency, Emergency.id == Story.emergency_id).filter(Story.emergency_id == id).first()
+	# if emergency_info.Emergency.trello_url:
+	# 	
+	# 	import requests
+	# 	
+	# 	url = 'https://api.trello.com/1/lists/621dfcf650d6493f43ad1740/cards'
+	# 	
+	# 	query = {
+	#    	'key': '',
+	#    	'token': ''
+	# 	}
+	# 	
+	# 	response = requests.get(url, params=query).json()
+	# 	response_length = len(response)
+	# 	
+	# 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, response=response, response_length=response_length)
+	# else:	
+	# 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio)
+		
+	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, check_for_story=check_for_story)
 
 @emergencies.route('/emergency/edit/<int:id>', methods=['GET', 'POST'])
 def edit_emergency(id):

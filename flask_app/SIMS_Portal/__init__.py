@@ -60,7 +60,7 @@ def create_app(config_class=Config):
 	from SIMS_Portal.emergencies.routes import emergencies
 	from SIMS_Portal.portfolios.routes import portfolios
 	from SIMS_Portal.users.routes import users
-	# from SIMS_Portal.administrator.routes import administrator
+	from SIMS_Portal.stories.routes import stories
 	from SIMS_Portal.errors.handlers import errors
 	
 	app.register_blueprint(main)
@@ -68,14 +68,15 @@ def create_app(config_class=Config):
 	app.register_blueprint(emergencies)
 	app.register_blueprint(portfolios)
 	app.register_blueprint(users)
-	# app.register_blueprint(administrator)
+	app.register_blueprint(stories)
 	app.register_blueprint(errors)
 	
-	from SIMS_Portal.models import User, Assignment, Emergency, Portfolio, NationalSociety
+	from SIMS_Portal.models import User, Assignment, Emergency, Portfolio, NationalSociety, Story
 	admin.add_view(AdminView(User, db.session))
 	admin.add_view(AdminView(Assignment, db.session))
 	admin.add_view(AdminView(Emergency, db.session))
 	admin.add_view(AdminView(Portfolio, db.session))
+	admin.add_view(AdminView(Story, db.session))
 	admin.add_view(AdminView(NationalSociety, db.session))
 	
 	return app

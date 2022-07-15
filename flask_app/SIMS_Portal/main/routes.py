@@ -81,10 +81,6 @@ def staging():
 	
 	return render_template('visualization.html', output=output)
 
-@main.route('/story') 
-def story(): 
-	return render_template('story.html')
-
 @main.route('/learning')
 def learning():
 	return render_template('learning.html')
