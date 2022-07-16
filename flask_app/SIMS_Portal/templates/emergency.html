@@ -47,7 +47,11 @@
 					  <a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
 					  <a href="https://go.ifrc.org/emergencies/{{ emergency_info.Emergency.emergency_go_id }}" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
 					  {% if current_user.is_admin == 1 %}
+					  	{% if check_for_story %}
+						<a href="/story/edit/{{emergency_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Edit Response Story</a>
+						{% else %}
 					  	<a href="/story/create/{{emergency_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Create Response Story</a>
+						{% endif %}
 					  	<a href="/emergency/edit/{{emergency_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Edit Emergency</a>
 						<a href="#" class="list-group-item list-group-item-action text-secondary" data-toggle="modal" data-target="#confirm-closeout">Closeout Emergency</a>
 					  	<a href="#" class="list-group-item list-group-item-action text-danger" data-toggle="modal" data-target="#confirm-delete">Delete Emergency</a>

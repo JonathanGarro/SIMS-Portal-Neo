@@ -81,16 +81,12 @@ def edit_emergency(id):
 		emergency_info.slack_channel = form.slack_channel.data
 		emergency_info.dropbox_url = form.dropbox_url.data
 		emergency_info.trello_url = form.trello_url.data
-		# print(emergency_info.emergency_type_id)
-		# print(type(emergency_info.emergency_type_id))
-		print(type(emergency_info.emergency_type_id))
 		db.session.commit()
 		flash('Emergency record updated!', 'success')
 		return redirect(url_for('main.dashboard'))
 	elif request.method == 'GET':
 		form.emergency_name.data = emergency_info.emergency_name
 		form.emergency_glide.data = emergency_info.emergency_glide
-
 		form.emergency_go_id.data = emergency_info.emergency_go_id
 		form.activation_details.data = emergency_info.activation_details
 		form.slack_channel.data = emergency_info.slack_channel

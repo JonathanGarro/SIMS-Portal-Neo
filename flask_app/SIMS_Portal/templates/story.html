@@ -23,31 +23,32 @@
 		</div>
 	</div>
 	<figcaption class="figure-caption">{{story_data.header_caption}}</figcaption>
-	
-	<div class='card px-5 py-4 bg-light my-5 border-0 rounded'>
-		<div class="row g-5 row-cols-1 row-cols-lg-3 ">
-			  <div class="feature col">
-				<img src="/static/assets/img/members.png" width="75" height="75" class="img-fluid mb-4" alt="Responsive image">
-				<h4 class='text-danger'>{{members_supporting}} Members</h4>
+	<div class='row my-5'>
+		<div class='col-md-3'>
+			<div class='card px-5 py-4 bg-light border-0 rounded'>
+				{% if current_user.is_admin == 1 %}
+				<a href="/story/edit/{{story_data.emergency_id}}" class="btn btn-danger my-3">Edit Story</a>
+				{% endif %}
+	  		<div class="row mb-4">
+				<img class='w-50' src="/static/assets/img/members.png"  class="mb-5" alt="">
+				<h3 class='text-danger'>{{members_supporting}} Members</h3>
 				<p class='lead'>provided support to the response</p>
-			  </div>
-			  <div class="feature col">
-				<img src="/static/assets/img/calendar.png" width="75" height="75" class="img-fluid mb-4" alt="Activations">
-				<h4 class='text-danger'>{{sum_days}} Days</h4>
+	  		</div>
+	  		<div class="row mb-4">
+				<img class='w-50' src="/static/assets/img/calendar.png" class="" alt="Activations">
+				<h3 class='text-danger'>{{sum_days}} Days</h3>
 				<p class='lead'>of remote and deployed support time</p>
-			  </div>
-			  <div class="feature col">
-				  <img src="/static/assets/img/products.png" width="75" height="75" class="img-fluid mb-4" alt="Activations">
-				  <h4 class='text-danger'>{{products_created}} Products</h4>
-				  <p class='lead'>created and publicly available</p>
+	  		</div>
+	  		<div class="row mb-4">
+		  		<img class='w-50' src="/static/assets/img/products.png" class="mb-5" alt="Activations">
+		  		<h3 class='text-danger'>{{products_created}} Products</h3>
+		  		<p class='lead'>created and publicly available</p>
 				</div>
+			</div>
 		</div>
+	<div class='col ps-4'>
+		{{story_data.entry|markdown}}
 	</div>
-	
-	<div class='row mb-4'>
-	<h2 class='text-danger my-3'>Response Overview</h2>
-	{{story_data.entry|markdown}}
 	</div>
-	
 </div>
 {% endblock content %}

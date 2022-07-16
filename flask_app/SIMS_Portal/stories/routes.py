@@ -2,7 +2,7 @@ from flask import request, render_template, url_for, flash, redirect, jsonify, B
 from SIMS_Portal import db
 from SIMS_Portal.config import Config
 from SIMS_Portal.models import Story, Emergency, User, Assignment, Portfolio
-from SIMS_Portal.stories.forms import NewStoryForm
+from SIMS_Portal.stories.forms import NewStoryForm, UpdateStoryForm
 from flask_sqlalchemy import SQLAlchemy
 from SIMS_Portal.stories.utils import save_header
 from sqlalchemy.sql import func
@@ -49,3 +49,44 @@ def create_story(emergency_id):
 	else:
 		emergency_name = db.session.query().with_entities(Emergency.emergency_name).filter(Emergency.id == emergency_id).first()
 		return render_template('story_create.html', form=form, emergency_name=emergency_name)
+
+@stories.route('/story/edit/<int:emergency_id>', methods=["GET", "POST"])
+@login_required
+def edit_story(emergency_id): 
+	form = UpdateStoryForm()
+	story = db.session.query(Story).filter(Story.emergency_id == emergency_id).first()
+	if current_user.is_admin == 0:
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
+	elif request.method == 'POST' and current_user.is_admin == 1:
+		if form.header_image.data:
+			header_file = save_header(form.header_image.data)
+		else:
+			header_file = story.header_image
+		header_caption = form.header_caption.data
+		story.header_image = header_file
+		story.header_caption = header_caption 
+		story.entry = form.entry.data
+		db.session.commit()
+		flash('The story has been updated', 'success')
+		return redirect(url_for('stories.view_story', emergency_id=story.emergency_id))
+	else:
+		emergency_name = db.session.query().with_entities(Emergency.emergency_name).filter(Emergency.id == emergency_id).first()
+		form.header_caption.data = story.header_caption
+		form.entry.data = story.entry
+		return render_template('story_edit.html', form=form, emergency_name=emergency_name, story=story)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

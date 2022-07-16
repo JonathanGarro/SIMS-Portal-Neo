@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="container mb-5">
-	<div class="" id="hideMe">
+<div class="container">
+	<div class="mt-2" id="hideMe">
 		{% with messages = get_flashed_messages(with_categories=true) %}
 			   {% if messages %}
 				   {% for category, message in messages %}

@@ -1,5 +1,5 @@
 from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
-from SIMS_Portal.models import Assignment, User, Emergency, Alert, user_skill, user_language, user_badge, Skill, Language, NationalSociety, Badge
+from SIMS_Portal.models import Assignment, User, Emergency, Alert, user_skill, user_language, user_badge, Skill, Language, NationalSociety, Badge, Story
 from SIMS_Portal import db
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, current_user, logout_user, login_required
@@ -12,7 +12,8 @@ main = Blueprint('main', __name__)
 
 @main.route('/') 
 def index(): 
-	return render_template('index.html')
+	latest_stories = db.session.query(Story, Emergency).join(Emergency, Emergency.id == Story.emergency_id).order_by(Story.id.desc()).limit(3).all()
+	return render_template('index.html', latest_stories=latest_stories)
 	
 @main.route('/about')
 def about():
@@ -47,18 +48,8 @@ def admin_landing():
 
 @main.route('/badges')
 def badges():
-	# badge_counts = db.session.query(user_badge, Badge).join(Badge, Badge.id == user_badge.badge_id).all()
 	badges = db.engine.execute("SELECT * FROM user_badge JOIN Badge ON Badge.id = user_badge.badge_id")
 	count_active_members = db.session.query(User).filter(User.status == 'Active').count()
-	
-	# badges = {}
-	# for badge in badges:
-	# 	if badge[1] not in badges.keys():
-	# 		new = {badge[3]: 1}
-	# 		badges.update(new)
-	# 	else: 
-	# 		badge[1] += 1
-	# print(badges)
 
 	count_list = []
 	for badge in badges:
