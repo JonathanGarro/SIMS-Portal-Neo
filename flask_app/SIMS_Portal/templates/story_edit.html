@@ -81,8 +81,27 @@
 					
 				</div>
 
-				{{ form.submit(class="btn btn-outline-danger") }}
+				{{ form.submit(class="btn btn-outline-danger") }} <a href='#' data-toggle="modal" data-target="#confirm-delete"><div class='btn btn-danger btn-outline ms-3'>Delete Story</div></a>
 			</form>
+			<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="deleteStory" aria-hidden="true">
+			  <div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<h5 class="modal-title" id="deleteStory">Delete this Story</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+				  </div>
+				  <div class="modal-body">
+					<span class=''>Deleting this story will remove the all data and it cannot be recovered.</span>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+					<a href="/story/delete/{{story.emergency_id}}"><button type="button" class="btn btn-danger">Delete</button></a>
+				  </div>
+				</div>
+			  </div>
+			</div>
 		</div>
 	</div>
 </div>

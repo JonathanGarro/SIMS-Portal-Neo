@@ -40,7 +40,10 @@ def create_story(emergency_id):
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
 	if request.method == 'POST' and current_user.is_admin == 1:
 		if form.validate_on_submit():
-			header_file = save_header(form.header_image.data)
+			if form.header_image.data:
+				header_file = save_header(form.header_image.data)
+			else:
+				header_file = 'default-banner.png'
 			story = Story(header_image=header_file, header_caption=form.header_caption.data, entry=form.entry.data, emergency_id=emergency_id)
 			db.session.add(story)
 			db.session.commit()
@@ -76,17 +79,17 @@ def edit_story(emergency_id):
 		form.entry.data = story.entry
 		return render_template('story_edit.html', form=form, emergency_name=emergency_name, story=story)
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+@stories.route('/story/delete/<int:emergency_id>', methods=["GET", "POST"])
+@login_required
+def delete_story(emergency_id):
+	if current_user.is_admin == 1:
+		try:
+			db.session.query(Story).filter(Story.emergency_id==emergency_id).delete()
+			db.session.commit()
+			flash("Story deleted.", 'success')
+		except:
+			flash("Error deleting emergency. Check that the emergency ID exists.", 'danger')
+		return redirect(url_for('emergencies.view_emergency', id = emergency_id))
+	else:
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
