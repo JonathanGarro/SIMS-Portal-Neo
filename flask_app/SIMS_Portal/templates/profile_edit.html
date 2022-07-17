@@ -21,8 +21,7 @@
 			</div>
 				<div class="list-group mt-5">
 				  <a href="#" class="list-group-item list-group-item-secondary">Update Profile</a>
-				  <a href="#" class="list-group-item list-group-item-action text-secondary">Assign to Disaster</a>
-				  <a href="#" class="list-group-item list-group-item-action text-secondary">Add to Portfolio</a>
+				  <a href="{{ url_for('portfolios.new_portfolio') }}" class="list-group-item list-group-item-action text-secondary">Add to Portfolio</a>
 				  <a href="#" class="list-group-item list-group-item-action text-danger" data-toggle="modal" data-target="#confirm-delete">Delete Member</a>	  
 				  <!-- Modal -->
 				  <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -139,17 +138,17 @@
 					</div>
 					<div class="col">
 						<div class="form-group pb-4">
-						{{ form.slack_id.label(class="form-control-label pb-2 text-secondary") }}
+						{{ form.unit.label(class="form-control-label pb-2 text-secondary") }} <span class='text-secondary' tabindex="0" data-toggle="tooltip" title="The team you belong to within your NS or organization.">ⓘ</span>
 						
-						{% if form.slack_id.errors %}
-							{{ form.slack_id(class="form-control form-control-lg is-invalid") }}
+						{% if form.unit.errors %}
+							{{ form.unit(class="form-control form-control-lg is-invalid") }}
 								<div class="invalid-feedback">
-									{% for error in form.slack_id.errors %}
+									{% for error in form.unit.errors %}
 										<span>{{ error }}</span>
 									{% endfor %}
 								</div>
 						{% else %}
-							{{ form.slack_id(class="form-control form-control-lg") }}
+							{{ form.unit(class="form-control form-control-lg") }}
 						{% endif %}
 					</div>
 					</div>
@@ -188,6 +187,77 @@
 						</div>
 					</div>
 				</div>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group pb-4">
+							{{ form.linked_in.label(class="form-control-label pb-2 text-secondary") }} <span class='text-secondary' tabindex="0" data-toggle="tooltip" title="Get your ID by going to your profile on LinkedIn and take everything after 'linkedin.com/in/'. For example, 'linkedin.com/in/YOUR-ID-HERE'">ⓘ</span>
+							
+							{% if form.linked_in.errors %}
+								{{ form.linked_in(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.linked_in.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.linked_in(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.slack_id.label(class="form-control-label pb-2 text-secondary") }} <span class='text-secondary' tabindex="0" data-toggle="tooltip" title="Get your Slack ID by going to your opening the desktop app, clicking on your avatar at the very top right of the window, then click 'Profile', then the three dots and click 'Copy Member ID'">ⓘ</span>
+							
+							{% if form.slack_id.errors %}
+								{{ form.slack_id(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.slack_id.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.slack_id(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group pb-4">
+							{{ form.messaging_number_country_code.label(class="form-control-label pb-2 text-secondary") }}
+							
+							{% if form.messaging_number_country_code.errors %}
+								{{ form.messaging_number_country_code(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.messaging_number_country_code.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.messaging_number_country_code(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group pb-4">
+							{{ form.messaging_number.label(class="form-control-label pb-2 text-secondary") }}
+							
+							{% if form.messaging_number.errors %}
+								{{ form.messaging_number(class="form-control form-control-lg is-invalid") }}
+									<div class="invalid-feedback">
+										{% for error in form.messaging_number.errors %}
+											<span>{{ error }}</span>
+										{% endfor %}
+									</div>
+							{% else %}
+								{{ form.messaging_number(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				
 				<div class="row">
 
 						<div class="form-group pb-4">

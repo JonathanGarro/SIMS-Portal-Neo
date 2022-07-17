@@ -55,7 +55,6 @@ def badges():
 	for badge in badges:
 		count_list.append(badge[3])
 	badge_counts = Counter(count_list)
-	print(badge_counts['No Pressure'])
 	
 	return render_template('badges.html', badge_counts=badge_counts, count_active_members=count_active_members)
 
@@ -75,26 +74,7 @@ def badge_assignment(user_id, badge_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-	def daterange(start_date, end_date):
-		for n in range(int((end_date - start_date).days)):
-			yield start_date + timedelta(n)
-			
-	start_date = date(2013, 1, 1)
-	end_date = date(2013, 1, 31)
-	
-	date_list = []
-	for single_date in daterange(start_date, end_date):
-		date_list.append(single_date.strftime("%Y-%m-%d"))
-	
-	index_list = []
-	index = len(date_list)
-	for x in range(index):
-		index_list.append(x)
-
-	output = dict(list(enumerate(date_list, 1)))
-	print(output)
-	
-	return render_template('visualization.html', output=output)
+	return render_template('visualization.html')
 
 @main.route('/learning')
 @login_required

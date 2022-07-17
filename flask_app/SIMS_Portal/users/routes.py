@@ -81,7 +81,7 @@ def profile():
 def view_profile(id):
 	user_info = User.query.filter(User.id==id).first()
 	try:
-		ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==id).with_entities(NationalSociety.ns_name).first()[0]	
+		ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==id).with_entities(NationalSociety.ns_name).first()[0]
 	except:
 		ns_association = 'None' 
 	try:
@@ -89,14 +89,15 @@ def view_profile(id):
 	except:
 		pass
 	deployment_history_count = len(assignment_history)
-	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==id).filter(User.id==id, Portfolio.product_status=='Active').all()
-	
+	# show full portfolio if user is logged in
+	if current_user.is_authenticated:
+		user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==id).filter(User.id==id, Portfolio.product_status=='Active').all()
+	# else show only products user has tagged as 'external'
+	else:
+		user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==id).filter(User.id==id, Portfolio.product_status=='Active', Portfolio.external == 1).all()
 	skills_list = db.engine.execute("SELECT * FROM user JOIN user_skill ON user.id = user_skill.user_id JOIN skill ON skill.id = user_skill.skill_id WHERE user.id=:member_id", {'member_id': id})
-		
 	languages_list = db.engine.execute("SELECT * FROM user JOIN user_language ON user.id = user_language.user_id JOIN language ON language.id = user_language.language_id WHERE user.id=:member_id", {'member_id': id})
-	
 	profile_picture = url_for('static', filename='assets/img/avatars/' + user_info.image_file)
-	
 	badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=:id ORDER BY name", {'id': id})
 	
 	return render_template('profile_member.html', title='Member Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list, badges=badges)
@@ -117,6 +118,7 @@ def update_profile():
 		current_user.lastname = form.lastname.data
 		current_user.email = form.email.data
 		current_user.job_title = form.job_title.data
+		current_user.unit = form.unit.data
 		try:
 			current_user.ns_id = form.ns_id.data.ns_go_id
 		except:
@@ -125,9 +127,11 @@ def update_profile():
 		current_user.twitter = form.twitter.data
 		current_user.slack_id = form.slack_id.data
 		current_user.github = form.github.data
+		current_user.linked_in = form.linked_in.data
+		current_user.messaging_number_country_code = form.messaging_number_country_code.data
+		current_user.messaging_number = form.messaging_number.data
 		for skill in form.skills.data:
 			current_user.skills.append(Skill.query.filter(Skill.name==skill).one())
-		# current_user.roles = form.roles.data
 		for language in form.languages.data:
 			current_user.languages.append(Language.query.filter(Language.name==language).one())
 		db.session.commit()
@@ -138,14 +142,15 @@ def update_profile():
 		form.lastname.data = current_user.lastname
 		form.email.data = current_user.email
 		form.job_title.data = current_user.job_title
+		form.unit.data = current_user.unit
 		form.ns_id.data = current_user.ns_id
 		form.bio.data = current_user.bio
 		form.slack_id.data = current_user.slack_id
 		form.github.data = current_user.github
 		form.twitter.data = current_user.twitter
-		# form.ns_id.data = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id == current_user.id).with_entities(NationalSociety.ns_name).first()[0]
-		# form.roles.data = current_user.roles
-		# form.languages.data = current_user.languages
+		form.linked_in.data = current_user.linked_in
+		form.messaging_number_country_code.data = current_user.messaging_number_country_code
+		form.messaging_number.data = current_user.messaging_number
 	profile_picture = url_for('static', filename='assets/img/avatars/' + current_user.image_file)
 	return render_template('profile_edit.html', title='Profile', profile_picture=profile_picture, form=form, ns_association=ns_association)
 

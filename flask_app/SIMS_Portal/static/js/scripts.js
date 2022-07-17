@@ -64,7 +64,7 @@ $(document).ready(function () {
 
 $(function(){
 	$(".typed").typed({
-		strings: ["Developers.", "Designers.", "People."],
+		strings: ["infographics.", "mobile data collection.", "basemaps."],
 		// Optionally use an HTML element to grab strings from (must wrap each string in a <p>)
 		stringsElement: null,
 		// typing speed
