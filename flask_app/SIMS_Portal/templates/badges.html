@@ -20,14 +20,14 @@
 		  </div>
 		<div class="col ps-4">
 			<h2 class='text-danger mb-2' id='9'>Gold Medal Relay</h2>
-			{% if ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int > 50 %}
-			<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int < 50 and ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int > 25 %}
-			<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int < 25 and ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int > 10 %}
-			<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% if ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int >= 50 %}
+				<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int < 50 and ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int >= 25 %}
+				<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int < 25 and ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int >= 10 %}
+				<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% else %}
-			<button class='btn btn-sm btn-danger'>Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+				<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Gold Medal Relay'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% endif %}
 			
 			
@@ -44,14 +44,14 @@
 		  </div>
 		<div class="col ps-4">
 			<h2 class='text-danger mb-2' id='3'>Maiden Voyage</h2>
-			{% if ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int > 50 %}
-			<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int < 50 and ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int > 25 %}
-			<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int < 25 and ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int > 10 %}
-			<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% if ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int >= 50 %}
+				<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int < 50 and ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int >= 25 %}
+				<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int < 25 and ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int >= 10 %}
+				<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% else %}
-			<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+				<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Maiden Voyage'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% endif %}
 			
 			
@@ -68,14 +68,14 @@
 		  </div>
 		<div class="col ps-4">
 			<h2 class='text-danger mb-2' id='7'>No Pressure</h2>
-			{% if ((badge_counts['No Pressure'] / count_active_members) * 100)|int > 50 %}
-			<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['No Pressure'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['No Pressure'] / count_active_members) * 100)|int < 50 and ((badge_counts['No Pressure'] / count_active_members) * 100)|int > 25 %}
-			<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['No Pressure'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['No Pressure'] / count_active_members) * 100)|int < 25 and ((badge_counts['No Pressure'] / count_active_members) * 100)|int > 10 %}
-			<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['No Pressure'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% if ((badge_counts['No Pressure'] / count_active_members) * 100)|int >= 50 %}
+				<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['No Pressure'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['No Pressure'] / count_active_members) * 100)|int < 50 and ((badge_counts['No Pressure'] / count_active_members) * 100)|int >= 25 %}
+				<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['No Pressure'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['No Pressure'] / count_active_members) * 100)|int < 25 and ((badge_counts['No Pressure'] / count_active_members) * 100)|int >= 10 %}
+				<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['No Pressure'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% else %}
-			<button class='btn btn-sm btn-danger'>Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['No Pressure'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+				<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['No Pressure'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% endif %}
 			
 			
@@ -92,14 +92,14 @@
 		  </div>
 		<div class="col ps-4">
 			<h2 class='text-danger mb-2' id='1'>Polyglot</h2>
-			{% if ((badge_counts['Polyglot'] / count_active_members) * 100)|int > 50 %}
-			<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Polyglot'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Polyglot'] / count_active_members) * 100)|int < 50 and ((badge_counts['Polyglot'] / count_active_members) * 100)|int > 25 %}
-			<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Polyglot'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Polyglot'] / count_active_members) * 100)|int < 25 and ((badge_counts['Polyglot'] / count_active_members) * 100)|int > 10 %}
-			<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Polyglot'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% if ((badge_counts['Polyglot'] / count_active_members) * 100)|int >= 50 %}
+				<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Polyglot'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Polyglot'] / count_active_members) * 100)|int < 50 and ((badge_counts['Polyglot'] / count_active_members) * 100)|int >= 25 %}
+				<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Polyglot'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Polyglot'] / count_active_members) * 100)|int < 25 and ((badge_counts['Polyglot'] / count_active_members) * 100)|int >= 10 %}
+				<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Polyglot'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% else %}
-			<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Polyglot'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+				<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Polyglot'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% endif %}
 			
 			
@@ -116,14 +116,14 @@
 		  </div>
 		<div class="col ps-4">
 			<h2 class='text-danger mb-2' id='4'>Self Promoter</h2>
-			{% if ((badge_counts['Self Promoter'] / count_active_members) * 100)|int > 50 %}
-			<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Self Promoter'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Self Promoter'] / count_active_members) * 100)|int < 50 and ((badge_counts['Self Promoter'] / count_active_members) * 100)|int > 25 %}
-			<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Self Promoter'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Self Promoter'] / count_active_members) * 100)|int < 25 and ((badge_counts['Self Promoter'] / count_active_members) * 100)|int > 10 %}
-			<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Self Promoter'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% if ((badge_counts['Self Promoter'] / count_active_members) * 100)|int >= 50 %}
+				<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Self Promoter'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Self Promoter'] / count_active_members) * 100)|int < 50 and ((badge_counts['Self Promoter'] / count_active_members) * 100)|int >= 25 %}
+				<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Self Promoter'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Self Promoter'] / count_active_members) * 100)|int < 25 and ((badge_counts['Self Promoter'] / count_active_members) * 100)|int >= 10 %}
+				<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Self Promoter'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% else %}
-			<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Self Promoter'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+				<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Self Promoter'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% endif %}
 			
 			
@@ -142,14 +142,14 @@
 		  </div>
 		<div class="col ps-4">
 			<h2 class='text-danger mb-2' id='8'>Super Scholar</h2>
-			{% if ((badge_counts['Super Scholar'] / count_active_members) * 100)|int > 50 %}
-			<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Super Scholar'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Super Scholar'] / count_active_members) * 100)|int < 50 and ((badge_counts['Super Scholar'] / count_active_members) * 100)|int > 25 %}
-			<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Super Scholar'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Super Scholar'] / count_active_members) * 100)|int < 25 and ((badge_counts['Super Scholar'] / count_active_members) * 100)|int > 10 %}
-			<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Super Scholar'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% if ((badge_counts['Super Scholar'] / count_active_members) * 100)|int >= 50 %}
+				<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Super Scholar'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Super Scholar'] / count_active_members) * 100)|int < 50 and ((badge_counts['Super Scholar'] / count_active_members) * 100)|int >= 25 %}
+				<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Super Scholar'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Super Scholar'] / count_active_members) * 100)|int < 25 and ((badge_counts['Super Scholar'] / count_active_members) * 100)|int >= 10 %}
+				<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Super Scholar'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% else %}
-			<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Super Scholar'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+				<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Super Scholar'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% endif %}
 			
 			
@@ -166,12 +166,12 @@
 		  </div>
 		<div class="col ps-4">
 			<h2 class='text-danger mb-2' id='6'>Teaching Moment</h2>
-			{% if ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int > 50 %}
-			<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int < 50 and ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int > 25 %}
-			<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int < 25 and ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int > 10 %}
-			<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% if ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int >= 50 %}
+				<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int < 50 and ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int >= 25 %}
+				<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int < 25 and ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int >= 10 %}
+				<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% else %}
 			<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['Teaching Moment'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% endif %}
@@ -190,14 +190,14 @@
 		  </div>
 		<div class="col ps-4">
 			<h2 class='text-danger mb-2' id='5'>World Traveler</h2>
-			{% if ((badge_counts['World Traveler'] / count_active_members) * 100)|int > 50 %}
-			<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['World Traveler'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['World Traveler'] / count_active_members) * 100)|int < 50 and ((badge_counts['World Traveler'] / count_active_members) * 100)|int > 25 %}
-			<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['World Traveler'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
-			{% elif ((badge_counts['World Traveler'] / count_active_members) * 100)|int < 25 and ((badge_counts['World Traveler'] / count_active_members) * 100)|int > 10 %}
-			<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['World Traveler'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% if ((badge_counts['World Traveler'] / count_active_members) * 100)|int >= 50 %}
+				<button class='btn btn-sm btn-secondary'>Common</button> &nbsp <span class='fw-bold text-secondary'>{{ ((badge_counts['World Traveler'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['World Traveler'] / count_active_members) * 100)|int < 50 and ((badge_counts['World Traveler'] / count_active_members) * 100)|int >= 25 %}
+				<button class='btn btn-sm btn-primary'>Unusual</button> &nbsp <span class='fw-bold text-primary'>{{ ((badge_counts['World Traveler'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+			{% elif ((badge_counts['World Traveler'] / count_active_members) * 100)|int < 25 and ((badge_counts['World Traveler'] / count_active_members) * 100)|int >= 10 %}
+				<button class='btn btn-sm btn-success'>Rare</button> &nbsp <span class='fw-bold text-success'>{{ ((badge_counts['World Traveler'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% else %}
-			<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['World Traveler'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
+				<button class='btn btn-sm btn-danger'>Extremely Rare</button> &nbsp <span class='fw-bold text-danger'>{{ ((badge_counts['World Traveler'] / count_active_members) * 100)|int }}% of SIMS members have this badge</span>
 			{% endif %}
 			
 			
