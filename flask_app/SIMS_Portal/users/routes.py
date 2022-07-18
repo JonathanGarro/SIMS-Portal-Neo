@@ -81,7 +81,7 @@ def profile():
 def view_profile(id):
 	user_info = User.query.filter(User.id==id).first()
 	try:
-		ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==id).with_entities(NationalSociety.ns_name).first()[0]
+		ns_association = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.id==id).with_entities(NationalSociety.ns_name).first()[0];
 	except:
 		ns_association = 'None' 
 	try:
