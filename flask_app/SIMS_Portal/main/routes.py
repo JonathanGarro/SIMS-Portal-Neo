@@ -74,6 +74,7 @@ def badge_assignment(user_id, badge_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
+	
 	return render_template('visualization.html')
 
 @main.route('/learning')
