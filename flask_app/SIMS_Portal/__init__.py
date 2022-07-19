@@ -49,11 +49,11 @@ def create_app(config_class=Config):
 	Markdown(app)
 	
 	# use this when migrating to new DB - will generate db file when running
-	with app.app_context():
-		db.create_all()
+	# with app.app_context():
+	# 	db.create_all()
 	
-	app.app_context().push()
-	db.create_all()
+	# app.app_context().push()
+	# db.create_all()
 	
 	from SIMS_Portal.main.routes import main
 	from SIMS_Portal.assignments.routes import assignments

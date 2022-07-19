@@ -16,7 +16,6 @@ def new_assignment():
 	form = NewAssignmentForm()
 	if form.validate_on_submit():
 		assignment = Assignment(user_id=form.user_id.data.id, emergency_id=form.emergency_id.data.id, start_date=form.start_date.data, end_date=form.end_date.data, role=form.role.data, assignment_details=form.assignment_details.data, remote=form.remote.data)
-		print(assignment)
 		db.session.add(assignment)
 		db.session.commit()
 		flash('New assignment successfully created.', 'success')
@@ -30,7 +29,6 @@ def new_assignment_from_disaster(dis_id):
 	emergency_info = db.session.query(Emergency).filter(Emergency.id == dis_id).first()
 	if form.validate_on_submit():
 		assignment = Assignment(user_id=form.user_id.data.id, emergency_id=dis_id, start_date=form.start_date.data, end_date=form.end_date.data, role=form.role.data, assignment_details=form.assignment_details.data, remote=form.remote.data)
-		print(assignment)
 		db.session.add(assignment)
 		db.session.commit()
 		flash('New assignment successfully created.', 'success')
@@ -51,12 +49,10 @@ def view_assignment(id):
 	days_left = db.engine.execute("SELECT JULIANDAY(:end_date) - JULIANDAY(DATE('now')) AS days_remaining FROM Assignment WHERE id = :id", {'id': id, 'end_date': dict_end_date})
 	days_left_dict = days_left.mappings().first()
 	days_left_int = int(days_left_dict['days_remaining'])
-	print(f"days left value is: {days_left_int}")
-	
+
 	assingment_length = db.engine.execute("SELECT JULIANDAY(:end_date) - JULIANDAY(:start_date) AS length FROM Assignment WHERE id = :id", {'id': id, 'end_date': dict_end_date, 'start_date': dict_start_date})
 	assignment_length_dict = assingment_length.mappings().first()
 	assignment_length_int = int(assignment_length_dict['length'])
-	print(f"assignment length value is: {assignment_length_int}")
 	
 	assingment_portfolio = db.session.query(Portfolio).filter(Portfolio.assignment_id==id, Portfolio.product_status=='Active').all()
 	
@@ -69,7 +65,6 @@ def view_assignment(id):
 		# available_dates = []
 		# for date in dates:
 		# 	available_dates.append(datetime.strptime(date,'%Y-%m-%d').strftime('%b %d'))
-		# print(available_dates)
 	else:
 		available_dates = []
 		
@@ -105,12 +100,10 @@ def assignment_availability(assignment_id, start, end):
 	days_left = db.engine.execute("SELECT JULIANDAY(:end_date) - JULIANDAY(DATE('now')) AS days_remaining FROM Assignment WHERE id = :id", {'id': assignment_id, 'end_date': dict_end_date})
 	days_left_dict = days_left.mappings().first()
 	days_left_int = int(days_left_dict['days_remaining'])
-	print(f"days left value is: {days_left_int}")
 	
 	assingment_length = db.engine.execute("SELECT JULIANDAY(:end_date) - JULIANDAY(:start_date) AS length FROM Assignment WHERE id = :id", {'id': assignment_id, 'end_date': dict_end_date, 'start_date': dict_start_date})
 	assignment_length_dict = assingment_length.mappings().first()
 	assignment_length_int = int(assignment_length_dict['length'])
-	print(f"assignment length value is: {assignment_length_int}")
 	
 	start_date = datetime.strptime(start, "%Y-%m-%d")
 	end_date = datetime.strptime(end, "%Y-%m-%d")
@@ -138,7 +131,6 @@ def assignment_availability_result():
 	response = request.form.getlist('available')
 	response_formatted = "{}".format(response)
 	assignment_id = request.form.get('assignment_id')
-	print(type(assignment_id))
 	db.session.query(Assignment).filter(Assignment.id==assignment_id).update({'availability': response_formatted})
 	db.session.commit()
 	return redirect(url_for('assignments.view_assignment', id=assignment_id))

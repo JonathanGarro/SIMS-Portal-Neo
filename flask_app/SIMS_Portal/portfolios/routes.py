@@ -63,7 +63,6 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 		product = Portfolio(
 			final_file_location = file, title=form.title.data, creator_id=user_id, description=form.description.data, type=form.type.data, emergency_id=emergency_id, external=form.external.data, assignment_id=assignment_id, asset_file_location=form.asset_file_location.data
 		)
-		print(product)
 		db.session.add(product)
 		db.session.commit()
 		flash('New product successfully uploaded.', 'success')

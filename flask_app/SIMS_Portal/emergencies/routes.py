@@ -13,7 +13,6 @@ emergencies = Blueprint('emergencies', __name__)
 @login_required
 def view_all_emergencies():
 	emergencies = db.engine.execute("SELECT e.id, e.emergency_name, e.emergency_status, e.emergency_glide, n.country_name, t.emergency_type_name, COUNT(a.id) as count_of_assignments FROM Emergency e JOIN Assignment a ON a.emergency_id = e.id JOIN EmergencyType t ON t.emergency_type_go_id = e.emergency_type_id JOIN nationalsociety n ON n.ns_go_id = e.emergency_location_id WHERE assignment_status <> 'Removed' GROUP BY emergency_name ")
-	print(emergencies)
 	return render_template('emergencies_all.html', emergencies=emergencies)
 
 @emergencies.route('/emergency/new', methods=['GET', 'POST'])

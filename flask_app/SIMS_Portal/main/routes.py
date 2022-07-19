@@ -7,6 +7,7 @@ from datetime import datetime
 from SIMS_Portal.main.forms import MemberSearchForm, EmergencySearchForm, ProductSearchForm, BadgeAssignmentForm
 from collections import defaultdict, Counter
 from datetime import date, timedelta
+import os
 
 main = Blueprint('main', __name__)
 

@@ -3,8 +3,7 @@ from SIMS_Portal.models import Alert
 from flask_sqlalchemy import SQLAlchemy
 
 # @scheduler.task("cron", id="go_alert_cron", minutes=1, misfire_grace_time=900)
-def get_im_alerts():
-	print("CRON JOB SUCCESS")
+# def get_im_alerts():
 	
 	# """Cron job to gran all alerts from the GO platform. Clears out table before running to always stay in sync."""
 	# print("RUNNING CRON JOB\n================\n")
