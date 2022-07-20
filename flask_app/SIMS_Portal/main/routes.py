@@ -75,8 +75,8 @@ def badge_assignment(user_id, badge_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-	
-	return render_template('visualization.html')
+	members = db.engine.execute("SELECT u.id, u.firstname, u.lastname, u.status, u.email, u.job_title, u.slack_id, u.ns_id, u.image_file, ns.ns_name, COUNT(a.id) as assignment_count FROM user u JOIN nationalsociety ns ON ns.ns_go_id = u.ns_id LEFT JOIN assignment a ON a.user_id = u.id WHERE u.status = 'Active' GROUP BY u.id ORDER BY u.firstname")
+	return render_template('visualization.html', members=members)
 
 @main.route('/learning')
 @login_required

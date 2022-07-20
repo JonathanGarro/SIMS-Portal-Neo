@@ -4,7 +4,7 @@ from flask_login import current_user
 from wtforms import StringField, PasswordField, FileField, SubmitField, BooleanField, IntegerField, DateField, DateTimeField, TextAreaField, SelectField, SelectMultipleField
 from wtforms_sqlalchemy.fields import QuerySelectField
 from flask_sqlalchemy import SQLAlchemy
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
 from SIMS_Portal.models import User, Emergency, NationalSociety, EmergencyType, Portfolio, Skill, Language
 
 class RegistrationForm(FlaskForm):
@@ -43,14 +43,14 @@ class UpdateAccountForm(FlaskForm):
 	twitter = StringField('Twitter Handle')
 	github = StringField('Github Username')
 	roles = StringField('SIMS Roles')
-	messaging_number_country_code = IntegerField('Country Code')
-	messaging_number = IntegerField('Messaging Number (Integers Only)')
+	messaging_number_country_code = IntegerField('Country Code', validators=[Optional()])
+	messaging_number = IntegerField('Messaging Number (Integers Only)', validators=[Optional()])
 	languages = SelectMultipleField('Languages', choices=lambda:[language.name for language in Language.query.order_by(Language.name).all()], render_kw={'style':'height: 200px'})
 	skills = SelectMultipleField('Skills', choices=lambda:[skill.name for skill in Skill.query.all()], render_kw={'style':'height: 200px'})
 	submit = SubmitField('Update Profile')
 	
 	def validate_email(self, email):
-		if email.data != current_user.email:
+		if email.data != current_user.email and current_user.is_admin != 1:
 			user = User.query.filter_by(email=email.data).first()
 			if user:
 				raise ValidationError('Email is already registered.')

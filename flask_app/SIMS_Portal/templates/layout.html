@@ -81,6 +81,11 @@
 				{% else %}
 					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('emergencies.view_all_emergencies')}}" style="font-family: 'Montserrat';">Emergencies</a></li>
 				{% endif %}
+				{% if '/members/all' in request.path %}
+					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Members</button></li>
+				{% else %}
+					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('users.members_all')}}" style="font-family: 'Montserrat';">Members</a></li>
+				{% endif %}
 				{% if '/all_products' in request.path %}
 					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">Portfolio</button></li>
 				{% else %}
@@ -97,27 +102,6 @@
 					<li class="nav-item px-2"><a class="nav-link text-light" href="{{ url_for('main.resources')}}" style="font-family: 'Montserrat';">Resources</a></li>
 				{% endif %}
 				
-				{# 
-				<li class="nav-item dropdown px-2">
-					<a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Montserrat';">View National Society</a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					{% for country in countries %}
-						<a class="dropdown-item" href="{{ url_for('ns_profile', id=country.ns_go_id) }}">{{country.country}}</a>
-					{% endfor %}
-					</div>
-				</li>
-				
-				<li class="nav-item dropdown pl-3">
-					<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Montserrat';">Create Record</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					  	<a class="dropdown-item" href="{{ url_for('emergencies.new_emergency') }}">New Emergency</a>
-					  	<a class="dropdown-item" href="{{ url_for('assignments.new_assignment') }}">New Assignment</a>
-					  	<a class="dropdown-item" href="#">New Review</a>
-						</div>
-				</li>
-				#}
-				
-
 					<li class="nav-item dropdown ps-2 pl-3">
 						<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'Montserrat';">Search</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">

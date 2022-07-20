@@ -15,6 +15,12 @@ def members():
 
 	return render_template('members.html', members=members)
 
+@users.route('/members/all') 
+@login_required
+def members_all(): 
+	members = db.engine.execute("SELECT u.id, u.firstname, u.lastname, u.status, u.email, u.job_title, u.slack_id, u.ns_id, u.image_file, ns.ns_name, COUNT(a.id) as assignment_count FROM user u JOIN nationalsociety ns ON ns.ns_go_id = u.ns_id LEFT JOIN assignment a ON a.user_id = u.id WHERE u.status = 'Active' GROUP BY u.id ORDER BY u.firstname")
+	return render_template('members_all.html', members=members)
+
 @users.route('/register', methods=['GET', 'POST'])
 def register():
 	if current_user.is_authenticated:

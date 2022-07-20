@@ -225,3 +225,11 @@ h2.header {
 	color: white;
 	font-size: 2em;
 }
+
+.dataTables_filter {
+	margin-bottom: 50px;
+}
+
+#datatable {
+	margin-bottom: 20px;
+}
