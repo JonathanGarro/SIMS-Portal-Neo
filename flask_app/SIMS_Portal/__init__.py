@@ -11,8 +11,6 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flaskext.markdown import Markdown
 
-load_dotenv()
-
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
