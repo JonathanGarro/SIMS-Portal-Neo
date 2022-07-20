@@ -53,7 +53,7 @@
 						{% endif %}
 						<a href="/portfolio/new_from_assignment/{{assignment_info.Assignment.id}}/{{assignment_info.User.id}}/{{assignment_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Upload Product</a>
 						<a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
-						<a href="#" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
+
 						{% if current_user.is_admin == 1 or current_user.id == assignment_info.User.id %}
 							<a href="#" class="list-group-item list-group-item-action text-secondary">Edit Assignment</a>
 							<a href="/assignment/delete/{{assignment_info.Assignment.id}}" class="list-group-item list-group-item-action text-danger">Delete Assignment</a>
