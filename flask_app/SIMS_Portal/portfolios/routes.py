@@ -29,7 +29,7 @@ def all_products():
 	type_search = ''
 	full_portfolio = db.session.query(Portfolio).filter(Portfolio.product_status=='Active').all()
 	type_list = ['Map', 'Infographic', 'Dashboard', 'Mobile Data Collection', 'Assessment', 'Report - Analysis', 'Other']
-	return render_template('all_products.html', title="SIMS Products", full_portfolio=full_portfolio, type_list=type_list, type_search=type_search)
+	return render_template('portfolio_all.html', title="SIMS Products", full_portfolio=full_portfolio, type_list=type_list, type_search=type_search)
 
 @portfolios.route('/portfolio_private/filter/<type>', methods=['GET', 'POST'])
 @login_required
@@ -37,7 +37,7 @@ def filter_portfolio_private(type):
 	type_list = ['Map', 'Infographic', 'Dashboard', 'Mobile Data Collection', 'Assessment', 'Report - Analysis', 'Other']
 	type_search = "{}".format(type)
 	full_portfolio = db.session.query(Portfolio).filter(Portfolio.product_status=='Active', Portfolio.type == type_search).all()
-	return render_template('all_products.html', title="SIMS Products", full_portfolio=full_portfolio, type_search=type_search, type_list=type_list)
+	return render_template('portfolio_all.html', title="SIMS Products", full_portfolio=full_portfolio, type_search=type_search, type_list=type_list)
 
 @portfolios.route('/portfolio/new', methods=['GET', 'POST'])
 @login_required

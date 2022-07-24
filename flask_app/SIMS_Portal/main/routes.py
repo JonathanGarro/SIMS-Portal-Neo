@@ -1,4 +1,4 @@
-from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
+from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint, current_app
 from SIMS_Portal.models import Assignment, User, Emergency, Alert, user_skill, user_language, user_badge, Skill, Language, NationalSociety, Badge, Story
 from SIMS_Portal import db
 from flask_sqlalchemy import SQLAlchemy
@@ -7,7 +7,9 @@ from datetime import datetime
 from SIMS_Portal.main.forms import MemberSearchForm, EmergencySearchForm, ProductSearchForm, BadgeAssignmentForm
 from collections import defaultdict, Counter
 from datetime import date, timedelta
+from SIMS_Portal.config import Config
 import os
+import tweepy
 
 main = Blueprint('main', __name__)
 
@@ -75,8 +77,19 @@ def badge_assignment(user_id, badge_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-	members = db.engine.execute("SELECT u.id, u.firstname, u.lastname, u.status, u.email, u.job_title, u.slack_id, u.ns_id, u.image_file, ns.ns_name, COUNT(a.id) as assignment_count FROM user u JOIN nationalsociety ns ON ns.ns_go_id = u.ns_id LEFT JOIN assignment a ON a.user_id = u.id WHERE u.status = 'Active' GROUP BY u.id ORDER BY u.firstname")
-	return render_template('visualization.html', members=members)
+	consumer_key = current_app.config['CONSUMER_KEY']
+	consumer_secret = current_app.config['CONSUMER_SECRET']
+	access_token = current_app.config['ACCESS_TOKEN']
+	access_token_secret = current_app.config['ACCESS_TOKEN_SECRET']
+	
+	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+	
+	auth.set_access_token(access_token, access_token_secret)
+	api = tweepy.API(auth)
+	
+	public_tweets = api.user_timeline(screen_name='IFRC_SIMS')
+	tweets_dict = [{'tweet': t.text, 'created_at': t.created_at, 'headshot_url': t.user.profile_image_url, 'username': t.user.name, 'screen_name': t.user.screen_name, 'location': t.user.location, 'url': t.user.followers_count} for t in public_tweets]
+	return render_template('visualization.html', tweets=public_tweets, tweets_dict = tweets_dict)
 
 @main.route('/learning')
 @login_required

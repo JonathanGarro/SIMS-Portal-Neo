@@ -79,6 +79,8 @@ li {
 #portfolio-card:hover {
   /* transform: scale(1.1); */
   background: lightgray !important;
+  border-width: 1px;
+  border-color: red
 }
 
 #portfolio-title {
@@ -124,6 +126,7 @@ li {
 .card-img-top {
 	width: 100%;
 	height: 15vw;
+	min-height: 200px;
 	object-fit: cover;
 }
 
@@ -194,6 +197,10 @@ h2.header {
 	font-family: 'Montserrat';
 }
 
+.profile-section-header {
+	font-family: 'Montserrat';
+}
+
 #profile-title {
 	font-family: 'Montserrat';
 }
@@ -236,4 +243,24 @@ h2.header {
 
 #datatable {
 	margin-bottom: 20px;
+}
+
+.badge-common {
+	color: white;
+	background-color: rgb(69, 146, 0)
+}
+
+.badge-unusual {
+	color: black;
+	background-color: rgb(200, 162, 0)
+}
+
+.badge-rare {
+	color: white;
+	background-color: rgb(211, 68, 2)
+}
+
+.badge-exrare {
+	color: white;
+	background-color: rgb(124, 0, 0)
 }

@@ -19,15 +19,15 @@
 					<img src="{{ profile_picture }}" class="img-fluid mb-4" >
 				</div>
 				<div class="row">
-					<h2 class="text-danger">{{ current_user.firstname }} {{ current_user.lastname }}</h2>
+					<h2 class="text-danger profile-section-header">{{ current_user.firstname }} {{ current_user.lastname }}</h2>
 				</div>
 				<div class="row">
-					<h5 class="text-secondary mt-4">Role</h5>
-					<h4>{{ current_user.job_title }}</h4>
+					<h5 class="text-secondary mt-4 ">Role</h5>
+					<h4 class='profile-section-header'>{{ current_user.job_title }}</h4>
 				</div>
 				<div class="row">
 					<h5 class="text-secondary mt-4">National Society</h5>
-					<h4>{{ ns_association }}</h4>
+					<h4 class='profile-section-header'>{{ ns_association }}</h4>
 				</div>
 				<div class="row">
 					<div>
@@ -100,7 +100,7 @@
 				</div>
 				{% endif %}
 
-				<h3 class="mb-3 text-danger">About {{ user_info.firstname }}</h3>
+				<h3 class="mb-3 text-danger profile-section-header">About {{ user_info.firstname }}</h3>
 				{% if user_info.bio %}
 				<p style="white-space: pre-line">{{ user_info.bio|markdown}}</p>
 				{% else %}
@@ -108,7 +108,7 @@
 				{% endif %}
 			</div>
 			<div class='mb-5'>
-				<h3 class="mb-3 text-danger">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h3>
+				<h3 class="mb-3 text-danger profile-section-header">Operations Supported: <span class='text-dark'>{{ deployment_history_count }}</span></h3>
 				{% if deployment_history_count == 0 %}
 					No deployments or remote support provided yet.
 				{% else %}
@@ -134,7 +134,7 @@
 				{% endif %}
 			</div>
 			<div class='mb-5'>
-				<h3 class="mb-3 text-danger">Portfolio Highlights</h3>
+				<h3 class="mb-3 text-danger profile-section-header">Portfolio Highlights</h3>
 				<div class="row row-cols-3 row-cols-md-3 g-4 mt-4">
 				{% for product in user_portfolio %}
 					<div class="col d-flex align-items-stretch">
@@ -157,7 +157,7 @@
 				</div>
 			</div>
 			<div class='mb-3'>
-			<h3 class="mb-2 text-danger">Badges</h3>
+			<h3 class="mb-2 text-danger profile-section-header">Badges</h3>
 				<div class="row row-cols-4 row-cols-md-4 g-4 mt-2">
 				{% for badge in badges %}
 					<div class="col d-flex align-items-stretch">
