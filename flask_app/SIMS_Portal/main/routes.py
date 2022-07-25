@@ -10,13 +10,32 @@ from datetime import date, timedelta
 from SIMS_Portal.config import Config
 import os
 import tweepy
+import re
 
 main = Blueprint('main', __name__)
 
 @main.route('/') 
 def index(): 
+	consumer_key = current_app.config['CONSUMER_KEY']
+	consumer_secret = current_app.config['CONSUMER_SECRET']
+	access_token = current_app.config['ACCESS_TOKEN']
+	access_token_secret = current_app.config['ACCESS_TOKEN_SECRET']
+	
+	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+	auth.set_access_token(access_token, access_token_secret)
+	api = tweepy.API(auth)
+	
+	public_tweets = api.user_timeline(screen_name='IFRC_SIMS', count=3, tweet_mode="extended")
+	
+	# list comprehension to grab relevant fields and regex to remove URLs in tweet
+	tweets = [{'tweet': re.sub(r"http\S+", "", t.full_text), 'created_at_year': t.created_at.year, 'created_at_month': t.created_at.month, 'created_at_day': t.created_at.day, 'headshot_url': t.user.profile_image_url, 'username': t.user.name, 'screen_name': t.user.screen_name, 'location': t.user.location, 'id': t.id_str} for t in public_tweets]
+	
+	
+	
+	
 	latest_stories = db.session.query(Story, Emergency).join(Emergency, Emergency.id == Story.emergency_id).order_by(Story.id.desc()).limit(3).all()
-	return render_template('index.html', latest_stories=latest_stories)
+	
+	return render_template('index.html', latest_stories=latest_stories, tweets=tweets)
 	
 @main.route('/about')
 def about():
@@ -83,13 +102,15 @@ def staging():
 	access_token_secret = current_app.config['ACCESS_TOKEN_SECRET']
 	
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-	
 	auth.set_access_token(access_token, access_token_secret)
 	api = tweepy.API(auth)
 	
-	public_tweets = api.user_timeline(screen_name='IFRC_SIMS')
-	tweets_dict = [{'tweet': t.text, 'created_at': t.created_at, 'headshot_url': t.user.profile_image_url, 'username': t.user.name, 'screen_name': t.user.screen_name, 'location': t.user.location, 'url': t.user.followers_count} for t in public_tweets]
-	return render_template('visualization.html', tweets=public_tweets, tweets_dict = tweets_dict)
+	public_tweets = api.user_timeline(screen_name='IFRC_SIMS', count=3, tweet_mode="extended")
+	
+	# list comprehension to grab relevant fields and regex to remove URLs in tweet
+	tweets = [{'tweet': re.sub(r"http\S+", "", t.full_text), 'created_at_year': t.created_at.year, 'created_at_month': t.created_at.month, 'created_at_day': t.created_at.day, 'headshot_url': t.user.profile_image_url, 'username': t.user.name, 'screen_name': t.user.screen_name, 'location': t.user.location, 'url': t.user.followers_count} for t in public_tweets]
+	
+	return render_template('visualization.html', tweets=tweets)
 
 @main.route('/learning')
 @login_required

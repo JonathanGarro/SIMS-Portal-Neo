@@ -35,6 +35,7 @@ def view_emergency(id):
 	emergency_info = db.session.query(Emergency, EmergencyType, NationalSociety).join(EmergencyType, EmergencyType.emergency_type_go_id==Emergency.emergency_type_id).join(NationalSociety, NationalSociety.ns_go_id == Emergency.emergency_location_id).filter(Emergency.id==id).first()
 	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id==Portfolio.emergency_id).filter(Emergency.id==id, Portfolio.product_status=='Active').all()
 	check_for_story = db.session.query(Story, Emergency).join(Emergency, Emergency.id == Story.emergency_id).filter(Story.emergency_id == id).first()
+
 	# if emergency_info.Emergency.trello_url:
 	# 	
 	# 	import requests
@@ -42,16 +43,16 @@ def view_emergency(id):
 	# 	url = 'https://api.trello.com/1/lists/621dfcf650d6493f43ad1740/cards'
 	# 	
 	# 	query = {
-	#    	'key': '',
-	#    	'token': ''
+	#    	'key': current_app.config['TRELLO_KEY'],
+	#    	'token': current_app.config['TRELLO_TOKEN']
 	# 	}
 	# 	
 	# 	response = requests.get(url, params=query).json()
 	# 	response_length = len(response)
 	# 	
-	# 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, response=response, response_length=response_length)
+	# 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, response=response, response_length=response_length, check_for_story=check_for_story)
 	# else:	
-	# 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio)
+	# 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, check_for_story=check_for_story)
 		
 	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, check_for_story=check_for_story)
 

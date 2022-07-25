@@ -1,13 +1,18 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class='container'>
-  <div class='row my-5'>
-    {% for tweet in tweets_dict %}
-      <p>{{ tweet.tweet }}</p>
-      <p>{{ tweet.url }}</p>
-      <p>{{ tweet.created_at }}</p>
-        
+
+    {% for tweet in tweets %}
+    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+    <div class="card-body">
+    <p class="card-text">{{ tweet.tweet }}</p>
+    </div>
+    <div class="card-footer text-light"><small>{{ tweet.created_at_year }}-{{ tweet.created_at_month }}-{{ tweet.created_at_day }}</small></div>
+    </div>
     {% endfor %}
-  </div>
+
+  
+
+  
 </div>
 {% endblock content %}

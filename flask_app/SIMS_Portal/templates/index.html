@@ -15,8 +15,8 @@
 		</div>
 	</div>
 	
-	<div class="container py-5" id="">
-		<div class="row g-5 py-5 row-cols-1 row-cols-lg-3">
+
+		<div class="row g-5 py-5 row-cols-1 row-cols-lg-3 mt-5 mb-6">
 		  <div class="feature col">
 			<img src="/static/assets/img/landing-remote.png" width="75" height="75" class="img-fluid mb-4" alt="Responsive image">
 			<h4 class='text-danger'>Remote Support</h4>
@@ -33,38 +33,58 @@
 			<p class='lead'>We maintain a roster of experts in a number of technical areas that can serve as technical advisors on blue-sky projects.</p>
 		  </div>
 		</div>
-	  </div>
-	
-	<h3 class="text-danger" id='portfolio-title'>Latest Response Stories</h3>
-	<div id="carouselExampleIndicators" class="carousel slide mt-4 mb-5" data-ride="carousel">
-	  <ol class="carousel-indicators">
-		<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-		<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-		<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-	  </ol>
-	  <div class="carousel-inner">
 
-	  	{% for story in latest_stories %}
-		<div class="carousel-item drk {% if loop.index == 1 %} active{% endif %}">
-		  <img class="d-block w-100 rounded rounded-5" src="/static/assets/img/stories/{{story.Story.header_image}}" alt="{{story.Emergency.emergency_name}}">
-			<div class="carousel-caption d-none d-md-block">
-				<h1 class='carousel-title'><a href='/story/{{story.Story.emergency_id}}'>{{story.Emergency.emergency_name}}</a></h1>
-			</div>
+		<h3 class="text-danger" id='portfolio-title'>Latest Tweets</h3>
+		<h5 class="text-secondary mb-4" id='portfolio-title'><a href='https://twitter.com/IFRC_SIMS'>@IFRC_SIMS</a></h5>
+		<div class="row row-cols-3 g-5">
+	  		{% for tweet in tweets %}
+					<div class="col d-flex align-items-stretch">
+			  			<div class="card bg-light">
+							<div class="card-body d-flex flex-column">
+				  				<h5 class=" mb-2">{{tweet.tweet}}</h5>
+								  <small>{{tweet.created_at_year}}-{{tweet.created_at_month}}-{{tweet.created_at_day}}</small>
+								  <br><br>
+									<div class='mt-auto'>
+										<a href='https://twitter.com/i/web/status/{{tweet.id}}'><button class='btn btn-sm btn-danger'>View</button></a> 
+									</div>
+							</div>
+			  			</div>
+					</div>
+	  		{% endfor %}
 		</div>
-		{% endfor %}
-		  
+		
+		<div class='row mb-6'>
+		
+		</div>
 
-		
-		
-		
+	<h3 class="text-danger mt-5" id='portfolio-title'>Latest Response Stories</h3>
+	<div id="carouselStories" class="carousel slide mt-4 mb-5" data-ride="carousel">
+	  <ol class="carousel-indicators">
+		<li data-target="#carouselStories" data-slide-to="0" class="active"></li>
+		<li data-target="#carouselStories" data-slide-to="1"></li>
+		<li data-target="#carouselStories" data-slide-to="2"></li>
+	  </ol>
+	  	<div class="carousel-inner">
+	  		{% for story in latest_stories %}
+			<div class="carousel-item drk {% if loop.index == 1 %} active{% endif %}">
+		  	<img class="d-block w-100 rounded rounded-5" src="/static/assets/img/stories/{{story.Story.header_image}}" alt="{{story.Emergency.emergency_name}}">
+				<div class="carousel-caption d-none d-md-block">
+					<h1 class='carousel-title'><a href='/story/{{story.Story.emergency_id}}'>{{story.Emergency.emergency_name}}</a></h1>
+				</div>
+			</div>
+			{% endfor %}
+	  	</div>
+		  <a class="carousel-control-prev" href="#carouselStories" role="button" data-slide="prev">
+			  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			</a>
+			<a class="carousel-control-next" href="#carouselStories" role="button" data-slide="next">
+			  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			</a>
 	  </div>
-	  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-	  </a>
-	  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-		<span class="carousel-control-next-icon" aria-hidden="true"></span>
-	  </a>
-	</div>
+
+	  
+	  
+</div>
 
 </div>
 {% endblock content %}

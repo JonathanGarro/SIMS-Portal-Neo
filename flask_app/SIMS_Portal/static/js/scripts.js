@@ -97,3 +97,9 @@ $(function(){
 		resetCallback: function() {}
 	});
 });
+
+$(document).ready(function() {
+  $("h5").html(function(_, html) {
+	return html.replace(/(\#\w+)/g, '<span class="tweet">$1</span>');
+  });
+});

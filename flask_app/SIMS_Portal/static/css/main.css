@@ -264,3 +264,16 @@ h2.header {
 	color: white;
 	background-color: rgb(124, 0, 0)
 }
+
+.tweet {
+  color: #1DA1F2;
+  font-weight: bold;
+}
+
+.mt-6 {
+	margin-top: 4rem; // or the value you want
+}
+
+.mb-6 {
+	margin-bottom: 4rem; // or the value you want
+}
