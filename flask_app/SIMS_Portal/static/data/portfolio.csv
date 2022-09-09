@@ -1,20 +1,20 @@
 id,title,type,description,product_status,final_file_location,asset_file_location,external,assignment_id,creator_id,emergency_id,created_at,updated_at
 1,Activity Map,Map,A map showing where teams have been deployed.,Removed,89ae6d4763eac5e6.png,NULL,0,NULL,1,4,2022-05-04 15:03:21,2022-06-30 01:45:07
 2,Venezuela Population Movement,Infographic,A 3W map for donors and ICRC partners.,Active,a67c066fbde84b6d.png,NULL,1,NULL,1,3,2022-05-04 15:03:21,NULL
-3,Python Seaborn Visualization,Report / Analysis,Visualizing the distribution of cash over time.,Active,06d126f95f5d2d22.png,NULL,1,NULL,1,2,2022-05-04 15:03:21,NULL
+3,Python Seaborn Visualization,Report - Analysis,Visualizing the distribution of cash over time.,Active,06d126f95f5d2d22.png,NULL,1,NULL,1,2,2022-05-04 15:03:21,NULL
 4,Activities Dashboard,Dashboard,A live view of activities in response to the earthquake. Built with Klipfolio.,Removed,29472dadde615fb8.png,NULL,1,NULL,1,5,2022-05-04 15:03:21,NULL
 5,SIMS Response Cycle Infographic,Infographic,An Illustrator-based file showing the various stages of an IM response to an emergency.,Active,d04b9af01e515abb.png,NULL,1,NULL,4,1,2022-05-04 15:03:21,NULL
 6,A Mockup of a Logo,Other,A logo example.,Removed,5f66a824aa7fec51.png,NULL,1,NULL,1,5,2022-05-04 15:03:21,NULL
 7,Test1,Map,Test,Removed,38f296e3396ff3b6.png,NULL,1,NULL,1,5,2022-05-04 15:03:21,NULL
 8,Test2,Infographic,Test2,Removed,f8acf29b2429cd00.png,NULL,0,NULL,1,5,2022-05-04 15:03:21,NULL
 9,Tets,Infographic,sdfasdf,Removed,4ad51445abb74edb.png,NULL,1,NULL,1,1,2022-05-04 15:03:21,2022-06-30 11:50:04
-10,COVID Learning Event Brochure,Report / Analysis,A PDF of the report,Removed,55c00a3bbc25e5b7.png,NULL,0,1,1,4,2022-06-29 18:43:44,2022-06-30 01:45:18
+10,COVID Learning Event Brochure,Report - Analysis,A PDF of the report,Removed,55c00a3bbc25e5b7.png,NULL,0,1,1,4,2022-06-29 18:43:44,2022-06-30 01:45:18
 11,Testt,Dashboard,asdf,Removed,291f622a427ab89b.png,NULL,0,1,1,4,2022-06-29 18:58:38,2022-06-30 01:46:31
 12,A New Map,Map,A map of stuff that's happened,Removed,d2e1c9a06244834e.png,google.com,0,1,1,4,2022-06-29 19:15:00,2022-06-30 01:46:00
 13,easdf,Infographic,asdf,Removed,b427a2c22bb34e52.png,asdf,0,5,4,2,2022-06-30 19:22:34,2022-06-30 19:23:06
 14,Test,Dashboard,asdf,Removed,28cca8ef0d6e4170.png,asdf,0,5,4,2,2022-06-30 19:25:12,2022-06-30 19:25:23
 15,Wildfire Extent Map,Map,Map of the wildfires across the Alberta region. Produced in QGIS and finished in Illustrator. Used for helping operations teams understand where to prioritize the response.,Active,5598eef8e9efa6c9.png,,1,6,1,1,2022-06-30 20:03:20,NULL
-16,Response Report,Report / Analysis,This was a report showing what we did for the cash program's information management needs.,Active,3d4d064b55fd0a78.png,,0,1,1,4,2022-07-01 11:48:30,NULL
+16,Response Report,Report - Analysis,This was a report showing what we did for the cash program's information management needs.,Active,3d4d064b55fd0a78.png,,0,1,1,4,2022-07-01 11:48:30,NULL
 17,Flood Dashboard,Dashboard,A dashboard showing flood data in real time.,Active,3bc9700485283186.png,,1,5,4,2,2022-07-01 12:34:22,NULL
 18,A New Dashboard,Dashboard,Dashboard showing damage,Active,acd2889c1b06b8c0.png,,0,1,1,4,2022-07-01 12:41:54,NULL
 19,Map of Affected Area in San Jose,Map,Map requested by HEOps showing the extent of the damage near the city.,Active,b026b2e830ebc7a5.png,,0,8,1,5,2022-07-01 14:12:13,NULL
@@ -23,3 +23,5 @@ id,title,type,description,product_status,final_file_location,asset_file_location
 22,Blah,Map,asdf,Removed,fce082c182a5459f.pdf,,0,8,1,5,2022-07-01 21:59:22,2022-07-02 12:21:04
 23,asdf,Map,,Removed,8c47e0b1b45c7a18.pdf,,0,8,1,5,2022-07-01 21:59:48,2022-07-02 12:20:56
 24,Test,Map,Test,Removed,0527ae62b75efd72.png,,0,5,4,2,2022-07-03 00:43:05,2022-07-03 00:43:31
+25,Thing,Infographic,Test,Removed,18adc7d90dec5041.png,NULL,0,NULL,1,1,2022-07-13 19:39:18,2022-07-13 20:02:38
+26,Mobile Data Form,Mobile Data Collection,An XLS form.,Active,70c789ece18e675d.png,,1,1,1,4,2022-07-17 16:41:17,NULL

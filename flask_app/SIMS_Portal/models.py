@@ -165,9 +165,21 @@ class Learning(db.Model):
 	
 	id = db.Column(db.Integer, primary_key=True)
 	
-	overall = db.Column(db.String, nullable=False)
+	overall_score = db.Column(db.Integer, nullable=False)
+	overall_exp = db.Column(db.String, nullable=False)
+	
+	got_support = db.Column(db.Integer)
+	internal_resource = db.Column(db.Integer)
+	external_resource = db.Column(db.Integer)
+	field_communication = db.Column(db.Integer)
+	clear_tasks = db.Column(db.Integer)
+	clear_deadlines = db.Column(db.Integer)
+	coordination_tools = db.Column(db.Integer)
 	
 	assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'), unique=True)
+	
+	created_at = db.Column(db.DateTime, server_default=func.now())
+	updated_at = db.Column(db.DateTime, onupdate=func.now())
 
 class WorkingGroup(db.Model):
 	__tablename__ = 'workinggroup'
