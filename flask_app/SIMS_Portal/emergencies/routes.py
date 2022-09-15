@@ -36,19 +36,27 @@ def view_emergency(id):
 	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id==Portfolio.emergency_id).filter(Emergency.id==id, Portfolio.product_status=='Active').all()
 	check_for_story = db.session.query(Story, Emergency).join(Emergency, Emergency.id == Story.emergency_id).filter(Story.emergency_id == id).first()
 
+	learning_count = db.session.query(Learning, Assignment, Emergency).join(Assignment, Assignment.id==Learning.assignment_id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(Emergency.id==id).count()
+
 	learning_data = db.engine.execute("SELECT AVG(overall_score) as 'Overall', AVG(got_support) as 'Support', AVG(internal_resource) as 'Internal Resources', AVG(external_resource) as 'External Resources', AVG(clear_tasks) as 'Task Clarity', AVG(field_communication) as 'Field Communication', AVG(clear_deadlines) as 'Deadlines', AVG(coordination_tools) as 'Coordination Tools' FROM learning JOIN assignment ON assignment.id = learning.assignment_id JOIN emergency ON emergency.id = assignment.emergency_id WHERE emergency.id = {}".format(id))
 	
-	learning_count = db.session.query(Learning, Assignment, Emergency).join(Assignment, Assignment.id==Learning.assignment_id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(Emergency.id==id).count()
-	
 	data_dict_learnings = [x._asdict() for x in learning_data]
-
 	learning_keys = []
 	learning_values = []
 	for k, v in data_dict_learnings[0].items():
 		learning_keys.append(k)
 		learning_values.append(v)
-		
-	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, check_for_story=check_for_story, learning_data=learning_data, learning_keys=learning_keys, learning_values=learning_values, learning_count=learning_count)
+	
+	avg_learning_data = db.engine.execute("SELECT AVG(overall_score) as 'Overall', AVG(got_support) as 'Support', AVG(internal_resource) as 'Internal Resources', AVG(external_resource) as 'External Resources', AVG(clear_tasks) as 'Task Clarity', AVG(field_communication) as 'Field Communication', AVG(clear_deadlines) as 'Deadlines', AVG(coordination_tools) as 'Coordination Tools' FROM learning")
+	
+	data_dict_avg_learnings = [x._asdict() for x in avg_learning_data]
+	avg_learning_keys = []
+	avg_learning_values = []
+	for k, v in data_dict_avg_learnings[0].items():
+		avg_learning_keys.append(k)
+		avg_learning_values.append(v)
+	
+	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, check_for_story=check_for_story, learning_data=learning_data, learning_keys=learning_keys, learning_values=learning_values, learning_count=learning_count, avg_learning_keys=avg_learning_keys, avg_learning_values=avg_learning_values)
 
 @emergencies.route('/emergency/edit/<int:id>', methods=['GET', 'POST'])
 def edit_emergency(id):
