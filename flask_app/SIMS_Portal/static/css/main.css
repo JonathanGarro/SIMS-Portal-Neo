@@ -189,7 +189,7 @@ h2.header {
 	font-size: 5px;
 }
 
-#emergency-title {
+.emergency-title {
 	font-family: 'Montserrat';
 }
 
@@ -272,4 +272,16 @@ h2.header {
 
 .mb-6 {
 	margin-bottom: 4rem; // or the value you want
+}
+
+.form-range::-webkit-slider-thumb {
+  background: gray;
+}
+
+.form-range::-moz-range-thumb {
+  background: gray;
+}
+
+.form-range::-ms-thumb {
+  background: gray;
 }

@@ -6,8 +6,8 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from SIMS_Portal.models import Learning
 
 class NewAssignmentLearningForm(FlaskForm):
-	overall_score = IntegerField('Rank your overall experience (1 = Terrible, 5 = Fantastic)', validators=[DataRequired())
-	overall_exp = StringField('Explain why you chose that score')
+	overall_score = IntegerField('Rank your overall experience (1 = Terrible, 5 = Fantastic)', validators=[DataRequired()])
+	overall_exp = TextAreaField('Explain why you chose that score')
 	
 	got_support = IntegerField('I got the support I needed from the network when I had an issue or question')
 	internal_resource = IntegerField('I found the necessary internal support documentation, templates, and other resources from the SIMS Portal')

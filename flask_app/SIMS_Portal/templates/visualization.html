@@ -1,18 +1,46 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 {% extends "layout.html" %}
 {% block content %}
 <div class='container'>
 
-    {% for tweet in tweets %}
-    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-    <div class="card-body">
-    <p class="card-text">{{ tweet.tweet }}</p>
-    </div>
-    <div class="card-footer text-light"><small>{{ tweet.created_at_year }}-{{ tweet.created_at_month }}-{{ tweet.created_at_day }}</small></div>
-    </div>
-    {% endfor %}
-
-  
-
+    <canvas id='barChartLearningAssignment' width='600' height='300'></canvas>
+      <script>
+          var ctx = document.getElementById('barChartLearningAssignment').getContext('2d');
+          var lineChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                  labels: {{ learning_keys | safe }},
+                  datasets: [{
+                      label: "Assignments by Emergency, All Time",
+                      data: {{ learning_values | safe }},
+                      fill: true,
+                      backgroundColor: "#dc3545"
+                  }]
+              },
+              options: {
+                  responsive: true,
+                  indexAxis: 'y',
+                  scales: {
+                      y: {
+                          ticks: {
+                              stepSize: 1
+                          },
+                          grid: {
+                              display: false
+                          }
+                          
+                      },
+                      x: {
+                          grid: {
+                              display: false
+                          }
+                      }
+                      
+                  }
+              }
+          })
+      </script>
   
 </div>
 {% endblock content %}

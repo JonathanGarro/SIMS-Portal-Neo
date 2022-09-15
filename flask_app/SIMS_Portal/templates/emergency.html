@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 {% extends "layout.html" %}
 {% block content %}
 <div class="container">
@@ -139,10 +141,10 @@
 		</div>
 	
 		<div class="col mx-4">
-			<h3 class="text-dark mt-4" id='emergency-title'>Activation Details</h3>
+			<h3 class="text-dark mt-4 emergency-title">Activation Details</h3>
 			<p class="pb-3">{{emergency_info.Emergency.activation_details}}</p>
 			<div class='mb-5'>
-				<h3 class="mb-3 text-dark" id='emergency-title'>Member Support<span class='text-dark'>{{ deployment_history_count }}</span></h3>
+				<h3 class="mb-3 text-dark emergency-title">Member Support<span class='text-dark'>{{ deployment_history_count }}</span></h3>
 				{% if deployment_history_count == 0 %}
 					No deployments yet.
 				{% else %}
@@ -169,8 +171,8 @@
 				</table>
 				{% endif %}
 			</div>
-			<h3 class="mb-1 text-dark" id='emergency-title'>Response Portfolio Highlights</h3>
-			<div class="row row-cols-3 row-cols-md-3 g-4 mt-3">
+			<h3 class="mb-1 text-dark mb-3 emergency-title">Response Portfolio Highlights</h3>
+			<div class="row row-cols-3 row-cols-md-3 g-4 mb-5">
 			{% for product in emergency_portfolio %}
 				<div class="col d-flex align-items-stretch">
 					<a href="/portfolio/view/{{product.Portfolio.id}}">
@@ -189,6 +191,67 @@
 				</div>
 			{% endfor %}
 			</div>
+			
+			<h3 class="text-dark my-4 emergency-title">Assignment Reviews</h3>
+			{% if learning_count == 0 %}
+			No assignment reviews have been submitted for this response. See the Learning section of the SIMS Portal for aggregated data related to past operational learning.
+			{% elif learning_count > 2 %}
+			
+			<p>There have been <span class='text-danger fw-bold'>{{learning_count}}</span> assignment reviews completed, which is over the specified threshold to display this data. </p>
+			<canvas id='barChartLearningAssignment' width='600' height='500'></canvas>
+			  <script>
+				  var ctx = document.getElementById('barChartLearningAssignment').getContext('2d');
+				  var lineChart = new Chart(ctx, {
+					  type: 'bar',
+					  data: {
+						  labels: {{ learning_keys | safe }},
+						  datasets: [{
+							  label: "Average Scores for this Emergency",
+							  data: {{ learning_values | safe }},
+							  fill: true,
+							  backgroundColor: "#dc3545"
+						  },
+					  {
+							label: "Average Score for All Emergencies",
+							data: [1,2,3,3,3,2,4,2],
+							fill: true,
+							backgroundColor: "#ABABAB"
+						}]
+					  },
+					  options: {
+						  plugins: {
+							  legend: true,
+						  },
+						  responsive: true,
+						  indexAxis: 'y',
+						  scales: {
+							  y: {
+								  ticks: {
+									  stepSize: 1
+								  },
+								  grid: {
+									  display: false
+								  }
+								  
+							  },
+							  x: {
+								  ticks: {
+										stepSize: 1
+									},
+								suggestedMax: 5,
+								grid: {
+									display: true
+								  }
+							  }
+							  
+						  }
+					  }
+				  })
+			  </script>
+			{% else %}  
+			<p>There have been <span class='text-danger fw-bold'>{{learning_count}}</span> assignment reviews completed, which is under the specified threshold to display this data. This is done to protect the identities of people who have provided their feedback.</p>
+			{% endif %}
+			
 			{% if response_length %}
 			<div class='row mt-5'>
 				<h3 class="text-dark" id='emergency-title'>Trello Cards Under 'Doing' <span class="badge rounded-pill bg-danger" id="smallbadge">{{response_length}}</span></h3> 

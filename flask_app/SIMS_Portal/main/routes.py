@@ -30,9 +30,6 @@ def index():
 	# list comprehension to grab relevant fields and regex to remove URLs in tweet
 	tweets = [{'tweet': re.sub(r"http\S+", "", t.full_text), 'created_at_year': t.created_at.year, 'created_at_month': t.created_at.month, 'created_at_day': t.created_at.day, 'headshot_url': t.user.profile_image_url, 'username': t.user.name, 'screen_name': t.user.screen_name, 'location': t.user.location, 'id': t.id_str} for t in public_tweets]
 	
-	
-	
-	
 	latest_stories = db.session.query(Story, Emergency).join(Emergency, Emergency.id == Story.emergency_id).order_by(Story.id.desc()).limit(3).all()
 	
 	return render_template('index.html', latest_stories=latest_stories, tweets=tweets)
@@ -96,21 +93,17 @@ def badge_assignment(user_id, badge_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-	consumer_key = current_app.config['CONSUMER_KEY']
-	consumer_secret = current_app.config['CONSUMER_SECRET']
-	access_token = current_app.config['ACCESS_TOKEN']
-	access_token_secret = current_app.config['ACCESS_TOKEN_SECRET']
+	learning_data = db.engine.execute("SELECT emergency_name, AVG(overall_score) as avg_overall, AVG(got_support) as avg_support, AVG(internal_resource) as avg_internal, AVG(external_resource) as avg_external, AVG(clear_tasks) as avg_tasks, AVG(field_communication) as avg_fieldcomm, AVG(clear_deadlines) as avg_deadlines, AVG(coordination_tools) as avg_coordtools FROM learning JOIN assignment ON assignment.id = learning.assignment_id JOIN emergency ON emergency.id = assignment.emergency_id GROUP BY emergency.id")
+
+	data_dict_learnings = [x._asdict() for x in learning_data]
+
+	learning_keys = []
+	learning_values = []
+	for k, v in data_dict_learnings[0].items():
+		learning_keys.append(k)
+		learning_values.append(v)
 	
-	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-	auth.set_access_token(access_token, access_token_secret)
-	api = tweepy.API(auth)
-	
-	public_tweets = api.user_timeline(screen_name='IFRC_SIMS', count=3, tweet_mode="extended")
-	
-	# list comprehension to grab relevant fields and regex to remove URLs in tweet
-	tweets = [{'tweet': re.sub(r"http\S+", "", t.full_text), 'created_at_year': t.created_at.year, 'created_at_month': t.created_at.month, 'created_at_day': t.created_at.day, 'headshot_url': t.user.profile_image_url, 'username': t.user.name, 'screen_name': t.user.screen_name, 'location': t.user.location, 'url': t.user.followers_count} for t in public_tweets]
-	
-	return render_template('visualization.html', tweets=tweets)
+	return render_template('visualization.html', learning_keys=learning_keys, learning_values=learning_values)
 
 @main.route('/learning')
 @login_required
@@ -262,6 +255,8 @@ def dashboard():
 	data_dict_assignments = [x._asdict() for x in assignments_by_emergency]
 	labels_for_assignment = [row['emergency_name'] for row in data_dict_assignments]
 	values_for_assignment = [row['count_assignments'] for row in data_dict_assignments]
+	
+	print(labels_for_assignment)
 	
 	products_by_emergency = db.engine.execute("SELECT emergency_name , COUNT(*) as count_products FROM emergency JOIN portfolio ON portfolio.emergency_id = emergency.id WHERE portfolio.product_status <> 'Removed' GROUP BY emergency_name")
 	data_dict_products = [y._asdict() for y in products_by_emergency]
