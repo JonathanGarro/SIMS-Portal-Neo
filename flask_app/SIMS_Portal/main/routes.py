@@ -4,7 +4,7 @@ from SIMS_Portal import db
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
-from SIMS_Portal.main.forms import MemberSearchForm, EmergencySearchForm, ProductSearchForm, BadgeAssignmentForm
+from SIMS_Portal.main.forms import MemberSearchForm, EmergencySearchForm, ProductSearchForm, BadgeAssignmentForm, SkillCreatorForm
 from collections import defaultdict, Counter
 from datetime import date, timedelta
 from SIMS_Portal.config import Config
@@ -42,12 +42,14 @@ def about():
 @login_required
 def admin_landing():
 	badge_form = BadgeAssignmentForm()
+	skill_form = SkillCreatorForm()
 	if request.method == 'GET' and current_user.is_admin == 1:
-		pending_users = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id==User.ns_id).filter(User.status=='Pending').all()
+		pending_users = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.status=='Pending').all()
 		all_users = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.status == 'Active').order_by(User.firstname).all()
 		assigned_badges = db.engine.execute("SELECT u.id, u.firstname, u.lastname, GROUP_CONCAT(b.name, ', ') as badges FROM user u JOIN user_badge ub ON ub.user_id = u.id JOIN badge b ON b.id = ub.badge_id WHERE u.status = 'Active' GROUP BY u.id ORDER BY u.firstname")
-		return render_template('admin_landing.html', pending_users=pending_users, all_users=all_users, badge_form=badge_form, assigned_badges=assigned_badges)
-	elif request.method == 'POST': 
+		all_skills = db.session.query(Skill.name, Skill.category).order_by(Skill.category, Skill.name).all()
+		return render_template('admin_landing.html', pending_users=pending_users, all_users=all_users, badge_form=badge_form, assigned_badges=assigned_badges, skill_form=skill_form, all_skills=all_skills)
+	elif request.method == 'POST' and badge_form.submit_badge.data: 
 		user_id = badge_form.user_name.data.id
 		badge_id = badge_form.badge_name.data.id
 		# get list of assigned badges, create column that concats user_id and badge_id to create unique identifier
@@ -61,6 +63,15 @@ def admin_landing():
 		else:
 			flash('Cannot add badge - user already has it.', 'danger')
 			return redirect(url_for('main.admin_landing'))
+	elif request.method == 'POST' and skill_form.submit_skill.data: 
+		new_skill = Skill(
+			name = skill_form.name.data,
+			category = skill_form.category.data
+		)
+		db.session.add(new_skill)
+		db.session.commit()
+		flash("New Skill Created.", "success")
+		return redirect(url_for('main.admin_landing'))
 	else:
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403

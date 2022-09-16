@@ -45,8 +45,8 @@ class UpdateAccountForm(FlaskForm):
 	roles = StringField('SIMS Roles')
 	messaging_number_country_code = IntegerField('Country Code', validators=[Optional()])
 	messaging_number = IntegerField('Messaging Number (Integers Only)', validators=[Optional()])
-	languages = SelectMultipleField('Languages', choices=lambda:[language.name for language in Language.query.order_by(Language.name).all()], render_kw={'style':'height: 200px'})
-	skills = SelectMultipleField('Skills', choices=lambda:[skill.name for skill in Skill.query.all()], render_kw={'style':'height: 200px'})
+	languages = SelectMultipleField('Languages', choices=lambda:[language.name for language in Language.query.order_by(Language.name).all()], render_kw={'style':'height: 400px'})
+	skills = SelectMultipleField('Skills', choices=lambda:[skill.name for skill in Skill.query.order_by(Skill.name).all()], render_kw={'style':'height: 400px'})
 	submit = SubmitField('Update Profile')
 	
 	def validate_email(self, email):

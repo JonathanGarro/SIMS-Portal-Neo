@@ -42,6 +42,7 @@ class Skill(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	
 	name = db.Column(db.String)
+	category = db.Column(db.String)
 
 class Language(db.Model):
 	__tablename__ = 'language'

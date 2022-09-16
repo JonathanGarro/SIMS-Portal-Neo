@@ -1,0 +1,5 @@
+id,overall_score,overall_exp,got_support,internal_resource,external_resource,field_communication,clear_tasks,clear_deadlines,coordination_tools,assignment_id,created_at,updated_at
+2,2,,2,1,2,2,2,3,3,5,2022-09-14 16:17:00,NULL
+3,1,asdf,1,1,1,1,1,1,1,17,2022-09-14 17:37:31,NULL
+4,5,df,5,5,5,5,5,5,5,16,2022-09-15 20:09:50,NULL
+5,5,asdf,5,5,5,5,5,5,5,1,2022-09-15 20:10:26,NULL
