@@ -55,6 +55,7 @@ def view_assignment(id):
 	assignment_length_int = int(assignment_length_dict['length'])
 	
 	assingment_portfolio = db.session.query(Portfolio).filter(Portfolio.assignment_id==id, Portfolio.product_status=='Active').all()
+	count_assignment_portfolio = len(assingment_portfolio)
 	
 	# get availability if reported and convert to list, else return empty list
 	if assignment_info.Assignment.availability:
@@ -68,7 +69,7 @@ def view_assignment(id):
 	else:
 		available_dates = []
 		
-	return render_template('assignment_view.html', assignment_info=assignment_info, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date, days_left_int=days_left_int, assignment_length_int=assignment_length_int, assingment_portfolio=assingment_portfolio, available_dates=available_dates)
+	return render_template('assignment_view.html', assignment_info=assignment_info, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date, days_left_int=days_left_int, assignment_length_int=assignment_length_int, assingment_portfolio=assingment_portfolio, available_dates=available_dates, count_assignment_portfolio=count_assignment_portfolio)
 
 @assignments.route('/assignment/delete/<int:id>')
 @login_required
