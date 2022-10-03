@@ -104,17 +104,9 @@ def badge_assignment(user_id, badge_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-	learning_data = db.engine.execute("SELECT emergency_name, AVG(overall_score) as avg_overall, AVG(got_support) as avg_support, AVG(internal_resource) as avg_internal, AVG(external_resource) as avg_external, AVG(clear_tasks) as avg_tasks, AVG(field_communication) as avg_fieldcomm, AVG(clear_deadlines) as avg_deadlines, AVG(coordination_tools) as avg_coordtools FROM learning JOIN assignment ON assignment.id = learning.assignment_id JOIN emergency ON emergency.id = assignment.emergency_id GROUP BY emergency.id")
-
-	data_dict_learnings = [x._asdict() for x in learning_data]
-
-	learning_keys = []
-	learning_values = []
-	for k, v in data_dict_learnings[0].items():
-		learning_keys.append(k)
-		learning_values.append(v)
 	
-	return render_template('visualization.html', learning_keys=learning_keys, learning_values=learning_values)
+	
+	return render_template('visualization.html')
 
 @main.route('/learning')
 @login_required

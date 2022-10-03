@@ -17,11 +17,12 @@
 	<div class="row my-5">
 		<div class="col col-md-4">
 			<div class="card border-0 p-4 bg-light">
-				<h1 class="text-danger mb-1" id='emergency-title'>{{ emergency_info.Emergency.emergency_name}}</h1>
-				<h4 class="text-secondary mb-3">{{emergency_info.EmergencyType.emergency_type_name}}</h4>
-				
+
+				<h1 class="text-danger mb-1 emergency-title">{{ emergency_info.Emergency.emergency_name}}</h1>
+
+
 				{% if emergency_info.Emergency.emergency_status == 'Closed' %}
-				<div class='row my-2 px-2'>
+				<div class='row my-4 px-2'>
 					<div class="alert alert-success" role="alert">
 					  This emergency response has been closed out. That means SIMS has completed the operation and no future assignments are expected.
 					</div>
@@ -141,13 +142,18 @@
 		</div>
 	
 		<div class="col mx-4">
-			<h3 class="text-dark mt-4 emergency-title">Activation Details</h3>
-			<p class="pb-3">{{emergency_info.Emergency.activation_details}}</p>
+			{% if emergency_info.Emergency.activation_details|length == 0 %}
+
+			{% else %}
+				<h3 class="text-dark mt-4 emergency-title">Activation Details</h3>
+				<p class="pb-3">{{emergency_info.Emergency.activation_details}}</p>
+			{% endif %}
 			<div class='mb-5'>
-				<h3 class="mb-3 text-dark emergency-title">Member Support<span class='text-dark'>{{ deployment_history_count }}</span></h3>
 				{% if deployment_history_count == 0 %}
+				<h3 class="mb-3 text-dark emergency-title">Member Support<span class='text-dark'>: {{ deployment_history_count }}</span></h3>
 					No deployments yet.
 				{% else %}
+				<h3 class="mb-3 text-dark emergency-title">Member Support<span class='text-dark'>: {{ deployment_history_count }}</span></h3>
 				<table class="table">
 				  <thead class="">
 					<tr>

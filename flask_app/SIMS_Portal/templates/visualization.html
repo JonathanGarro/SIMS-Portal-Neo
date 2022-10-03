@@ -1,46 +1,24 @@
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 {% extends "layout.html" %}
 {% block content %}
 <div class='container'>
-
-    <canvas id='barChartLearningAssignment' width='600' height='300'></canvas>
-      <script>
-          var ctx = document.getElementById('barChartLearningAssignment').getContext('2d');
-          var lineChart = new Chart(ctx, {
-              type: 'bar',
-              data: {
-                  labels: {{ learning_keys | safe }},
-                  datasets: [{
-                      label: "Assignments by Emergency, All Time",
-                      data: {{ learning_values | safe }},
-                      fill: true,
-                      backgroundColor: "#dc3545"
-                  }]
-              },
-              options: {
-                  responsive: true,
-                  indexAxis: 'y',
-                  scales: {
-                      y: {
-                          ticks: {
-                              stepSize: 1
-                          },
-                          grid: {
-                              display: false
-                          }
-                          
-                      },
-                      x: {
-                          grid: {
-                              display: false
-                          }
-                      }
-                      
-                  }
-              }
-          })
-      </script>
-  
+<script>
+   var format = function(d) {
+       d = d / 1000000;
+       return d3.format(',.02f')(d) + 'M';
+   }
+   
+   var map = d3.choropleth()
+       .geofile('/d3-geomap/topojson/world/countries.json')
+       .colors(d3.schemeYlGnBu[9])
+       .column('emergency')
+       .format(format)
+       .legend(true)
+       .unitId('iso3');
+   
+   d3.csv('/static/data/dummy_geo_data.csv').then(data => {
+       var selection = d3.select('#map').datum(data);
+       map.draw(selection);
+   });
+  </script>
 </div>
 {% endblock content %}
