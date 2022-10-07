@@ -1,24 +1,56 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class='container'>
-<script>
-   var format = function(d) {
-       d = d / 1000000;
-       return d3.format(',.02f')(d) + 'M';
-   }
-   
-   var map = d3.choropleth()
-       .geofile('/d3-geomap/topojson/world/countries.json')
-       .colors(d3.schemeYlGnBu[9])
-       .column('emergency')
-       .format(format)
-       .legend(true)
-       .unitId('iso3');
-   
-   d3.csv('/static/data/dummy_geo_data.csv').then(data => {
-       var selection = d3.select('#map').datum(data);
-       map.draw(selection);
-   });
-  </script>
+  <div class="map">
+    {{data_file}}
+    <svg id="my_dataviz" width="1200" height="450"></svg>
+    
+    <script>
+    
+    var svg = d3.select("svg"),
+      width = +svg.attr("width"),
+      height = +svg.attr("height");
+    
+    // Map and projection
+    var path = d3.geoPath();
+    var projection = d3.geoMercator()
+      .scale(150)
+      .center([0,20])
+      .translate([width / 2, height / 2]);
+    
+    // Data and color scale
+    var data = d3.map();
+    var colorScale = d3.scaleThreshold()
+      .domain([1, 2, 3, 4])
+      .range(d3.schemeReds[4]);
+    
+    // Load external data and boot
+    d3.queue()
+      .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+      .defer(d3.csv, "/static/data/emergencies_viz.csv", function(d) { data.set(d.iso3, +d.count); })
+      .await(ready);
+    
+    function ready(error, topo) {
+    
+      // Draw the map
+      svg.append("g")
+        .selectAll("path")
+        .data(topo.features)
+        .enter()
+        .append("path")
+          // draw each country
+          .attr("d", d3.geoPath()
+            .projection(projection)
+          )
+          // set the color of each country
+          .attr("fill", function (d) {
+            d.total = data.get(d.id) || 0;
+            return colorScale(d.total);
+          });
+        }
+    
+    </script>
+    
+  </div>
 </div>
 {% endblock content %}

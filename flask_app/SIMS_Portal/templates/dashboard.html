@@ -55,11 +55,71 @@
 				<li class="nav-item" role="presentation">
 				<button class="nav-link active text-danger" id="assignments-emergency-tab" data-bs-toggle="tab" data-bs-target="#assignments-emergency" type="button" role="tab" aria-controls="assignments-emergency" aria-selected="true">Assignments by Emergency</button>
 				</li>
+				
+				<li class="nav-item" role="presentation">
+				<button class="nav-link text-danger" id="location-emergencies-tab" data-bs-toggle="tab" data-bs-target="#location-emergencies" type="button" role="tab" aria-controls="assignments-emergency" aria-selected="false">Global Response History</button>
+				</li>
+
 				<li class="nav-item" role="presentation">
 				<button class="nav-link text-danger" id="products-emergency-tab" data-bs-toggle="tab" data-bs-target="#products-emergency" type="button" role="tab" aria-controls="products-emergency" aria-selected="false">Products by Emergency</button>
 				</li>
+				
 			</ul>
 			<div class="tab-content" id="dashboardContent">
+				<div class="tab-pane fade" id="location-emergencies" role="tabpanel" aria-labelledby="location-emergencies-tab">
+					<div class="map">
+						<svg class='my-3' id="response-history-map" width='1300' height='700'></svg>
+						
+						<script>
+						
+						var svg = d3.select("svg"),
+						  width = +svg.attr("width"),
+						  height = +svg.attr("height");
+						
+						// Map and projection
+						var path = d3.geoPath();
+						var projection = d3.geoMercator()
+						  .scale(150)
+						  .center([0,20])
+						  .translate([width / 2, height / 2]);
+						
+						// Data and color scale
+						var data = d3.map();
+						var colorScale = d3.scaleThreshold()
+						  .domain([1, 2, 3, 4])
+						  .range(d3.schemeReds[4]);
+						
+						// Load external data and boot
+						d3.queue()
+						  .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+						  .defer(d3.csv, "/static/data/emergencies_viz.csv", function(d) { data.set(d.iso3, +d.count); })
+						  .await(ready);
+						
+						function ready(error, topo) {
+						
+						  // Draw the map
+						  svg.append("g")
+							.selectAll("path")
+							.data(topo.features)
+							.enter()
+							.append("path")
+							  // draw each country
+							  .attr("d", d3.geoPath()
+								.projection(projection)
+							  )
+							  // set the color of each country
+							  .attr("fill", function (d) {
+								d.total = data.get(d.id) || 0;
+								return colorScale(d.total);
+							  });
+							}
+						
+						</script>
+						
+						<h4 style="text-align:center">Find a full list of responses with links their respective pages on the <a href='/emergencies/all'>Emergencies</a> page.
+						
+					  </div>
+				</div>
 			  <div class="tab-pane fade show active" id="assignments-emergency" role="tabpanel" aria-labelledby="assignments-emergency-tab">
 				  <br>
 				  <canvas id='barChartAssignments' width='1200' height='300'></canvas>

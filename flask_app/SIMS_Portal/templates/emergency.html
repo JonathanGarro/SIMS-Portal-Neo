@@ -18,30 +18,46 @@
 		<div class="col col-md-4">
 			<div class="card border-0 p-4 bg-light">
 
-				<h1 class="text-danger mb-1 emergency-title">{{ emergency_info.Emergency.emergency_name}}</h1>
-
-
-				{% if emergency_info.Emergency.emergency_status == 'Closed' %}
-				<div class='row my-4 px-2'>
-					<div class="alert alert-success" role="alert">
-					  This emergency response has been closed out. That means SIMS has completed the operation and no future assignments are expected.
+				<h1 class="text-danger mb-5 emergency-title">{{ emergency_info.Emergency.emergency_name}}</h1>
+				
+				{% if  emergency_info.Emergency.emergency_status == 'Active' %}
+				
+				<div class="alert alert-secondary mt-3" role="alert">
+					<div class='row align-items-center'>
+						<div class='col-2 me-1'>
+							<img src='/static/assets/img/active-emergency.png' height='50px' width='50px'></a>
+						</div>
+						<div class='col ps-4'>
+							<span class='lead' id='emergency-story-link'>Active Operation</span></a>
+						</div>
 					</div>
 				</div>
-				{% elif emergency_info.Emergency.emergency_status == 'Removed' %}
-				<div class='row my-2 px-2'>
-					<div class="alert alert-warning" role="alert">
-					  This emergency response has been removed. The data remains accessible but the record should not be considered part of the SIMS portfolio or responses.
+				
+				{% else %}
+
+				<div class="alert alert-secondary mt-3" role="alert">
+					<div class='row align-items-center'>
+						<div class='col-2 me-1'>
+							<img src='/static/assets/img/removed-emergency.png' height='50px' width='50px'></a>
+						</div>
+						<div class='col ps-4'>
+							<span class='lead' id='emergency-story-link'>Closed Operation</span></a>
+						</div>
 					</div>
 				</div>
+				
 				{% endif %}
+
+				
 				{% if check_for_story %}
-				<hr class='my-3'>
-				<div class='row align-items-center'>
-					<div class='col-3'>
-						<a href='/story/{{emergency_info.Emergency.id}}'><img src='/static/assets/img/story-icon.png' height='100px' width='100px'></a>
-					</div>
-					<div class='col ps-4'>
-						<a href='/story/{{emergency_info.Emergency.id}}'><span class='lead' id='emergency-story-link'>Response<br> Story</span></a>
+				<div class="alert alert-secondary" role="alert">
+					<div class='row align-items-center'>
+						<div class='col-2 me-1'>
+							<a href='/story/{{emergency_info.Emergency.id}}'><img src='/static/assets/img/story-icon.png' height='50px' width='50px'></a>
+						</div>
+						<div class='col ps-4'>
+							<a href='/story/{{emergency_info.Emergency.id}}'><span class='lead' id='emergency-story-link'>Response Story</span></a>
+						</div>
 					</div>
 				</div>
 				{% endif %}
@@ -153,7 +169,7 @@
 				<h3 class="mb-3 text-dark emergency-title">Member Support<span class='text-dark'>: {{ deployment_history_count }}</span></h3>
 					No deployments yet.
 				{% else %}
-				<h3 class="mb-3 text-dark emergency-title">Member Support<span class='text-dark'>: {{ deployment_history_count }}</span></h3>
+				<h3 class="mb-3 text-dark emergency-title">Member Support: <span class='text-danger'>{{ deployment_history_count }}</span></h3>
 				<table class="table">
 				  <thead class="">
 					<tr>

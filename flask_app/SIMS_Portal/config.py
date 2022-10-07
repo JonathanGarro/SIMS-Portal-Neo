@@ -18,3 +18,4 @@ class Config:
 	SCHEDULER_API_ENABLED = True
 	TRELLO_KEY = os.environ.get('TRELLO_KEY')
 	TRELLO_TOKEN = os.environ.get('TRELLO_TOKEN')
+	DATA_FOLDER = '/SIMS_Portal/static/data/'

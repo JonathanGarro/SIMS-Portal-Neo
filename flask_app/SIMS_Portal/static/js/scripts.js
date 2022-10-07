@@ -58,7 +58,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
 $(document).ready(function () {
 	$('#datatable').DataTable({
-		order: [[0, 'desc']],
+		order: [[0, 'asc']],
 	});
 });
 

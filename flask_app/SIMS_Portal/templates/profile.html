@@ -102,9 +102,9 @@
 
 				<h3 class="mb-3 text-danger profile-section-header">About {{ user_info.firstname }}</h3>
 				{% if user_info.bio %}
-				<p style="white-space: pre-line">{{ user_info.bio|markdown}}</p>
+					<p style="white-space: pre-line">{{ user_info.bio|markdown}}</p>
 				{% else %}
-				No information shared yet.
+					No information shared yet.
 				{% endif %}
 			</div>
 			<div class='mb-5'>
@@ -127,7 +127,6 @@
 						<td class="fw-bold"><a href="/emergency/{{assignment.Emergency.id}}" class="link-danger">{{assignment.Emergency.emergency_name}}</a></td>
 						<td><a href='/assignment/{{assignment.Assignment.id}}'>{{assignment.Assignment.role}}</a></td>
 						<td>{{assignment.Assignment.start_date}}</td>  
-				  	</tr>
 				  	{% endfor %}
 			  	</tbody>
 				</table>
