@@ -55,7 +55,7 @@
 						<a href="/learning/assignment/new/{{assignment_info.Assignment.user_id}}/{{assignment_info.Assignment.id}}" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
 
 						{% if current_user.is_admin == 1 or current_user.id == assignment_info.User.id %}
-							<a href="#" class="list-group-item list-group-item-action text-secondary">Edit Assignment</a>
+							<a href="/assignment/edit/{{assignment_info.Assignment.id}}" class="list-group-item list-group-item-action text-secondary">Edit Assignment</a>
 							<a href="/assignment/delete/{{assignment_info.Assignment.id}}" class="list-group-item list-group-item-action text-danger">Delete Assignment</a>
 						{% endif %}
 					{% endif %}

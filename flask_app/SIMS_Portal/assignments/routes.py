@@ -3,7 +3,7 @@ from SIMS_Portal.models import Assignment, User, Emergency, Portfolio
 from SIMS_Portal import db, login_manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, current_user, logout_user, login_required
-from SIMS_Portal.assignments.forms import NewAssignmentForm
+from SIMS_Portal.assignments.forms import NewAssignmentForm, UpdateAssignmentForm
 from datetime import datetime
 from datetime import date, timedelta
 import pandas as pd
@@ -70,6 +70,24 @@ def view_assignment(id):
 		available_dates = []
 		
 	return render_template('assignment_view.html', assignment_info=assignment_info, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date, days_left_int=days_left_int, assignment_length_int=assignment_length_int, assingment_portfolio=assingment_portfolio, available_dates=available_dates, count_assignment_portfolio=count_assignment_portfolio)
+
+@assignments.route('/assignment/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_assignment(id):
+	assignment_info = db.session.query(Assignment, User, Emergency).join(User).join(Emergency).filter(Assignment.id == id).first()
+	form = UpdateAssignmentForm(role=assignment_info.Assignment.role, start_date=assignment_info.Assignment.start_date, end_date=assignment_info.Assignment.end_date, assignment_details=assignment_info.Assignment.assignment_details)
+	
+	this_assignment = db.session.query(Assignment).filter(Assignment.id==id).first()
+	if form.validate_on_submit():
+		this_assignment.role = form.role.data
+		this_assignment.start_date = form.start_date.data
+		this_assignment.end_date = form.end_date.data
+		this_assignment.assignment_details = form.assignment_details.data
+		db.session.commit()
+		flash('Assignment record updated!', 'success')
+		return redirect(url_for('assignments.view_assignment', id=this_assignment.id))
+	
+	return render_template('assignment_edit.html', form=form, assignment_info=assignment_info)
 
 @assignments.route('/assignment/delete/<int:id>')
 @login_required

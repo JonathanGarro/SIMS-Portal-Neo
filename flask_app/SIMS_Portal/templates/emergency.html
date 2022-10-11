@@ -28,7 +28,20 @@
 							<img src='/static/assets/img/active-emergency.png' height='50px' width='50px'></a>
 						</div>
 						<div class='col ps-4'>
-							<span class='lead' id='emergency-story-link'>Active Operation</span></a>
+							<span class='lead' id='emergency-story-link'>Active Response</span><br> <span class='text-secondary'><a href='/resources/sims_portal#emergency-statuses'>What's this?</a></span></a>
+						</div>
+					</div>
+				</div>
+				
+				{% elif  emergency_info.Emergency.emergency_status == 'Removed' %}
+				
+				<div class="alert alert-secondary mt-3" role="alert">
+					<div class='row align-items-center'>
+						<div class='col-2 me-1'>
+							<img src='/static/assets/img/removed-emergency.png' height='50px' width='50px'></a>
+						</div>
+						<div class='col ps-4'>
+							<span class='lead' id='emergency-story-link'>Deleted Record</span><br> <span class='text-secondary'><a href='/resources/sims_portal#emergency-statuses'>What's this?</a></span></a>
 						</div>
 					</div>
 				</div>
@@ -38,10 +51,10 @@
 				<div class="alert alert-secondary mt-3" role="alert">
 					<div class='row align-items-center'>
 						<div class='col-2 me-1'>
-							<img src='/static/assets/img/removed-emergency.png' height='50px' width='50px'></a>
+							<img src='/static/assets/img/closed-emergency.png' height='50px' width='50px'></a>
 						</div>
 						<div class='col ps-4'>
-							<span class='lead' id='emergency-story-link'>Closed Operation</span></a>
+							<span class='lead' id='emergency-story-link'>Closed Operation</span><br> <span class='text-secondary'><a href='/resources/sims_portal#emergency-statuses'>What's this?</a></span></a>
 						</div>
 					</div>
 				</div>

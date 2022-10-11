@@ -95,7 +95,10 @@ def profile():
 	for end_date in assignment_history:
 		all_end_dates.append(convert_date_to_int(end_date.Assignment.end_date))
 	
-	max_end = max(all_end_dates)
+	try:
+		max_end = max(all_end_dates)
+	except:
+		pass
 
 	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list, badges=badges)
 	
