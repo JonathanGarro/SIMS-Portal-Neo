@@ -38,7 +38,10 @@ def index():
 	
 @main.route('/about')
 def about():
-	return render_template('about.html')
+	count_activations = db.session.query(Emergency).count()
+	lateset_activation = db.session.query(Emergency).order_by(Emergency.created_at.desc()).first()
+	count_members = db.session.query(User).filter(User.status == 'Active').count()
+	return render_template('about.html', count_activations=count_activations, latest_activation=lateset_activation, count_members=count_members)
 	
 @main.route('/admin_landing', methods=['GET', 'POST'])
 @login_required
