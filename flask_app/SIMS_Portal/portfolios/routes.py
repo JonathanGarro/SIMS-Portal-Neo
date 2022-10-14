@@ -115,16 +115,54 @@ def delete_portfolio(id):
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
 		
-@portfolios.route('/portfolio/approve/<int:dis_id>')
+@portfolios.route('/portfolio/review/<int:dis_id>', methods=['GET', 'POST'])
 @login_required
-def approve_portfolio(dis_id):
+def review_portfolio(dis_id):
+	# get list of all SIMS coordinators for event
+	disaster_coordinator_query = db.session.query(Emergency, Assignment, User).join(Assignment, Assignment.emergency_id == Emergency.id).join(User, User.id == Assignment.user_id).filter(Emergency.id == dis_id, Assignment.role == 'SIMS Remote Coordinator').all()
+	# for loop gets the user id of query and appends to list
+	disaster_coordinator_list = []
+	for coordinator in disaster_coordinator_query:
+		disaster_coordinator_list.append(coordinator.User.id)
+	
+	# check if current user is one of the event's coordinators
+	if current_user.id in disaster_coordinator_list or current_user.is_admin == 1:
+		pass
+	else:
+		event_name = db.session.query(Emergency).filter(Emergency.id == dis_id).first()
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins, disaster_coordinator_query=disaster_coordinator_query, event_name=event_name), 403
+	# get pending products for this emergency	
 	pending_list = db.session.query(Portfolio, Emergency, User).join(Emergency, Emergency.id == Portfolio.emergency_id).join(User, User.id == Portfolio.creator_id).filter(Portfolio.emergency_id == dis_id, Portfolio.product_status == 'Pending Approval').all()
-	print(pending_list)
+
 	return render_template('portfolio_approve.html', pending_list=pending_list)
 	
 	
+@portfolios.route('/portfolio/approve/<int:prod_id>/<int:dis_id>', methods=['GET', 'POST'])
+@login_required
+def approve_portfolio(prod_id, dis_id):
+	# get list of all SIMS coordinators for event
+	disaster_coordinator_query = db.session.query(Emergency, Assignment, User).join(Assignment, Assignment.emergency_id == Emergency.id).join(User, User.id == Assignment.user_id).filter(Emergency.id == dis_id, Assignment.role == 'SIMS Remote Coordinator').all()
+	# for loop gets the user id of query and appends to list
+	disaster_coordinator_list = []
+	for coordinator in disaster_coordinator_query:
+		disaster_coordinator_list.append(coordinator.User.id)
 	
-	
+	# check if current user is one of the event's coordinators
+	if current_user.id in disaster_coordinator_list or current_user.is_admin == 1:
+		try:
+			db.session.query(Portfolio).filter(Portfolio.id == prod_id).update({'product_status':'Approved'})
+			db.session.commit()
+			flash('Product has been approved for external viewers.', 'success')
+		except:
+			flash('Error approving the product. Check that the product ID is correct.', 'warning')
+		redirect_url = '/emergency/{}'.format(dis_id)
+		return redirect(redirect_url)
+			
+	else:
+		event_name = db.session.query(Emergency).filter(Emergency.id == dis_id).first()
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins, disaster_coordinator_query=disaster_coordinator_query, event_name=event_name), 403
 	
 	
 	
