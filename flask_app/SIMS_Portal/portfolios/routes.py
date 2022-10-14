@@ -48,10 +48,12 @@ def new_portfolio():
 			file = save_portfolio(form.file.data)
 		if form.external.data == True:
 			form.external.data = 1
+			status = 'Pending Approval'
 		else:
 			form.external.data = 0
+			status = 'Active'
 		product = Portfolio(
-			final_file_location = file, title=form.title.data, creator_id=form.creator_id.data.id, description=form.description.data, type=form.type.data, emergency_id=form.emergency_id.data.id, external=form.external.data, asset_file_location=form.asset_file_location.data
+			final_file_location = file, title=form.title.data, creator_id=form.creator_id.data.id, description=form.description.data, type=form.type.data, emergency_id=form.emergency_id.data.id, external=form.external.data, asset_file_location=form.asset_file_location.data, product_status=status
 		)
 		db.session.add(product)
 		db.session.commit()
@@ -68,10 +70,12 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 			file = save_portfolio(form.file.data)
 		if form.external.data == True:
 			form.external.data = 1
+			status = 'Pending Approval'
 		else:
 			form.external.data = 0
+			status = 'Active'
 		product = Portfolio(
-			final_file_location = file, title=form.title.data, creator_id=user_id, description=form.description.data, type=form.type.data, emergency_id=emergency_id, external=form.external.data, assignment_id=assignment_id, asset_file_location=form.asset_file_location.data
+			final_file_location = file, title=form.title.data, creator_id=user_id, description=form.description.data, type=form.type.data, emergency_id=emergency_id, external=form.external.data, assignment_id=assignment_id, asset_file_location=form.asset_file_location.data, product_status=status
 		)
 		db.session.add(product)
 		db.session.commit()
@@ -110,3 +114,26 @@ def delete_portfolio(id):
 	else:
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
+		
+@portfolios.route('/portfolio/approve/<int:dis_id>')
+@login_required
+def approve_portfolio(dis_id):
+	pending_list = db.session.query(Portfolio, Emergency, User).join(Emergency, Emergency.id == Portfolio.emergency_id).join(User, User.id == Portfolio.creator_id).filter(Portfolio.emergency_id == dis_id, Portfolio.product_status == 'Pending Approval').all()
+	print(pending_list)
+	return render_template('portfolio_approve.html', pending_list=pending_list)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
