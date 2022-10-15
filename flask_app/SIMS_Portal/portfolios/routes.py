@@ -143,35 +143,74 @@ def review_portfolio(dis_id):
 def approve_portfolio(prod_id, dis_id):
 	# get list of all SIMS coordinators for event
 	disaster_coordinator_query = db.session.query(Emergency, Assignment, User).join(Assignment, Assignment.emergency_id == Emergency.id).join(User, User.id == Assignment.user_id).filter(Emergency.id == dis_id, Assignment.role == 'SIMS Remote Coordinator').all()
+	
 	# for loop gets the user id of query and appends to list
 	disaster_coordinator_list = []
 	for coordinator in disaster_coordinator_query:
 		disaster_coordinator_list.append(coordinator.User.id)
 	
-	# check if current user is one of the event's coordinators
-	if current_user.id in disaster_coordinator_list or current_user.is_admin == 1:
+	# check that product is associated with that disaster
+	check_record = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id == prod_id, Emergency.id == dis_id).first()
+	
+	# check if current user is one of the event's coordinators, and that the product passed the route is associated with the emergency
+	if (current_user.id in disaster_coordinator_list or current_user.is_admin == 1) and check_record:
 		try:
 			db.session.query(Portfolio).filter(Portfolio.id == prod_id).update({'product_status':'Approved'})
 			db.session.commit()
 			flash('Product has been approved for external viewers.', 'success')
 		except:
-			flash('Error approving the product. Check that the product ID is correct.', 'warning')
+			flash('Error approving the product.', 'warning')
 		redirect_url = '/emergency/{}'.format(dis_id)
 		return redirect(redirect_url)
-			
+	elif (current_user.id in disaster_coordinator_list or current_user.is_admin == 1) and not check_record:
+		flash('Error approving the product. It looks like that product is not associated with this emergency, or an ID number is wrong. Contact a site administrator.', 'warning')
+		redirect_url = '/emergency/{}'.format(dis_id)
+		return redirect(redirect_url)
 	else:
 		event_name = db.session.query(Emergency).filter(Emergency.id == dis_id).first()
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins, disaster_coordinator_query=disaster_coordinator_query, event_name=event_name), 403
+
+@portfolios.route('/portfolio/reject/<int:prod_id>/<int:dis_id>', methods=['GET', 'POST'])
+@login_required
+def reject_portfolio(prod_id, dis_id):
+	# get list of all SIMS coordinators for event
+	disaster_coordinator_query = db.session.query(Emergency, Assignment, User).join(Assignment, Assignment.emergency_id == Emergency.id).join(User, User.id == Assignment.user_id).filter(Emergency.id == dis_id, Assignment.role == 'SIMS Remote Coordinator').all()
 	
+	# for loop gets the user id of query and appends to list
+	disaster_coordinator_list = []
+	for coordinator in disaster_coordinator_query:
+		disaster_coordinator_list.append(coordinator.User.id)
 	
+	# check that product is associated with that disaster
+	check_record = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id == prod_id, Emergency.id == dis_id).first()
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	# check if current user is one of the event's coordinators, and that the product passed the route is associated with the emergency
+	if (current_user.id in disaster_coordinator_list or current_user.is_admin == 1) and check_record:
+		try:
+			db.session.query(Portfolio).filter(Portfolio.id == prod_id).update({'product_status':'Rejected'})
+			db.session.commit()
+			flash('Product has been rejected for public viewing.', 'success')
+		except:
+			flash('Error approving the product.', 'warning')
+		redirect_url = '/emergency/{}'.format(dis_id)
+		return redirect(redirect_url)
+	elif (current_user.id in disaster_coordinator_list or current_user.is_admin == 1) and not check_record:
+		flash('Error approving the product. It looks like that product is not associated with this emergency, or an ID number is wrong. Contact a site administrator.', 'warning')
+		redirect_url = '/emergency/{}'.format(dis_id)
+		return redirect(redirect_url)
+	else:
+		event_name = db.session.query(Emergency).filter(Emergency.id == dis_id).first()
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins, disaster_coordinator_query=disaster_coordinator_query, event_name=event_name), 403
+
+
+
+
+
+
+
+
+
+
+

@@ -32,6 +32,20 @@ def new_emergency():
 @emergencies.route('/emergency/<int:id>', methods=['GET', 'POST'])
 @login_required
 def view_emergency(id):
+	# get IDs of all this emergency's sims remote coordinators
+	sims_co_ids = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id == User.id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.id == id, Assignment.role == 'SIMS Remote Coordinator').all()
+
+	# loop through IDs to see if current user is one of the coordinators
+	sims_co_list = []
+	for coordinator in sims_co_ids:
+		sims_co_list.append(coordinator.User.id)
+	if current_user.id in sims_co_list:
+		user_is_sims_co = True
+	else:
+		user_is_sims_co = False
+	
+	pending_products = db.session.query(Portfolio).filter(Portfolio.emergency_id == id, Portfolio.product_status == 'Pending Approval').all()
+
 	deployments = db.session.query(Assignment, Emergency, User, NationalSociety).join(Emergency, Emergency.id==Assignment.emergency_id).join(User, User.id==Assignment.user_id).join(NationalSociety, NationalSociety.ns_go_id==User.ns_id).filter(Emergency.id==id, Assignment.assignment_status=='Active').all()
 	emergency_info = db.session.query(Emergency, EmergencyType, NationalSociety).join(EmergencyType, EmergencyType.emergency_type_go_id==Emergency.emergency_type_id).join(NationalSociety, NationalSociety.ns_go_id == Emergency.emergency_location_id).filter(Emergency.id==id).first()
 	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id==Portfolio.emergency_id).filter(Emergency.id==id, Portfolio.product_status=='Active').all()
@@ -56,11 +70,10 @@ def view_emergency(id):
 	for k, v in data_dict_avg_learnings[0].items():
 		avg_learning_keys.append(k)
 		avg_learning_values.append(v)
-	
-	print('the number of deployments is: {}'.format(len(deployments)))
-	
+
 	deployment_history_count = len(deployments)
-	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, check_for_story=check_for_story, learning_data=learning_data, learning_keys=learning_keys, learning_values=learning_values, learning_count=learning_count, avg_learning_keys=avg_learning_keys, avg_learning_values=avg_learning_values, deployment_history_count=deployment_history_count)
+	
+	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, check_for_story=check_for_story, learning_data=learning_data, learning_keys=learning_keys, learning_values=learning_values, learning_count=learning_count, avg_learning_keys=avg_learning_keys, avg_learning_values=avg_learning_values, deployment_history_count=deployment_history_count, user_is_sims_co=user_is_sims_co, pending_products=pending_products)
 
 @emergencies.route('/emergency/edit/<int:id>', methods=['GET', 'POST'])
 def edit_emergency(id):
