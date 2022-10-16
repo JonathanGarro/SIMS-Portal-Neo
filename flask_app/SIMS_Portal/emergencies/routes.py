@@ -47,11 +47,11 @@ def view_emergency(id):
 	pending_products = db.session.query(Portfolio).filter(Portfolio.emergency_id == id, Portfolio.product_status == 'Pending Approval').all()
 
 	deployments = db.session.query(Assignment, Emergency, User, NationalSociety).join(Emergency, Emergency.id==Assignment.emergency_id).join(User, User.id==Assignment.user_id).join(NationalSociety, NationalSociety.ns_go_id==User.ns_id).filter(Emergency.id==id, Assignment.assignment_status=='Active').all()
-	emergency_info = db.session.query(Emergency, EmergencyType, NationalSociety).join(EmergencyType, EmergencyType.emergency_type_go_id==Emergency.emergency_type_id).join(NationalSociety, NationalSociety.ns_go_id == Emergency.emergency_location_id).filter(Emergency.id==id).first()
-	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id==Portfolio.emergency_id).filter(Emergency.id==id, Portfolio.product_status=='Active').all()
+	emergency_info = db.session.query(Emergency, EmergencyType, NationalSociety).join(EmergencyType, EmergencyType.emergency_type_go_id == Emergency.emergency_type_id).join(NationalSociety, NationalSociety.ns_go_id == Emergency.emergency_location_id).filter(Emergency.id == id).first()
+	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Emergency.id == id, Portfolio.product_status == 'Active').all()
 	check_for_story = db.session.query(Story, Emergency).join(Emergency, Emergency.id == Story.emergency_id).filter(Story.emergency_id == id).first()
 
-	learning_count = db.session.query(Learning, Assignment, Emergency).join(Assignment, Assignment.id==Learning.assignment_id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(Emergency.id==id).count()
+	learning_count = db.session.query(Learning, Assignment, Emergency).join(Assignment, Assignment.id == Learning.assignment_id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.id == id).count()
 
 	learning_data = db.engine.execute("SELECT AVG(overall_score) as 'Overall', AVG(got_support) as 'Support', AVG(internal_resource) as 'Internal Resources', AVG(external_resource) as 'External Resources', AVG(clear_tasks) as 'Task Clarity', AVG(field_communication) as 'Field Communication', AVG(clear_deadlines) as 'Deadlines', AVG(coordination_tools) as 'Coordination Tools' FROM learning JOIN assignment ON assignment.id = learning.assignment_id JOIN emergency ON emergency.id = assignment.emergency_id WHERE emergency.id = {}".format(id))
 	

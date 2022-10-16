@@ -13,7 +13,7 @@ portfolios = Blueprint('portfolios', __name__)
 def portfolio():
 	type_search = ''
 	type_list = ['Map', 'Infographic', 'Dashboard', 'Mobile Data Collection', 'Assessment', 'Report - Analysis', 'Other']
-	public_portfolio = db.session.query(Portfolio).filter(Portfolio.external==1, Portfolio.product_status=='Active').all()
+	public_portfolio = db.session.query(Portfolio).filter(Portfolio.external==1, Portfolio.product_status=='Approved').all()
 	return render_template('portfolio_public.html', title="SIMS Products", public_portfolio=public_portfolio, type_list=type_list, type_search=type_search)
 	
 @portfolios.route('/portfolio/filter/<type>', methods=['GET', 'POST'])
@@ -118,6 +118,8 @@ def delete_portfolio(id):
 @portfolios.route('/portfolio/review/<int:dis_id>', methods=['GET', 'POST'])
 @login_required
 def review_portfolio(dis_id):
+	emergency_info = db.session.query(Emergency, EmergencyType, NationalSociety).join(EmergencyType, EmergencyType.emergency_type_go_id == Emergency.emergency_type_id).join(NationalSociety, NationalSociety.ns_go_id == Emergency.emergency_location_id).filter(Emergency.id == dis_id).first()
+	
 	# get list of all SIMS coordinators for event
 	disaster_coordinator_query = db.session.query(Emergency, Assignment, User).join(Assignment, Assignment.emergency_id == Emergency.id).join(User, User.id == Assignment.user_id).filter(Emergency.id == dis_id, Assignment.role == 'SIMS Remote Coordinator').all()
 	# for loop gets the user id of query and appends to list
@@ -135,7 +137,7 @@ def review_portfolio(dis_id):
 	# get pending products for this emergency	
 	pending_list = db.session.query(Portfolio, Emergency, User).join(Emergency, Emergency.id == Portfolio.emergency_id).join(User, User.id == Portfolio.creator_id).filter(Portfolio.emergency_id == dis_id, Portfolio.product_status == 'Pending Approval').all()
 
-	return render_template('portfolio_approve.html', pending_list=pending_list)
+	return render_template('portfolio_approve.html', pending_list=pending_list, emergency_info=emergency_info)
 	
 	
 @portfolios.route('/portfolio/approve/<int:prod_id>/<int:dis_id>', methods=['GET', 'POST'])
@@ -160,11 +162,11 @@ def approve_portfolio(prod_id, dis_id):
 			flash('Product has been approved for external viewers.', 'success')
 		except:
 			flash('Error approving the product.', 'warning')
-		redirect_url = '/emergency/{}'.format(dis_id)
+		redirect_url = '/portfolio/review/{}'.format(dis_id)
 		return redirect(redirect_url)
 	elif (current_user.id in disaster_coordinator_list or current_user.is_admin == 1) and not check_record:
 		flash('Error approving the product. It looks like that product is not associated with this emergency, or an ID number is wrong. Contact a site administrator.', 'warning')
-		redirect_url = '/emergency/{}'.format(dis_id)
+		redirect_url = '/portfolio/review/{}'.format(dis_id)
 		return redirect(redirect_url)
 	else:
 		event_name = db.session.query(Emergency).filter(Emergency.id == dis_id).first()
@@ -193,11 +195,11 @@ def reject_portfolio(prod_id, dis_id):
 			flash('Product has been rejected for public viewing.', 'success')
 		except:
 			flash('Error approving the product.', 'warning')
-		redirect_url = '/emergency/{}'.format(dis_id)
+		redirect_url = '/portfolio/review/{}'.format(dis_id)
 		return redirect(redirect_url)
 	elif (current_user.id in disaster_coordinator_list or current_user.is_admin == 1) and not check_record:
 		flash('Error approving the product. It looks like that product is not associated with this emergency, or an ID number is wrong. Contact a site administrator.', 'warning')
-		redirect_url = '/emergency/{}'.format(dis_id)
+		redirect_url = '/portfolio/review/{}'.format(dis_id)
 		return redirect(redirect_url)
 	else:
 		event_name = db.session.query(Emergency).filter(Emergency.id == dis_id).first()
