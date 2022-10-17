@@ -1,11 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class='container'>
-  <a href="#" class="list-group-item"><i class="fa fa-solid fa-laptop" aria-hidden="true"></i>
-  Desktop</a>
-  <a href="#" class="list-group-item"><i class="fa fa-solid fa-graduation-cap" aria-hidden="true"></i>
-  Mobile</a>
-  <a href="#" class="list-group-item"><i class="fa fa-globe" aria-hidden="true"></i>
-  Tablet</a>
+  <div class='col-4'>
+    <div class="card p-4 bg-light mt-5">
+      <div class='row'>
+        <div class="col text-center">
+          <img src="/static/assets/img/active-emergency.png" width="48" alt="Bulb icon" class="d-block mb-2 mx-auto">
+          <h5 class="mb-2 pb-1 text-secondary">Active<br> Response</h5>
+        </div>
+        <div class="col text-center">
+          <img src="/static/assets/img/story-icon.png" width="48" alt="Bulb icon" class="d-block mb-2 mx-auto">
+          <h5 class="mb-2 pb-1 text-secondary">Response<br> Story</h5>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock content %}

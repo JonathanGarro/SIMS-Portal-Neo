@@ -109,14 +109,16 @@ def badge_assignment(user_id, badge_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-	all_emergencies = db.engine.execute("SELECT iso3, COUNT(*) as count FROM emergency JOIN nationalsociety WHERE emergency.emergency_location_id = nationalsociety.ns_go_id AND emergency_status <> 'Removed' GROUP BY iso3")
-		
-	header_row = ['iso3', 'count']
-	with open('SIMS_Portal/static/data/emergencies_viz.csv', 'w', newline='') as f:
-		f.write(','.join(header_row) + '\n')
-		writer = csv.writer(f)
-		for x in all_emergencies:
-			writer.writerow([x.iso3, x.count])
+
+	# # generate new csv for dashboard
+	# all_emergencies = db.engine.execute("SELECT iso3, COUNT(*) as count FROM emergency JOIN nationalsociety WHERE emergency.emergency_location_id = nationalsociety.ns_go_id AND emergency_status <> 'Removed' GROUP BY iso3")
+	# 	
+	# header_row = ['iso3', 'count']
+	# with open('SIMS_Portal/static/data/emergencies_viz.csv', 'w', newline='') as f:
+	# 	f.write(','.join(header_row) + '\n')
+	# 	writer = csv.writer(f)
+	# 	for x in all_emergencies:
+	# 		writer.writerow([x.iso3, x.count])
 		
 	return render_template('visualization.html')
 

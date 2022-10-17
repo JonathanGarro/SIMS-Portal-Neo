@@ -19,62 +19,31 @@
 			<div class="card p-4 bg-light">
 				<h5 class="text-secondary py-1">Response Operation</h5>
 				<h1 class="text-danger mb-5 emergency-title">{{ emergency_info.Emergency.emergency_name}}</h1>
-				
+
 				{% if  emergency_info.Emergency.emergency_status == 'Active' %}
 				
-				<div>
-					<div class='row align-items-center'>
-						<div class='col-2 me-1'>
-							<img src='/static/assets/img/active-emergency.png' height='50px' width='50px'></a>
-						</div>
-						<div class='col ps-4'>
-							<span class='lead' id='emergency-story-link'>Active Response</span>
-						</div>
-					</div>
+				<div class="d-flex flex-row bd-highlight align-items-center">
+					<div class="bd-highlight"><img src='/static/assets/img/active-emergency.png'></a></div>
+					<div class="ps-4 bd-highlight"><span class='lead' id='emergency-story-link'>Active Response</span></div>
 				</div>
 				
 				{% elif  emergency_info.Emergency.emergency_status == 'Removed' %}
 				
-				<div>
-					<div class='row align-items-center'>
-						<div class='col-2 me-1'>
-							<img src='/static/assets/img/removed-emergency.png' height='50px' width='50px'></a>
-						</div>
-						<div class='col ps-4'>
-							<span class='lead' id='emergency-story-link'>Deleted Record</span><br> <span class='text-secondary'><a href='/resources/sims_portal#emergency-statuses'>What's this?</a></span></a>
-						</div>
-					</div>
+				<div class="d-flex flex-row bd-highlight align-items-center">
+					<div class="bd-highlight"><img src='/static/assets/img/closed-emergency.png'></a></div>
+					<div class="ps-4 bd-highlight"><span class='lead' id='emergency-story-link'>Deleted Record</span></div>
 				</div>
 				
 				{% else %}
 
-				<div>
-					<div class='row align-items-center'>
-						<div class='col-2 me-1'>
-							<img src='/static/assets/img/closed-emergency.png' height='50px' width='50px'></a>
-						</div>
-						<div class='col ps-4'>
-							<span class='lead' id='emergency-story-link'>Closed Operation</span><br> <span class='text-secondary'><a href='/resources/sims_portal#emergency-statuses'>What's this?</a></span></a>
-						</div>
-					</div>
+				<div class="d-flex flex-row bd-highlight align-items-center">
+					<div class="bd-highlight"><img src='/static/assets/img/closed-emergency.png'></a></div>
+					<div class="ps-4 bd-highlight"><span class='lead' id='emergency-story-link'>Closed Response</span></div>
 				</div>
 				
 				{% endif %}
 
-				
-				{% if check_for_story %}
-				<div class='mt-3'>
-					<div class='row align-items-center'>
-						<div class='col-2 me-1'>
-							<a href='/story/{{emergency_info.Emergency.id}}'><img src='/static/assets/img/story-icon.png' height='50px' width='50px'></a>
-						</div>
-						<div class='col ps-4'>
-							<a href='/story/{{emergency_info.Emergency.id}}'><span class='lead' id='emergency-story-link'>Response Story</span></a>
-						</div>
-					</div>
-				</div>
-				{% endif %}
-				
+
 				
 			</div>
 			<br>
@@ -85,7 +54,7 @@
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="/assignment/new/{{emergency_info.Emergency.id}}" class="text-secondary">Log New Assignment</a>
 					</li>
-					{% if pending_products|length > 0 and user_is_sims_co or current_user.is_admin == 1 %}
+					{% if (pending_products|length > 0 and user_is_sims_co) or (pending_products|length > 0 and current_user.is_admin == 1) %}
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="/portfolio/review/{{emergency_info.Emergency.id}}" class="text-secondary">Review Products</a>
 						<span class="badge bg-danger rounded-pill"><a href="#" class='text-light'>{{pending_products|length}}</a></span>
@@ -95,6 +64,11 @@
 						<a href="#" class="text-secondary">Review Operation</a>
 						<span class="badge bg-secondary rounded-pill"><a href="#" class='text-light'>?</a></span>
 					</li>
+					{% if check_for_story %}
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						<a href='/story/{{emergency_info.Emergency.id}}' class="text-secondary">View Response Story</a>
+					</li>
+					{% endif %}
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="https://go.ifrc.org/emergencies/{{ emergency_info.Emergency.emergency_go_id }}" class="text-secondary">View Emergency on GO</a>
 					</li>
