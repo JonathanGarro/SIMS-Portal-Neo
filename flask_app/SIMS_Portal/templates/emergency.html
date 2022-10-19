@@ -193,6 +193,13 @@
 		</div>
 	
 		<div class="col mx-4">
+			{% if (pending_products|length > 1 and user_is_sims_co) or (pending_products|length > 1 and current_user.is_admin == 1) %}
+			<div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			  There are {{pending_products|length}} products pending approval. <a href="/portfolio/review/{{emergency_info.Emergency.id}}" class="text-danger fw-bold">Review the products here</a>.
+			</div>
+			{% endif %}
+			
 			{% if emergency_info.Emergency.activation_details|length == 0 %}
 
 			{% else %}
@@ -228,7 +235,7 @@
 				</table>
 				{% endif %}
 			</div>
-			<h3 class="mb-1 text-dark mb-3 emergency-title">Response Portfolio Highlights</h3>
+			<h3 class="mb-1 text-dark mb-4 emergency-title">Response Portfolio Highlights: <span class='text-danger'>{{ emergency_portfolio_size }}</span></h3>
 			<div class="row row-cols-3 row-cols-md-3 g-4 mb-5">
 			{% for product in emergency_portfolio %}
 				<div class="col d-flex align-items-stretch">
@@ -237,16 +244,19 @@
 						{% if '.pdf' in product.Portfolio.final_file_location %}
 						<img src="/static/assets/portfolio/placeholder.png" class="card-img-top" alt="PDF Placeholder Thumbnail">
 						{% else %}
-					  <img src="/static/assets/portfolio/{{product.Portfolio.final_file_location}}" class="card-img-top" alt="...">
-					  {% endif %}
-					  <div class="card-body d-flex flex-column">
-					  	<div class='pb-4'><button type="button" class="btn btn-secondary btn-sm">{{product.Portfolio.type}}</button></div>
-						<h5 class="card-title mt-auto text-danger">{{product.Portfolio.title}}</h5>
-						</a>
-					  </div>
-					</div>
+					    <img src="/static/assets/portfolio/{{product.Portfolio.final_file_location}}" class="card-img-top" alt="...">
+					    {% endif %}
+					    <div class="card-body d-flex flex-column">
+					  		<div class='pb-4'><button type="button" class="btn btn-secondary btn-sm">{{product.Portfolio.type}}</button></div>
+							  <h5 class="card-title mt-auto text-danger">{{product.Portfolio.title}}</h5>
+					</a>
 				</div>
+			</div>
+		</div>
 			{% endfor %}
+	</div>
+			<div class='mb-5'>
+				<a href='/portfolio/emergency_more/{{emergency_info.Emergency.id}}'<button type="button" class="btn btn-danger btn-sm">View All Products Posted for this Operation</button></a>
 			</div>
 			
 			<h3 class="text-dark my-4 emergency-title">Assignment Reviews</h3>

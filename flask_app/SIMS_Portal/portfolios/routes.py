@@ -206,7 +206,13 @@ def reject_portfolio(prod_id, dis_id):
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins, disaster_coordinator_query=disaster_coordinator_query, event_name=event_name), 403
 
-
+@portfolios.route('/portfolio/emergency_more/<int:id>')
+@login_required
+def all_emergency_products(id):
+	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Emergency.id == id, Portfolio.product_status == 'Active' or Portfolio.product_status == 'Approved').all()
+	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
+	print(emergency_info.emergency_name)
+	return render_template('emergency_more.html', emergency_portfolio=emergency_portfolio, emergency_info=emergency_info)
 
 
 

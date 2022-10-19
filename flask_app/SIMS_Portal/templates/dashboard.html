@@ -15,6 +15,20 @@
 			{% endwith %}
 		</div>
 		<div class="row mb-5">
+			{% if pending_user_check|length == 1 and current_user.is_admin == 1 %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			  There is one new user account pending approval. Go to the Admin Portal to approve or reject the request.
+			</div>
+			{% endif %}
+			
+			{% if pending_user_check|length > 1 and current_user.is_admin == 1 %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			  There are {{pending_user_check|length}} new user accounts pending approval. Go to the Admin Portal to approve or reject their requests.
+			</div>
+			{% endif %}
+			
 			<div class='mb-5'>
 			{% if count_active_assignments == 0 %}
 				<h3 class="mt-5" style="font-family: 'Montserrat'">No Active Assignments</h3>
