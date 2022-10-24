@@ -27,7 +27,7 @@ def filter_portfolio(type):
 @login_required
 def all_products():
 	type_search = ''
-	full_portfolio = db.session.query(Portfolio).filter(Portfolio.product_status=='Active').all()
+	full_portfolio = db.session.query(Portfolio).filter(Portfolio.product_status != 'Removed').all()
 	type_list = ['Map', 'Infographic', 'Dashboard', 'Mobile Data Collection', 'Assessment', 'Report - Analysis', 'Other']
 	return render_template('portfolio_all.html', title="SIMS Products", full_portfolio=full_portfolio, type_list=type_list, type_search=type_search)
 
@@ -36,7 +36,7 @@ def all_products():
 def filter_portfolio_private(type):
 	type_list = ['Map', 'Infographic', 'Dashboard', 'Mobile Data Collection', 'Assessment', 'Report - Analysis', 'Other']
 	type_search = "{}".format(type)
-	full_portfolio = db.session.query(Portfolio).filter(Portfolio.product_status=='Active', Portfolio.type == type_search).all()
+	full_portfolio = db.session.query(Portfolio).filter(Portfolio.product_status != 'Removed', Portfolio.type == type_search).all()
 	return render_template('portfolio_all.html', title="SIMS Products", full_portfolio=full_portfolio, type_search=type_search, type_list=type_list)
 
 @portfolios.route('/portfolio/new', methods=['GET', 'POST'])
@@ -68,12 +68,16 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 	if form.validate_on_submit():
 		if form.file.data:
 			file = save_portfolio(form.file.data)
+		else:
+			redirect_url = '/portfolio/new_from_assignment/{}/{}/{}'.format(assignment_id, user_id, emergency_id)
+			flash('There was an error posting your product. Please make sure you have filled out all required fields and selected a compatible file.', 'danger')
+			return redirect(request.url)
 		if form.external.data == True:
 			form.external.data = 1
 			status = 'Pending Approval'
 		else:
 			form.external.data = 0
-			status = 'Active'
+			status = 'Personal'
 		product = Portfolio(
 			final_file_location = file, title=form.title.data, creator_id=user_id, description=form.description.data, type=form.type.data, emergency_id=emergency_id, external=form.external.data, assignment_id=assignment_id, asset_file_location=form.asset_file_location.data, product_status=status
 		)
@@ -209,11 +213,16 @@ def reject_portfolio(prod_id, dis_id):
 @portfolios.route('/portfolio/emergency_more/<int:id>')
 @login_required
 def all_emergency_products(id):
-	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Emergency.id == id, Portfolio.product_status == 'Active' or Portfolio.product_status == 'Approved').all()
+	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Emergency.id == id, Portfolio.product_status == 'Approved').all()
 	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
-	print(emergency_info.emergency_name)
 	return render_template('emergency_more.html', emergency_portfolio=emergency_portfolio, emergency_info=emergency_info)
 
+@portfolios.route('/portfolio/profile_more/<int:id>')
+@login_required
+def all_user_products(id):
+	user_portfolio = db.session.query(Portfolio).filter(Portfolio.creator_id == id, Portfolio.product_status != 'Removed').all()
+	user_info = db.session.query(User).filter(User.id == id).first()
+	return render_template('profile_more.html', user_info=user_info, user_portfolio=user_portfolio)
 
 
 

@@ -54,7 +54,7 @@ def view_assignment(id):
 	assignment_length_dict = assingment_length.mappings().first()
 	assignment_length_int = int(assignment_length_dict['length'])
 	
-	assingment_portfolio = db.session.query(Portfolio).filter(Portfolio.assignment_id==id, Portfolio.product_status=='Active').all()
+	assingment_portfolio = db.session.query(Portfolio).filter(Portfolio.assignment_id==id, Portfolio.product_status != 'Removed').all()
 	count_assignment_portfolio = len(assingment_portfolio)
 	
 	# get availability if reported and convert to list, else return empty list

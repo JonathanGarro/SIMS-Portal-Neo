@@ -132,8 +132,8 @@
 				{% endif %}
 			</div>
 			<div class='mb-5'>
-				<h3 class="mb-3 text-danger profile-section-header">Portfolio Highlights</h3>
-				<div class="row row-cols-3 row-cols-md-3 g-4 mt-4">
+				<h3 class="mb-3 text-danger profile-section-header">Portfolio Highlights: <span class='text-dark'>{{user_portfolio_size}}</h3>
+				<div class="row row-cols-3 row-cols-md-3 g-4 my-4">
 				{% for product in user_portfolio %}
 					<div class="col d-flex align-items-stretch">
 						<a href="/portfolio/view/{{product.Portfolio.id}}">
@@ -153,6 +153,11 @@
 					</div>
 				{% endfor %}
 				</div>
+				{% if user_portfolio_size > 3 %}
+				<div class='mb-5'>
+					<a href='/portfolio/profile_more/{{current_user.id}}'><button type="button" class="btn btn-danger">View All of {{current_user.firstname}}'s' Products</button></a>
+				</div>
+				{% endif %}
 			</div>
 			<div class='mb-3'>
 			<h3 class="mb-2 text-danger profile-section-header">Badges</h3>

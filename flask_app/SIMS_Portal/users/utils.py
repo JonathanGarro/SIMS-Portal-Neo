@@ -1,9 +1,11 @@
 from flask import url_for, current_app
 import os
 import secrets
+import requests
 from PIL import Image
 from flask_mail import Message
-from SIMS_Portal import mail
+from SIMS_Portal import mail, db
+from SIMS_Portal.models import User, Assignment, Emergency
 
 def save_picture(form_picture):
 	random_hex = secrets.token_hex(8)
@@ -27,3 +29,14 @@ def send_reset_email(user):
 If you did not make this request, then simply ignore this email and no changes will be made.
 '''
 	mail.send(msg)
+
+# send slack alert when new user signs up
+def new_user_slack_alert(message):
+	key = current_app.config['SLACK_BOT_TOKEN_NEW_USER']
+	payload = '{"text": "%s"}' % message
+	response = requests.post('https://hooks.slack.com/services/{}'.format(key), data=payload)
+
+def rem_cos_search():
+	with app.app_context():
+		active_SIMS_cos = db.session.query(Assignment, User, Emergency).join(User, User.id == Assignment.user_id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.emergency_status == 'Active', Assignment.role == 'SIMS Remote Coordinator').all()
+		print(active_SIMS_cos)

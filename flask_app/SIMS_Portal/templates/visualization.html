@@ -1,19 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class='container'>
-  <div class='col-4'>
-    <div class="card p-4 bg-light mt-5">
-      <div class='row'>
-        <div class="col text-center">
-          <img src="/static/assets/img/active-emergency.png" width="48" alt="Bulb icon" class="d-block mb-2 mx-auto">
-          <h5 class="mb-2 pb-1 text-secondary">Active<br> Response</h5>
-        </div>
-        <div class="col text-center">
-          <img src="/static/assets/img/story-icon.png" width="48" alt="Bulb icon" class="d-block mb-2 mx-auto">
-          <h5 class="mb-2 pb-1 text-secondary">Response<br> Story</h5>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% for badge in user_badges %}
+    {{badge}}
+  {% endfor %}
 </div>
 {% endblock content %}

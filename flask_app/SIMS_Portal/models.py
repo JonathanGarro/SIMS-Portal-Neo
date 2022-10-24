@@ -272,7 +272,7 @@ class Portfolio(db.Model):
 	title = db.Column(db.String(200), nullable=False)
 	type = db.Column(db.String(100), nullable=False)
 	description = db.Column(db.Text)
-	product_status = db.Column(db.String(100), default='Active')
+	product_status = db.Column(db.String(100), default='Personal')
 	final_file_location = db.Column(db.String(100), nullable=False)
 	asset_file_location = db.Column(db.String(100))
 	external = db.Column(db.Boolean, default=False)

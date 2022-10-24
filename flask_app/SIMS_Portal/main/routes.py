@@ -33,7 +33,7 @@ def index():
 	tweets = [{'tweet': re.sub(r"http\S+", "", t.full_text), 'created_at_year': t.created_at.year, 'created_at_month': t.created_at.month, 'created_at_day': t.created_at.day, 'headshot_url': t.user.profile_image_url, 'username': t.user.name, 'screen_name': t.user.screen_name, 'location': t.user.location, 'id': t.id_str} for t in public_tweets]
 	
 	latest_stories = db.session.query(Story, Emergency).join(Emergency, Emergency.id == Story.emergency_id).order_by(Story.id.desc()).limit(3).all()
-	
+	print("LOADING LAYOUT VIEW")
 	return render_template('index.html', latest_stories=latest_stories, tweets=tweets)
 	
 @main.route('/about')
@@ -109,7 +109,8 @@ def badge_assignment(user_id, badge_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-
+	user_badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=4 ORDER BY name")
+	
 	# # generate new csv for dashboard
 	# all_emergencies = db.engine.execute("SELECT iso3, COUNT(*) as count FROM emergency JOIN nationalsociety WHERE emergency.emergency_location_id = nationalsociety.ns_go_id AND emergency_status <> 'Removed' GROUP BY iso3")
 	# 	
@@ -120,7 +121,7 @@ def staging():
 	# 	for x in all_emergencies:
 	# 		writer.writerow([x.iso3, x.count])
 		
-	return render_template('visualization.html')
+	return render_template('visualization.html', user_badges=user_badges)
 
 @main.route('/learning')
 @login_required

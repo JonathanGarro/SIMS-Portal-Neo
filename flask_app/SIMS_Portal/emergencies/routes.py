@@ -13,7 +13,6 @@ emergencies = Blueprint('emergencies', __name__)
 @login_required
 def view_all_emergencies():
 	emergencies = db.engine.execute("SELECT e.id, e.emergency_name, e.emergency_status, e.emergency_glide, e.created_at, a.end_date, COUNT(a.id) as count_assignments, n.country_name, t.emergency_type_name FROM emergency e LEFT JOIN assignment a ON a.emergency_id = e.id LEFT JOIN nationalsociety n ON e.emergency_location_id = n.ns_go_id LEFT JOIN emergencytype t ON t.emergency_type_go_id = e.emergency_type_id WHERE e.emergency_status <> 'Removed' GROUP BY e.emergency_name")
-	print(type(emergencies))
 	return render_template('emergencies_all.html', emergencies=emergencies)
 
 @emergencies.route('/emergency/new', methods=['GET', 'POST'])
@@ -45,11 +44,11 @@ def view_emergency(id):
 		user_is_sims_co = False
 	
 	pending_products = db.session.query(Portfolio).filter(Portfolio.emergency_id == id, Portfolio.product_status == 'Pending Approval').all()
-
+	print(len(pending_products))
 	deployments = db.session.query(Assignment, Emergency, User, NationalSociety).join(Emergency, Emergency.id==Assignment.emergency_id).join(User, User.id==Assignment.user_id).join(NationalSociety, NationalSociety.ns_go_id==User.ns_id).filter(Emergency.id==id, Assignment.assignment_status=='Active').all()
 	emergency_info = db.session.query(Emergency, EmergencyType, NationalSociety).join(EmergencyType, EmergencyType.emergency_type_go_id == Emergency.emergency_type_id).join(NationalSociety, NationalSociety.ns_go_id == Emergency.emergency_location_id).filter(Emergency.id == id).first()
-	emergency_portfolio_size = len(db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Emergency.id == id, Portfolio.product_status == 'Active' or Portfolio.product_status == 'Approved').all())
-	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Emergency.id == id, Portfolio.product_status == 'Active' or Portfolio.product_status == 'Approved').limit(3).all()
+	emergency_portfolio_size = len(db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Emergency.id == id, Portfolio.product_status == 'Approved').all())
+	emergency_portfolio = db.session.query(Portfolio, Emergency).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Emergency.id == id, Portfolio.product_status == 'Approved').limit(3).all()
 	check_for_story = db.session.query(Story, Emergency).join(Emergency, Emergency.id == Story.emergency_id).filter(Story.emergency_id == id).first()
 
 	learning_count = db.session.query(Learning, Assignment, Emergency).join(Assignment, Assignment.id == Learning.assignment_id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.id == id).count()

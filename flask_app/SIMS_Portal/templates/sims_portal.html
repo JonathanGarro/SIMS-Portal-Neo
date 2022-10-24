@@ -36,15 +36,13 @@
 			<img src='/static/assets/img/SIMS_Portal_Data_Model.jpg' class='img-fluid'>
 			
 			<h2 class='my-4 text-danger' id='emergencies'>Emergencies</h2>
-			<p>The emergency page serves as the record to reflect the work that SIMS is doing in response to a specific event. It is not meant to capture much additional information about the event itself, instead using the GLIDE number to allow future connections with other databases, should there be a desire for that. The data points stored within the portal on the emergency record are designed to help us query the database for insights. For instance, we might want to see other events that we've responded to in that same country, or review all of our responses to a specific type of event.</p>
+			<p>The emergency page serves as the record to capture the work that SIMS is doing in response to a specific event. It is not meant to capture much additional information about the event itself, instead using the GLIDE number to allow future connections with other databases, should there be a desire for that. The data points stored within the portal on the emergency record are designed to help us query the database for insights. For instance, we might want to see other events that we've responded to in that same country, or review all of our responses to a specific type of event.</p>
 			
 			<p>The page allows us to link to the tools we commonly use: the Trello board that manages tasks, the Slack channel where communication occurs, and the Dropbox where files are shared. It also connects the assignments that are associated with this event via a <span class='fw-bold'>one-to-many</span> relationship (one emergency can have many assignments, but each assignment can only connect to a single emergency).</p>
-			
-			
 			<ul>
 				<li><span class='fw-bold'>Activation Details:</span> Capture a few sentences explaining the steps that led to SIMS being activated. Provide an overview of how SIMS responded and with what sort of support. Offer a look at the transition process and key learnings gleaned from the experience.</li>
 				<li><span class='fw-bold'>Member Support:</span> An automatically-updated table that shows which SIMS members provided support, either in the form of field-deployments or remote support. Clicking on the assignment in the table brings you to a dedicated page for that person's work. To add people to the emergency, the SIMS Coordinator can use the "Log New Assignment" button in the left pane. </li>
-				<li><span class='fw-bold'>Response Portfolio Highlights: </span> As members that are assigned to this emergency complete items that they are proud of and want to share, they get posted to their assignment record and will appear here as an aggregated view of all assignments. Clicking on a product will bring you to a dedicated page for it, with the ability to download the final version or navigate to the Dropbox folder where the underlying assets are stored. </li>
+				<li><span class='fw-bold'>Response Products: </span> As members that are assigned to this emergency complete items that they are proud of and want to share, they get posted to their assignment record and will appear here as an aggregated view of all assignments. Clicking on a product will bring you to a dedicated page for it, with the ability to download the final version or navigate to the Dropbox folder where the underlying assets are stored. If a member marks an uploaded product as "Share Publicly", it gets queued for review by a SIMS Remote Coordinator for that emergency. See the <a href="#products">products section</a> of this guide for more information.</li>
 				<li><span class='fw-bold'>Learning Overview: </span> As members rotate out of their assignments, they are given the opportunity to contribute to the learning process. The emergency page rolls up those insights to provide at-a-glance views of what worked well and what could be improved in the future.</li>
 			</ul>
 			<h4 class='my-4 text-secondary' id='emergency-statuses'>Emergency Statuses</h4>
@@ -83,7 +81,7 @@
 			</div>
 			
 			<h2 class='my-4 text-danger' id='assignments'>Assignments</h2>
-			<p>The Assignment object has a <span class='fw-bold'>many-to-one</span> relationship with emergencies (each assignment can be tagged to a single emergency, but each emergency can have many assignments), and a <span class='fw-bold'>many-to-one</span> relationship with members (each assignment can have one member, but each member can have many assignments).</p>
+			<p>The Assignment object has a <span class='fw-bold'>many-to-one</span> relationship with emergencies (each assignment can be tagged to a single emergency, but each emergency can have many assignments), and a <span class='fw-bold'>many-to-one</span> relationship with members, meaning that each assignment can have one member, but each member can have many assignments.</p>
 			
 			<p>Assignments are designed to provide some clarity to who is doing what within any given response. There has traditionally been more focus on the visible support provided in the form of IM field deployments and SIMS coordinators, but the strength of our network lies in the remote support from members who take on tasks and work in the background. By creating an assignment for anyone that is helping, we can better highlight their work and quantify the support being provided to the operation. </p>
 			
@@ -93,6 +91,30 @@
 				<li><span class='fw-bold'>Role: </span> The dropdown captures the most common roles that SIMS members have when they deploy to an operation. The "Remote Support" role is meant to capture anyone who has not deployed but is provided products or services from their home country.</li>
 				<li><span class='fw-bold'>Status: </span> The end date is what filters which assignments are currently active. This status field is only used to maintain a record of assignments that have been deleted. When deleted, the status is changed to "Removed". The row in the database is maintained to avoid conflicts, as there are other elements that link to the assignment record (including products produced). Only administrators can toggle this.</li>
 			</ul>
+			
+			<h2 class='my-4 text-danger' id='learnings'>Learnings</h2>
+			<p>The portal is designed to help the SIMS network learn from our collective experience supporting responses. Learning records are connected to assignments with a <span class='fw-bold'>one-to-one</span> relationship, meaning that each assignment can have only one associated learning record.</p>
+			
+			<p>As members cycle out of their deployment or remote support assignment, they have the option to fill out a learning survey. In order to ensure anonymity, a minimum number of responses must be submitted before the aggregated data is shown.</p>
+			
+			<h2 class='my-4 text-danger' id='members'>Members</h2>
+			<p>The portal is designed to help the SIMS network learn from our collective experience supporting responses. Learning records are connected to assignments with a <span class='fw-bold'>one-to-one</span> relationship, meaning that each assignment can have only one associated learning record.</p>
+			
+			<h2 class='my-4 text-danger' id='products'>Products</h2>
+			<p>The SIMS Portal is not designed to be a comprehensive repository for all the products created during a response. Rather, members can pick their favorite products to share. Products have a <span class='fw-bold'>many-to-one</span> relationship with assignments, meaning many products can be associated with an assignment. To post a product that you're proud of, navigate to your assignment and click "Upload Product".</p>
+			
+			<ul>
+				<li><span class='fw-bold'>Product Title:</span> Give the product a simple but descriptive name. This will help other members find your product when using the search function.</li>
+				<li><span class='fw-bold'>File Type:</span> Select the type of product. If the dropdown doesn't have an option that suits your product, choose other.</li>
+				<li><span class='fw-bold'>Description:</span> Provide a brief (one or two sentence) explanation of the product's purpose, and how to created it, what software you used, etc.</li>
+				<li><span class='fw-bold'>File Assets URL:</span> If the product has associated files that would be useful for someone that is looking to recreate or remix it for another use, include a link to the hosted folder where those files are.</li>
+				<li><span class='fw-bold'>Share Publicly:</span> Check this box if you want to promote the product beyond your profile. See "Product Visibility" for more information.
+			
+			<h4 class='my-4 text-secondary' id='product-visibility'>Product Visibility and Review</h4>
+			<p>By default, products that are uploaded to the portal are only posted to the member's profile page. If the creator also wants the product to appear on the emergency's page and be seen by external audiences, they'll need to select the "Share Publicly" box when uploading. Products that have that box selected will go into a queue on the emergency page, where only SIMS Remote Coordinators assigned to that operation can approve or reject the request to share items publicly.</p>
+			
+			<h4 class='my-4 text-secondary' id='emergency-statuses'>Sharing Product Ownership</h4>
+			<p>TBD</p>
 			
 			<h2 class='my-4 text-danger' id='badges'>Badges</h2>
 			<p>Badges are a simple way to recognize the achievements of members as they contribute to operations and to the SIMS network. These are stored in a table within the database, which allows for easy management of them as we continually add new ones. The <span class='fw-bold'>many-to-many</span> relationship of users to badges means that each user can have many badges, and those badges are not exclusive (except for a few rare ones which are meant to serve as awards). </p>
@@ -105,9 +127,6 @@
 			  </div>
 			</div>
 			<p>To learn more about the badges that are available and how common they are, see <a href='/badges'>this dedicated page</a>. The badges on user profiles link directly to this index. </p>
-			
-			
-			
 			
 	  </div>
 	  </div>
