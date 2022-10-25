@@ -224,7 +224,23 @@ def all_user_products(id):
 	user_info = db.session.query(User).filter(User.id == id).first()
 	return render_template('profile_more.html', user_info=user_info, user_portfolio=user_portfolio)
 
-
+# @portfolios.route('/portfolio/add_supporter/<int:product_id>')
+# @login_required
+# def add_supporter_to_product(product_id):
+# 	if form.validate_on_submit():
+# 		current_user.id = user_id
+# 		supporters = db.session.query(Portfolio).filter(Portfolio.id == product_id).first()
+# 		
+# 		
+# 		@assignments.route('/assignment/availability/result', methods=['GET', 'POST'])
+# 		@login_required
+# 		def assignment_availability_result():
+# 			response = request.form.getlist('available')
+# 			response_formatted = "{}".format(response)
+# 			assignment_id = request.form.get('assignment_id')
+# 			db.session.query(Assignment).filter(Assignment.id==assignment_id).update({'availability': response_formatted})
+# 			db.session.commit()
+# 			return redirect(url_for('assignments.view_assignment', id=assignment_id))
 
 
 

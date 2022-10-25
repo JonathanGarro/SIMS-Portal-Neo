@@ -113,7 +113,7 @@ def view_profile(id):
 	except:
 		ns_association = 'None' 
 	try:
-		assignment_history = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id==User.id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(User.id==id).all()
+		assignment_history = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id==User.id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(User.id==id, Emergency.emergency_status != 'Removed').all()
 	except:
 		pass
 	deployment_history_count = len(assignment_history)

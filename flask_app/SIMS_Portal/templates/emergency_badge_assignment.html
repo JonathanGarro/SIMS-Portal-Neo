@@ -54,7 +54,7 @@
 				  <tbody>
 					  {% for user in assigned_badges %}
 						  <tr>
-							  <td><a href='#'>{{user.firstname}} {{user.lastname}}</a></td>
+							  <td><a href='/profile/view/{{user.id}}'>{{user.firstname}} {{user.lastname}}</a></td>
 							  <td>{{user.badges}}</td>
 						  </tr>
 					  {% endfor %}

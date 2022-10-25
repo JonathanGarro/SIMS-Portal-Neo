@@ -12,8 +12,9 @@ stories = Blueprint('stories', __name__)
 
 @stories.route('/story/<int:emergency_id>')
 def view_story(emergency_id): 
-	if db.session.query(Story).filter(Story.emergency_id == emergency_id).first():
-		story_data = db.session.query(Story).filter(Story.emergency_id == emergency_id).first()
+	story_for_emergency = db.session.query(Story).filter(Story.emergency_id == emergency_id).first()
+	if story_for_emergency:
+		story_data = story_for_emergency
 		emergency_name = db.session.query(Story, Emergency).join(Emergency, Emergency.id == emergency_id).first()
 		members_supporting = db.session.query(Assignment, User, Story).join(User, User.id == Assignment.user_id).join(Story, Story.emergency_id == Assignment.emergency_id).filter(Assignment.emergency_id == emergency_id, Assignment.assignment_status == 'Active').count()
 		member_days = db.engine.execute("SELECT id, JULIANDAY(end_date) - JULIANDAY(start_date) as day_count, emergency_id FROM assignment WHERE emergency_id = :id AND assignment.assignment_status = 'Active'", {'id': emergency_id})
