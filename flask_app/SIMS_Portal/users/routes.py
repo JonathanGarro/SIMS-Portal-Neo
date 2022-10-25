@@ -267,7 +267,7 @@ def reset_token(token):
 		return redirect(url_for('users.login'))
 	return render_template('reset_token.html', title='Reset Password', form=form)
 
-@users.route('/user/approve/<int:id>')
+@users.route('/user/approve/<int:id>', methods=['GET', 'POST'])
 @login_required
 def approve_user(id):
 	if current_user.is_admin == 1:
@@ -282,7 +282,7 @@ def approve_user(id):
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
 
-@users.route('/user/delete/<int:id>')
+@users.route('/user/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delete_user(id):
 	if current_user.id == id:

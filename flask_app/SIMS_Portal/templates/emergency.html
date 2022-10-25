@@ -60,6 +60,12 @@
 						<span class="badge bg-danger rounded-pill"><a href="#" class='text-light'>{{pending_products|length}}</a></span>
 					</li>
 					{% endif %}
+					{% if user_is_sims_co %}
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						<a href="/badge_assignment_simsco/{{emergency_info.Emergency.id}}" class="text-secondary">Assign Badges</a>
+						<span class="badge bg-secondary rounded-pill"><a href="#" class='text-light'>?</a></span>
+					</li>
+					{% endif %}
 					{% if current_user.is_admin == 1 %}
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="#" class="text-secondary">Review Operation</a>
