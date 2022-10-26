@@ -28,7 +28,11 @@ user_language = db.Table('user_language',
 
 user_badge = db.Table('user_badge',
 	db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-	db.Column('badge_id', db.Integer, db.ForeignKey('badge.id'))
+	db.Column('badge_id', db.Integer, db.ForeignKey('badge.id')),
+	db.Column('assigner_id', db.Integer),
+	db.Column('assigner_justify', db.Text),
+	db.Column('created_date', db.DateTime, server_default=func.now()),
+	db.Column('updated_date', db.DateTime, onupdate=func.now())
 )
 
 user_workinggroup = db.Table('user_workinggroup',
@@ -276,6 +280,9 @@ class Portfolio(db.Model):
 	final_file_location = db.Column(db.String(100), nullable=False)
 	asset_file_location = db.Column(db.String(100))
 	external = db.Column(db.Boolean, default=False)
+	collaborator_ids = db.Column(db.String(200))
+	approver_id = db.Column(db.Integer)
+	approver_message = db.Column(db.Text)
 	
 	assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
 	creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -285,7 +292,7 @@ class Portfolio(db.Model):
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
 
 	def __repr__(self):
-		return f"Portfolio('{self.title}','{self.type}','{self.description}','{self.final_file_location}','{self.creator_id}')"
+		return f"Portfolio('{self.title}','{self.type}','{self.description}','{self.final_file_location}','{self.creator_id}','{self.collaborator_ids}')"
 
 class Alert(db.Model):
 	__tablename__ = 'alert'

@@ -47,6 +47,10 @@ a:hover {
 	color: white
 }
 
+.override-link-color {
+	color: white
+}
+
 body {
   position: relative;
 }

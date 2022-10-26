@@ -93,7 +93,9 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 def view_portfolio(id):
 	try:
 		product = db.session.query(Portfolio, User, Emergency).join(User, User.id == Portfolio.creator_id).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id==id).first()
-
+		
+		print(product.collaborator_ids)
+		
 		return render_template('portfolio_view.html', product=product)
 	except:
 		return redirect('error404')
@@ -224,24 +226,36 @@ def all_user_products(id):
 	user_info = db.session.query(User).filter(User.id == id).first()
 	return render_template('profile_more.html', user_info=user_info, user_portfolio=user_portfolio)
 
-# @portfolios.route('/portfolio/add_supporter/<int:product_id>')
-# @login_required
-# def add_supporter_to_product(product_id):
-# 	if form.validate_on_submit():
-# 		current_user.id = user_id
-# 		supporters = db.session.query(Portfolio).filter(Portfolio.id == product_id).first()
-# 		
-# 		
-# 		@assignments.route('/assignment/availability/result', methods=['GET', 'POST'])
-# 		@login_required
-# 		def assignment_availability_result():
-# 			response = request.form.getlist('available')
-# 			response_formatted = "{}".format(response)
-# 			assignment_id = request.form.get('assignment_id')
-# 			db.session.query(Assignment).filter(Assignment.id==assignment_id).update({'availability': response_formatted})
-# 			db.session.commit()
-# 			return redirect(url_for('assignments.view_assignment', id=assignment_id))
-
+@portfolios.route('/portfolio/add_supporter/<int:product_id>')
+@login_required
+def add_supporter_to_product(product_id):
+	user_id = current_user.id
+	collaborators = db.session.query(Portfolio).filter(Portfolio.id == product_id).first()
+	if collaborators.collaborator_ids is not None:
+		# split the string by comma and convert to list
+		split_collaborators = collaborators.collaborator_ids.split(',')
+		# convert str to int
+		list_collaborators = [eval(i) for i in split_collaborators]
+		# check if user is already associated
+		if user_id in list_collaborators:
+			flash('You are already associated with this product.', 'danger')
+			return redirect(url_for('portfolios.view_portfolio', id=product_id))
+		else:
+			# add user to list as collaborator
+			list_collaborators.append(user_id)
+			# convert list of ints back to single string
+			string_of_collaborators = ','.join(str(x) for x in list_collaborators)
+			# add new string back into db
+			db.session.query(Portfolio).filter(Portfolio.id == product_id).update({'collaborator_ids':string_of_collaborators})
+			db.session.commit()
+			flash('You are now listed as a collaborator!', 'success')
+			return redirect(url_for('portfolios.view_portfolio', id=product_id))
+	else:
+		str(user_id)
+		db.session.query(Portfolio).filter(Portfolio.id == product_id).update({'collaborator_ids':user_id})
+		db.session.commit()
+		flash('You are now listed as a collaborator!', 'success')
+		return redirect(url_for('portfolios.view_portfolio', id=product_id))
 
 
 

@@ -1,6 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container">
+	<div class="py-3" id="hideMe">
+	{% with messages = get_flashed_messages(with_categories=true) %}
+		   {% if messages %}
+			   {% for category, message in messages %}
+				   <div class="alert alert-{{ category }}">
+					   {{ message }} 
+				   </div>
+			   {% endfor %}
+		   {% endif %}
+	   {% endwith %}
+	</div>
 	<div class="row my-5">
 		<div class="col col-md-4 rounded rounded-3">
 			<div class="card border-0 p-4 bg-light">
@@ -11,10 +22,15 @@
 					<h5 class="text-secondary mt-4">Creator</h5>
 					<h4><a href="/profile/view/{{product.Portfolio.creator_id}}" class="text-danger">{{ product.User.firstname }} {{ product.User.lastname }}</a></h4>
 				</div>
+				{% if current_user.is_authenticated %}
+				<br>
+				<div class="row">
+					<p><a href="/portfolio/add_supporter/{{product.Portfolio.id}}" class="btn btn-sm btn-secondary mt-1" id="override-link-color">Add To My Profile</a> <span class="badge bg-secondary rounded-pill"><a href="/resources/sims_portal#shared-products" class='text-light'>?</a></span></p>
+				</div>
+				{% endif %}
 				<div class="row">
 					<h5 class="text-secondary mt-4">Emergency Response</h5>
 					<h4><a href={{url_for('emergencies.view_emergency', id=product.Portfolio.emergency_id)}} class='text-danger'> {{ product.Emergency.emergency_name}}</a></h4>
-					<h6><a href='https://go.ifrc.org/emergencies/{{product.Emergency.emergency_go_id}}' class='text-danger'>View on GO Platform</a></h6>
 				</div>
 
 				<div class="row">
@@ -23,12 +39,12 @@
 				</div>
 				<div class="row">
 					<h5 class="text-secondary mt-4">Final Product</h5>
-					<p><a href='/portfolio/download/{{product.Portfolio.id}}' class="btn btn-sm btn-danger mt-1" id="override-link-color">Download</a></p>
+					<p><a href='/portfolio/download/{{product.Portfolio.id}}' class="btn btn-sm btn-secondary mt-1" id="override-link-color">Download</a></p>
 				</div>
 				{% if product.Portfolio.asset_file_location and current_user.is_authenticated %}
 				<div class="row">
 					<h5 class="text-secondary mt-4">Source Files</h5>
-					<p><a href='https://{{product.Portfolio.asset_file_location}}' class="btn btn-sm btn-danger mt-1" id="override-link-color">Access</a></p>
+					<p><a href='https://{{product.Portfolio.asset_file_location}}' class="btn btn-sm btn-secondary mt-1" id="override-link-color">Access</a></p>
 				</div>
 				{% endif %}
 				{% if current_user.is_admin == 1 or current_user.id == product.User.id %}
