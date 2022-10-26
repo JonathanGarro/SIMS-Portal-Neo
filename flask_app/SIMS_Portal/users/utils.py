@@ -40,3 +40,16 @@ def rem_cos_search():
 	with app.app_context():
 		active_SIMS_cos = db.session.query(Assignment, User, Emergency).join(User, User.id == Assignment.user_id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.emergency_status == 'Active', Assignment.role == 'SIMS Remote Coordinator').all()
 		print(active_SIMS_cos)
+
+def send_slack_dm(message, user):
+
+	slack_token = current_app.config['SIMS_PORTAL_SLACK_BOT']
+
+	data = {
+			'token': slack_token,
+			'channel': user,    # User's Slack ID
+			'as_user': True,
+			'text': message
+	}
+	
+	requests.post(url='https://slack.com/api/chat.postMessage', data=data)

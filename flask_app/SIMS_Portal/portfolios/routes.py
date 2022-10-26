@@ -2,6 +2,7 @@ from flask import request, render_template, url_for, flash, redirect, jsonify, B
 from SIMS_Portal import db
 from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill, user_language, Badge, Alert
 from SIMS_Portal.portfolios.forms import PortfolioUploadForm
+from SIMS_Portal.users.utils import send_slack_dm
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
 from SIMS_Portal.portfolios.utils import save_portfolio
@@ -39,31 +40,10 @@ def filter_portfolio_private(type):
 	full_portfolio = db.session.query(Portfolio).filter(Portfolio.product_status != 'Removed', Portfolio.type == type_search).all()
 	return render_template('portfolio_all.html', title="SIMS Products", full_portfolio=full_portfolio, type_search=type_search, type_list=type_list)
 
-@portfolios.route('/portfolio/new', methods=['GET', 'POST'])
-@login_required
-def new_portfolio():
-	form = PortfolioUploadForm()
-	if form.validate_on_submit():
-		if form.file.data:
-			file = save_portfolio(form.file.data)
-		if form.external.data == True:
-			form.external.data = 1
-			status = 'Pending Approval'
-		else:
-			form.external.data = 0
-			status = 'Active'
-		product = Portfolio(
-			final_file_location = file, title=form.title.data, creator_id=form.creator_id.data.id, description=form.description.data, type=form.type.data, emergency_id=form.emergency_id.data.id, external=form.external.data, asset_file_location=form.asset_file_location.data, product_status=status
-		)
-		db.session.add(product)
-		db.session.commit()
-		flash('New product successfully uploaded.', 'success')
-		return redirect(url_for('users.profile'))
-	return render_template('create_portfolio.html', title='Upload New SIMS Product', form=form)
-
 @portfolios.route('/portfolio/new_from_assignment/<int:assignment_id>/<int:user_id>/<int:emergency_id>', methods=['GET', 'POST'])
 @login_required
 def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
+	user_info = db.session.query(User).filter(User.id == user_id).first()
 	form = PortfolioUploadForm()
 	if form.validate_on_submit():
 		if form.file.data:
@@ -83,6 +63,11 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 		)
 		db.session.add(product)
 		db.session.commit()
+		if user_info.slack_id is not None:
+			message = 'You have successfully posted to the portal!'
+			user = user_info.slack_id
+			print(user)
+			send_slack_dm(message, user)
 		flash('New product successfully uploaded.', 'success')
 		# return redirect(url_for('users.profile'))
 		redirect_url = '/assignment/{}'.format(assignment_id)
@@ -91,13 +76,22 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 
 @portfolios.route('/portfolio/view/<int:id>')
 def view_portfolio(id):
-	try:
-		product = db.session.query(Portfolio, User, Emergency).join(User, User.id == Portfolio.creator_id).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id==id).first()
-		
-		print(product.collaborator_ids)
-		
-		return render_template('portfolio_view.html', product=product)
-	except:
+	product = db.session.query(Portfolio, User, Emergency).join(User, User.id == Portfolio.creator_id).join(Emergency, Emergency.id == Portfolio.emergency_id).filter(Portfolio.id==id).first()
+	if product is not None:
+		# check if product already has collaborators assigned
+		if product.Portfolio.collaborator_ids is not None:
+			# strip out collaborator ids
+			split_collaborators = product.Portfolio.collaborator_ids.split(',')
+			# convert str to int
+			list_collaborators = [eval(i) for i in split_collaborators]
+			list_collaborators_user_info = []
+			for user_id in list_collaborators:
+				list_collaborators_user_info.append(db.session.query(User).filter(User.id == user_id).first())
+			return render_template('portfolio_view.html', product=product, list_collaborators_user_info=list_collaborators_user_info)
+		else:
+			list_collaborators_user_info = None
+			return render_template('portfolio_view.html', product=product, list_collaborators_user_info=list_collaborators_user_info)
+	else:
 		return redirect('error404')
 
 @portfolios.route('/portfolio/download/<int:id>')
@@ -196,7 +190,7 @@ def reject_portfolio(prod_id, dis_id):
 	# check if current user is one of the event's coordinators, and that the product passed the route is associated with the emergency
 	if (current_user.id in disaster_coordinator_list or current_user.is_admin == 1) and check_record:
 		try:
-			db.session.query(Portfolio).filter(Portfolio.id == prod_id).update({'product_status':'Rejected'})
+			db.session.query(Portfolio).filter(Portfolio.id == prod_id).update({'product_status':'Personal'})
 			db.session.commit()
 			flash('Product has been rejected for public viewing.', 'success')
 		except:

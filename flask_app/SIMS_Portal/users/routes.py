@@ -77,9 +77,9 @@ def profile():
 		pass
 	deployment_history_count = len(assignment_history)
 	
-	user_portfolio_size = len(db.session.query(Portfolio).filter(Portfolio.creator_id == current_user.id, Portfolio.product_status == 'Personal' or Portfolio.product_status == 'Approved').all())
+	user_portfolio_size = len(db.session.query(Portfolio).filter(Portfolio.creator_id == current_user.id).all())
 	
-	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==User.id).filter(User.id==current_user.id, Portfolio.product_status=='Personal' or Portfolio.product_status=='Approved').limit(3).all()
+	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==User.id).filter(User.id==current_user.id).limit(3).all()
 	
 	skills_list = db.engine.execute("SELECT * FROM user JOIN user_skill ON user.id = user_skill.user_id JOIN skill ON skill.id = user_skill.skill_id WHERE user.id=:current_user", {'current_user': current_user.id})
 	
@@ -89,6 +89,7 @@ def profile():
 	
 	badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=:current_user ORDER BY name", {'current_user': current_user.id})
 	
+	count_badges = db.engine.execute("SELECT count(*) as count FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=:member_id ORDER BY name", {'member_id': current_user.id}).scalar()
 	
 	# highlight assignments for which end date has not passed (i.e. is active assignment)
 	def convert_date_to_int(date):
@@ -103,7 +104,7 @@ def profile():
 	except:
 		pass
 
-	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list, badges=badges, user_portfolio_size=user_portfolio_size)
+	return render_template('profile.html', title='Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, skills_list=skills_list, languages_list=languages_list, badges=badges, user_portfolio_size=user_portfolio_size, count_badges=count_badges)
 	
 @users.route('/profile/view/<int:id>')
 def view_profile(id):

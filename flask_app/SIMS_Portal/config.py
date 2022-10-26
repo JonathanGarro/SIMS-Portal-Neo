@@ -20,3 +20,4 @@ class Config:
 	TRELLO_TOKEN = os.environ.get('TRELLO_TOKEN')
 	DATA_FOLDER = '/SIMS_Portal/static/data/'
 	SLACK_BOT_TOKEN_NEW_USER = os.environ.get('SLACK_BOT_TOKEN_NEW_USER')
+	SIMS_PORTAL_SLACK_BOT = os.environ.get('SIMS_PORTAL_SLACK_BOT')
