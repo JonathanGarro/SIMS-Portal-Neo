@@ -8,6 +8,7 @@ from SIMS_Portal.main.forms import MemberSearchForm, EmergencySearchForm, Produc
 from collections import defaultdict, Counter
 from datetime import date, timedelta
 from SIMS_Portal.config import Config
+from SIMS_Portal.main.utils import fetch_slack_channels
 import os
 import tweepy
 import re
@@ -178,8 +179,7 @@ def badge_assignment_sims_co(dis_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-	user_badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=4 ORDER BY name")
-	
+	output = fetch_slack_channels()
 	# # generate new csv for dashboard
 	# all_emergencies = db.engine.execute("SELECT iso3, COUNT(*) as count FROM emergency JOIN nationalsociety WHERE emergency.emergency_location_id = nationalsociety.ns_go_id AND emergency_status <> 'Removed' GROUP BY iso3")
 	# 	
@@ -190,7 +190,7 @@ def staging():
 	# 	for x in all_emergencies:
 	# 		writer.writerow([x.iso3, x.count])
 		
-	return render_template('visualization.html', user_badges=user_badges)
+	return render_template('visualization.html',output=output)
 
 @main.route('/learning')
 @login_required
@@ -206,6 +206,22 @@ def resources():
 @login_required
 def resources_colors():
 	return render_template('resources_colors.html')
+
+@main.route('/resources/communication_collaboration')
+@login_required
+def communication_and_collaboration():
+	return render_template('communication_collaboration.html')
+
+@main.route('/resources/slack')
+@login_required
+def resources_slack():
+	return render_template('slack.html')
+
+@main.route('/resources/slack/channels')
+@login_required
+def resources_slack_channels():
+	output = fetch_slack_channels()
+	return render_template('slack_channels.html', output=output)
 	
 @main.route('/resources/sims_portal')
 @login_required
@@ -259,6 +275,7 @@ def search_members():
 		return render_template('search_members_results.html', master_search=master_search)
 
 @main.route('/search/emergencies', methods=['GET', 'POST'])
+@login_required
 def search_emergencies():
 	emergency_form = EmergencySearchForm()
 	if request.method == 'GET':

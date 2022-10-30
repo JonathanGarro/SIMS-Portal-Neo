@@ -7,6 +7,7 @@ from flask_mail import Message
 from SIMS_Portal import mail, db
 from SIMS_Portal.models import User, Assignment, Emergency
 
+
 def save_picture(form_picture):
 	random_hex = secrets.token_hex(8)
 	filename, file_ext = os.path.splitext(form_picture.filename)
@@ -36,20 +37,19 @@ def new_user_slack_alert(message):
 	payload = '{"text": "%s"}' % message
 	response = requests.post('https://hooks.slack.com/services/{}'.format(key), data=payload)
 
+# search for remote coordinators currently active
 def rem_cos_search():
 	with app.app_context():
 		active_SIMS_cos = db.session.query(Assignment, User, Emergency).join(User, User.id == Assignment.user_id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.emergency_status == 'Active', Assignment.role == 'SIMS Remote Coordinator').all()
 		print(active_SIMS_cos)
 
+# general purpose DM messaging bot
 def send_slack_dm(message, user):
-
 	slack_token = current_app.config['SIMS_PORTAL_SLACK_BOT']
-
 	data = {
 			'token': slack_token,
 			'channel': user,    # User's Slack ID
 			'as_user': True,
 			'text': message
 	}
-	
 	requests.post(url='https://slack.com/api/chat.postMessage', data=data)

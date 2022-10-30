@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, logout_user, current_user, login_required
 from SIMS_Portal.portfolios.utils import save_portfolio
 import os
+from func_timeout import func_timeout, FunctionTimedOut
 
 portfolios = Blueprint('portfolios', __name__)
 
@@ -64,9 +65,11 @@ def new_portfolio_from_assignment(assignment_id, user_id, emergency_id):
 		db.session.add(product)
 		db.session.commit()
 		if user_info.slack_id is not None:
-			message = 'You have successfully posted to the portal!'
+			if form.external.data == True:
+				message = 'You have successfully posted {} to the portal! Since you have requested that it be publicly visible, it has been added to the review queue for a SIMS Remote Coordinator. In the meantime, the product will be visible on your profile page to viewers that are logged in, and on your individual assignment page for this emergency.'.format(form.title.data)
+			else:
+				message = 'You have successfully posted {} to the portal! It has been marked as "Personal", and is now visible on your profile page to viewers that are logged in, and on your individual assignment page for this emergency.'.format(form.title.data)
 			user = user_info.slack_id
-			print(user)
 			send_slack_dm(message, user)
 		flash('New product successfully uploaded.', 'success')
 		# return redirect(url_for('users.profile'))

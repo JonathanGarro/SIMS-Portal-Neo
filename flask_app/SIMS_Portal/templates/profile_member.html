@@ -74,7 +74,6 @@
 				{% if current_user.is_admin == 1 %}
 				<div class="list-group mt-5">
 					  <a href="/profile_edit/{{user_info.id}}" class="list-group-item list-group-item-action text-secondary">Update Profile</a>
-					  <a href="{{ url_for('portfolios.new_portfolio') }}" class="list-group-item list-group-item-action text-secondary">Add to Portfolio</a>
 					  <a href="/user/delete/{{user_info.id}}" class="list-group-item list-group-item-action text-danger">Delete Member</a>
 				</div>
 				{% elif current_user.id == user_info.id %}

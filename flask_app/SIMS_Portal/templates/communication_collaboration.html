@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+	<div class="row my-5">
+	  <div class="col-md-3">
+		  <div class="card border-0 p-4 bg-light sticky-top">
+			  <h5 class="text-danger Montserrat mb-5">Communication and Collaboration</h5>
+				  <div class="list-group">
+					<a href="/resources" class="list-group-item list-group-item-action text-secondary">← Resources Home</a>
+				</div>
+				<div class="list-group mt-3">
+					<a href="#slack" class="list-group-item list-group-item-action text-secondary">Slack</a>
+					<a href="#dropbox" class="list-group-item list-group-item-action text-secondary">Dropbox</a>
+				</div>
+			</div>
+	  </div>
+
+	  <div class="col">
+			<h3 class='my-4 text-danger Montserrat' id='slack'>Communicating with Slack</h3>
+			<p>NORMS</p>
+			<p>DISASTER CHANNELS</p>
+			<p>The SIMS Portal is configured to work with Slack in a number of ways. The SIMS Portal Bot can send push notifications directly to members (requires that they fill out their Slack ID on their member profile) for specific events, including when a product is uploaded or approved. The Portal also is connected to the SIMS Slack instance through its API, allowing various read/write functions. For instance, the Portal can monitor the number of people in active public channels—for privacy and data security reasons, we do not connect to private channels—and can link users directly to those channels. For a full list of SIMS Slack channels, <a href='/resources/slack/channels'>see this page.</a></p>
+			
+			<h3 class='my-4 text-danger Montserrat' id='dropbox'>Collaborating with Dropbox</h3>
+			<p>CONTENT</p>
+			
+			
+
+	  </div>
+	  </div>
+</div>
+{% endblock content %}
