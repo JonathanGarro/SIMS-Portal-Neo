@@ -292,7 +292,7 @@ class Portfolio(db.Model):
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
 
 	def __repr__(self):
-		return f"Portfolio('{self.title}','{self.type}','{self.description}','{self.final_file_location}','{self.creator_id}','{self.collaborator_ids}')"
+		return f"Portfolio('{self.id}','{self.title}','{self.type}','{self.description}','{self.final_file_location}','{self.creator_id}','{self.collaborator_ids}')"
 
 class Alert(db.Model):
 	__tablename__ = 'alert'

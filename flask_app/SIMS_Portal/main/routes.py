@@ -200,22 +200,22 @@ def learning():
 @main.route('/resources')
 @login_required
 def resources():
-	return render_template('resources.html')
+	return render_template('resources/resources.html')
 
 @main.route('/resources/colors')
 @login_required
 def resources_colors():
-	return render_template('resources_colors.html')
+	return render_template('/resources/colors.html')
 
 @main.route('/resources/communication_collaboration')
 @login_required
 def communication_and_collaboration():
-	return render_template('communication_collaboration.html')
+	return render_template('/resources/communication_collaboration.html')
 
 @main.route('/resources/slack')
 @login_required
 def resources_slack():
-	return render_template('slack.html')
+	return render_template('/resources/slack.html')
 
 @main.route('/resources/slack/channels')
 @login_required
@@ -226,7 +226,7 @@ def resources_slack_channels():
 @main.route('/resources/sims_portal')
 @login_required
 def resources_sims_portal():
-	return render_template('sims_portal.html')
+	return render_template('/resources/sims_portal.html')
 
 @main.route('/search/members', methods=['GET', 'POST'])
 def search_members():

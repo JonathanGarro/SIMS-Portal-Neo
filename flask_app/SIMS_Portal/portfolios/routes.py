@@ -226,8 +226,13 @@ def all_user_products(id):
 @portfolios.route('/portfolio/add_supporter/<int:product_id>')
 @login_required
 def add_supporter_to_product(product_id):
+	product = db.session.query(Portfolio).filter(Portfolio.id == product_id).first()
+	product_owner = product.creator_id
 	user_id = current_user.id
 	collaborators = db.session.query(Portfolio).filter(Portfolio.id == product_id).first()
+	if user_id == product_owner:
+		flash('You are already listed as the owner of this product and cannot be added as a collaborator.','danger')
+		return redirect(url_for('portfolios.view_portfolio', id=product_id))
 	if collaborators.collaborator_ids is not None:
 		# split the string by comma and convert to list
 		split_collaborators = collaborators.collaborator_ids.split(',')
