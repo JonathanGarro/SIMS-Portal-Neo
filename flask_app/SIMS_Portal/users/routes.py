@@ -3,6 +3,7 @@ from SIMS_Portal import db, bcrypt, mail
 from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill, user_language, Badge, Alert, user_badge
 from SIMS_Portal.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from SIMS_Portal.users.utils import save_picture, send_reset_email, new_user_slack_alert
+from SIMS_Portal.portfolios.utils import get_full_portfolio
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 from flask_login import login_user, logout_user, current_user, login_required
@@ -78,35 +79,7 @@ def profile():
 		pass
 	deployment_history_count = len(assignment_history)
 	
-	# get all products that user has posted
-	user_products = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==User.id).where(or_(User.id==current_user.id, Portfolio.collaborator_ids.like(user_info.id))).filter(Portfolio.product_status != 'Removed').all()
-	# empty list to hold product IDs
-	this_users_products = []
-	# iterate over user_products to get just the ID and update the list
-	for item in user_products:
-		this_users_products.append(item.Portfolio.id)
-	# get all products that have collaborators
-	user_collaborations = db.session.query(Portfolio).filter(Portfolio.collaborator_ids != None).all()
-	# empty list to hold product IDs
-	this_users_collaborations = []
-	# iterate over all products with collaborators
-	for item in user_collaborations:
-		# split the strings at comma
-		split_collaborators = item.collaborator_ids.split(',')
-		# convert numbers in string to integers
-		list_collaborators = [eval(i) for i in split_collaborators]
-		# if user's id is in that list
-		if user_info.id in list_collaborators:
-			# append product id to list
-			this_users_collaborations.append(item.id)
-	# merge user's products with user's collaborated products
-	total_portfolio = this_users_products + list(set(this_users_collaborations) - set(this_users_products))
-	#empty list to hold final list of objects from merged collaborator and product owner list
-	user_portfolio = []
-	# iterate over list to call each product individually from database
-	for product_id in total_portfolio:
-		# append results to final list
-		user_portfolio.append(db.session.query(Portfolio).filter(Portfolio.id == product_id).first())
+	user_portfolio = get_full_portfolio(current_user.id)
 	user_portfolio_size = len(user_portfolio)
 	
 	user_products = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==User.id).where(or_(User.id==current_user.id, Portfolio.collaborator_ids.like(user_info.id))).filter(Portfolio.product_status != 'Removed').all()
