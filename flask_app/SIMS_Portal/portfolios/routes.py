@@ -4,6 +4,7 @@ from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Por
 from SIMS_Portal.portfolios.forms import PortfolioUploadForm
 from SIMS_Portal.users.utils import send_slack_dm
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 from flask_login import login_user, logout_user, current_user, login_required
 from SIMS_Portal.portfolios.utils import save_portfolio
 import os
@@ -142,7 +143,6 @@ def review_portfolio(dis_id):
 
 	return render_template('portfolio_approve.html', pending_list=pending_list, emergency_info=emergency_info)
 	
-	
 @portfolios.route('/portfolio/approve/<int:prod_id>/<int:dis_id>', methods=['GET', 'POST'])
 @login_required
 def approve_portfolio(prod_id, dis_id):
@@ -219,8 +219,32 @@ def all_emergency_products(id):
 @portfolios.route('/portfolio/profile_more/<int:id>')
 @login_required
 def all_user_products(id):
-	user_portfolio = db.session.query(Portfolio).filter(Portfolio.creator_id == id, Portfolio.product_status != 'Removed').all()
 	user_info = db.session.query(User).filter(User.id == id).first()
+	all_collaborators_plus_creators = db.session.query(Portfolio.id, Portfolio.collaborator_ids, Portfolio.creator_id, Portfolio.product_status).filter(Portfolio.product_status != 'Removed').all()
+	temp_list = []
+	for item in all_collaborators_plus_creators:
+		temp_dict = {}
+		if item[1] is not None:
+			temp_dict['product_id'] = item[0]
+			temp_dict['user_ids'] = [int(item) for item in item[1].split(',') if item.isdigit()]
+			temp_dict['user_ids'].append(item[2])
+			temp_list.append(temp_dict)
+		else:
+			temp_dict['product_id'] = item[0]
+			temp_dict['user_ids'] = [item[2]]
+			temp_list.append(temp_dict)
+	
+	list_of_product_ids = []
+	
+	for item in temp_list:
+		if id in item['user_ids']:
+			list_of_product_ids.append(item['product_id'])
+	
+	user_portfolio = []
+	for this_product_id in list_of_product_ids:
+		user_portfolio.append(db.session.query(Portfolio).filter(Portfolio.id == this_product_id).all())
+	
+	user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==User.id).where(or_(User.id==user_info.id, Portfolio.collaborator_ids.like(user_info.id))).filter(Portfolio.product_status != 'Removed').all()
 	return render_template('profile_more.html', user_info=user_info, user_portfolio=user_portfolio)
 
 @portfolios.route('/portfolio/add_supporter/<int:product_id>')
@@ -230,9 +254,11 @@ def add_supporter_to_product(product_id):
 	product_owner = product.creator_id
 	user_id = current_user.id
 	collaborators = db.session.query(Portfolio).filter(Portfolio.id == product_id).first()
+	# prevent product owner from also being collaborator
 	if user_id == product_owner:
 		flash('You are already listed as the owner of this product and cannot be added as a collaborator.','danger')
 		return redirect(url_for('portfolios.view_portfolio', id=product_id))
+	# check if collaborator column has data
 	if collaborators.collaborator_ids is not None:
 		# split the string by comma and convert to list
 		split_collaborators = collaborators.collaborator_ids.split(',')
@@ -252,6 +278,7 @@ def add_supporter_to_product(product_id):
 			db.session.commit()
 			flash('You are now listed as a collaborator!', 'success')
 			return redirect(url_for('portfolios.view_portfolio', id=product_id))
+	# collaborator column is empty, so update with user id
 	else:
 		str(user_id)
 		db.session.query(Portfolio).filter(Portfolio.id == product_id).update({'collaborator_ids':user_id})
