@@ -1,37 +1,72 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div class="container">
 
-	<div class="row mt-5 mb-1">
-		<div class="col jumbotron">
-		  <h1 class='pb-3' style="font-family: 'Montserrat';" id='sims-blue'>We support operations with  <br><span class="text-danger typed"> </span></h1>
-		  <p class="lead mt-5">SIMS is a global network of Information Management experts who support IFRC emergency response operations by providing a variety of services and products. We maintain a roster of specialists from around the world across several key areas of technical support, including GIS, data collection and management, data analysis and visualization, and much more.</p> 
+<section class="position-relative overflow-hidden mb-3">
+	<div class="container pt-lg-2">
+	  <div class="row flex-lg-nowrap">
+		<div class="col-lg-6 col-xl-5 text-center text-lg-start pt-5 mt-xl-4">
+		  <div class="col jumbotron">
+			<h3 class='pb-3' style="font-family: 'Montserrat';" id='sims-blue'>We support operations with<br><span class="text-danger typed"> </span></h3>
+			<p class="lead mt-5">SIMS is a global network of Information Management experts who support IFRC emergency response operations by providing a variety of services and products. We maintain a roster of specialists from around the world across several key areas of technical support, including GIS, data collection and management, data analysis and visualization, and much more.</p> 
+		  
 
-		  <a href="/about" class="btn btn-danger mt-3" id="override-link-color">Learn More</a>
+<a href="/about" class="btn btn-danger btn-lg my-4" id="override-link-color">Learn More</a>
+
+<div class="row my-5">
+	<div class="col text-center pb-md-2 mb-3 mb-lg-4">
+		<div class="d-inline-block p-3 mb-4">
+			<img src="/static/assets/img/landing-remote.png" width="64" alt="Icon">
 		</div>
-		<div class="col-md-4 mr-4">
-		<img src="/static/assets/img/landing-top.png" class="img-fluid mb-4 rounded-3" alt="Responsive image">
-		</div>
+		<h4 class="pb-1 mb-2 text-danger Montserrat">Remote<br>Support</h4>
 	</div>
-	
-		<div class="row g-5 py-5 row-cols-1 row-cols-lg-3 mt-5 mb-6">
-		  <div class="feature col">
-			<img src="/static/assets/img/landing-remote.png" width="75" height="75" class="img-fluid mb-4" alt="Responsive image">
-			<h4 class='text-danger'>Remote Support</h4>
-			<p class='lead'>Our global network of information management specialists are ready to support tasks that can be done remotely. </p>
-		  </div>
-		  <div class="feature col"> 
-			<img src="/static/assets/img/landing-deploy.png" width="75" height="75" class="img-fluid mb-4" alt="Responsive image">
-			<h4 class='text-danger'>Field-Based Deployments</h4>
-			<p class='lead'>SIMS members support disaster response operations through in-person deployments in a variety of Information Management roles. </p>
-		  </div>
-		  <div class="feature col">
-			<img src="/static/assets/img/landing-sme.png" width="75" height="75" class="img-fluid mb-4" alt="Responsive image">
-			<h4 class='text-danger'>Subject Matter Experts</h4>
-			<p class='lead'>We maintain a roster of experts in a number of technical areas that can serve as technical advisors on blue-sky projects.</p>
+	<div class="col text-center pb-md-2 mb-3 mb-lg-4">
+		<div class="d-inline-block p-3 mb-4">
+			<img src="/static/assets/img/landing-deploy.png" width="64" alt="Icon">
+		</div>
+		<h4 class="pb-1 mb-2 text-danger Montserrat">Field<br>Deployments</h4>
+	</div>
+	<div class="col text-center pb-md-2 mb-3 mb-lg-4">
+		<div class="d-inline-block p-3 mb-4">
+			<img src="/static/assets/img/landing-sme.png" width="64" alt="Icon">
+		</div>
+		<h4 class="pb-1 mb-2 text-danger Montserrat">Technical<br>Advisors</h4>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+
 		  </div>
 		</div>
+
+		<!-- Layer parallax -->
+		<div class="parallax mt-1 ms-4 me-lg-0 ms-lg-n5 ms-xl-n3 mt-lg-n4">
+		  <div class="parallax-layer" data-depth="0.1">
+			<img src="/static/assets/img/landing/Top Banner.png" width="1416" alt="Layer">
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </section>
+	<div class="container">
 
 	<h3 class="text-danger mt-5" id='portfolio-title'>Latest Response Stories</h3>
 		<div id="carouselStories" class="carousel slide mt-4 mb-5" data-ride="carousel">
@@ -61,20 +96,20 @@
 		<h3 class="text-danger" id='portfolio-title'>Latest Tweets</h3>
 		<h5 class="text-secondary mb-4" id='portfolio-title'><a href='https://twitter.com/IFRC_SIMS'>@IFRC_SIMS</a></h5>
 		<div class="row row-cols-3 g-5">
-	  		{% for tweet in tweets %}
+			  {% for tweet in tweets %}
 					<div class="col d-flex align-items-stretch">
-			  			<div class="card bg-light">
+						  <div class="card bg-light">
 							<div class="card-body d-flex flex-column">
-				  				<h5 class=" mb-2">{{tweet.tweet}}</h5>
+								  <h5 class=" mb-2">{{tweet.tweet}}</h5>
 								  <small>{{tweet.created_at_year}}-{{tweet.created_at_month}}-{{tweet.created_at_day}}</small>
 								  <br><br>
 									<div class='mt-auto'>
 										<a href='https://twitter.com/i/web/status/{{tweet.id}}'><button class='btn btn-sm btn-danger'>View</button></a> 
 									</div>
 							</div>
-			  			</div>
+						  </div>
 					</div>
-	  		{% endfor %}
+			  {% endfor %}
 		</div>
 		
 		<div class='row mb-6'>

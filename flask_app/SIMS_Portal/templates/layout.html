@@ -40,7 +40,7 @@
 					<li class="nav-item px-3"><a class="nav-link text-light" href="/dashboard" style="font-family: 'Montserrat';"> Dashboard </a></li>
 				{% endif %}
 				{% if '/profile_edit/' in request.path %}
-				<li class="nav-item px-3"> </li>
+				<li class="nav-item px-2"><a class="nav-link text-light" href="/profile" style="font-family: 'Montserrat';"> Your Profile </a></li>
 				
 				{% elif request.path == '/profile' %}
 					<li class="nav-item px-2"><button type="button" class="btn btn-light" style="font-family: 'Montserrat';">{{ current_user.firstname }}'s Profile</button></li>
