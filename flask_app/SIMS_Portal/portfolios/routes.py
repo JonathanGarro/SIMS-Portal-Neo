@@ -23,7 +23,7 @@ def portfolio():
 def filter_portfolio(type):
 	type_list = ['Map', 'Infographic', 'Dashboard', 'Mobile Data Collection', 'Assessment', 'Report - Analysis', 'Other']
 	type_search = "{}".format(type)
-	public_portfolio = db.session.query(Portfolio).filter(Portfolio.external==1, Portfolio.product_status=='Active', Portfolio.type == type_search).all()
+	public_portfolio = db.session.query(Portfolio).filter(Portfolio.external==1, Portfolio.product_status=='Approved', Portfolio.type == type_search).all()
 	return render_template('portfolio_public.html', title="SIMS Products", public_portfolio=public_portfolio, type_search=type_search, type_list=type_list)
 	
 @portfolios.route('/all_products')

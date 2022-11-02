@@ -86,10 +86,11 @@ def admin_landing():
 def badges():
 	badges = db.engine.execute("SELECT * FROM user_badge JOIN Badge ON Badge.id = user_badge.badge_id")
 	count_active_members = db.session.query(User).filter(User.status == 'Active').count()
-
+	
+	# loop over each item in sqlalchemy object, append the badge name to a list, and use Counter() to summarize
 	count_list = []
 	for badge in badges:
-		count_list.append(badge[3])
+		count_list.append(badge[7])
 	badge_counts = Counter(count_list)
 	
 	return render_template('badges.html', badge_counts=badge_counts, count_active_members=count_active_members)
@@ -179,18 +180,34 @@ def badge_assignment_sims_co(dis_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-	output = fetch_slack_channels()
-	# # generate new csv for dashboard
-	# all_emergencies = db.engine.execute("SELECT iso3, COUNT(*) as count FROM emergency JOIN nationalsociety WHERE emergency.emergency_location_id = nationalsociety.ns_go_id AND emergency_status <> 'Removed' GROUP BY iso3")
-	# 	
-	# header_row = ['iso3', 'count']
-	# with open('SIMS_Portal/static/data/emergencies_viz.csv', 'w', newline='') as f:
-	# 	f.write(','.join(header_row) + '\n')
-	# 	writer = csv.writer(f)
-	# 	for x in all_emergencies:
-	# 		writer.writerow([x.iso3, x.count])
-		
-	return render_template('visualization.html',output=output)
+	import requests
+	import json
+	
+	key = current_app.config['TRELLO_KEY']
+	token = current_app.config['TRELLO_TOKEN']
+	list_id = '621dfcf650d6493f43ad1740'
+	
+	url = "https://api.trello.com/1/lists/{}/cards".format(list_id)
+	
+	headers = {
+		"Accept": "application/json"
+	}
+	
+	query = {
+		'key': key,
+		'token': token
+	}
+	
+	response = requests.request(
+		"GET",
+		url,
+		headers=headers,
+		params=query
+	)
+	
+	output = json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": "))
+	
+	return render_template('visualization.html', output=output)
 
 @main.route('/learning')
 @login_required
@@ -221,7 +238,7 @@ def resources_slack():
 @login_required
 def resources_slack_channels():
 	output = fetch_slack_channels()
-	return render_template('slack_channels.html', output=output)
+	return render_template('resources/slack_channels.html', output=output)
 	
 @main.route('/resources/sims_portal')
 @login_required

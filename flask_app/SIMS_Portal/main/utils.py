@@ -3,6 +3,7 @@ import logging
 import os
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
+from SIMS_Portal.models import Emergency, NationalSociety
 
 def fetch_slack_channels():
 	token = current_app.config['SIMS_PORTAL_SLACK_BOT']
@@ -44,3 +45,15 @@ def fetch_slack_channels():
 				temp_dict['purpose'] = d['purpose']['value']
 				output.append(temp_dict)
 	return output
+
+def generate_new_response_map():
+	"""Gets full list of countries where SIMS has responded, and writes results to a CSV stored in the static folder."""
+	
+	all_emergencies = db.engine.execute("SELECT iso3, COUNT(*) as count FROM emergency JOIN nationalsociety WHERE emergency.emergency_location_id = nationalsociety.ns_go_id AND emergency_status <> 'Removed' GROUP BY iso3")
+		
+	header_row = ['iso3', 'count']
+	with open('SIMS_Portal/static/data/emergencies_viz.csv', 'w', newline='') as f:
+		f.write(','.join(header_row) + '\n')
+		writer = csv.writer(f)
+		for x in all_emergencies:
+			writer.writerow([x.iso3, x.count])
