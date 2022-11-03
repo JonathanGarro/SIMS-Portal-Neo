@@ -1,4 +1,5 @@
-![Screen Shot 2022-07-18 at 03 26 38 PM](https://user-images.githubusercontent.com/8890661/179601643-7b77a74e-11fa-4d0e-becc-42c8242fb7de.png)
+<img width="1705" alt="Screen Shot 2022-11-03 at 10 56 00 AM@2x" src="https://user-images.githubusercontent.com/8890661/199755519-d4ad8109-8ec5-4c45-abef-1e2af86fef0d.png">
+
 
 # SIMS-Portal-Neo
 
