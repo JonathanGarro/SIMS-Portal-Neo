@@ -35,6 +35,7 @@ class BadgeAssignmentViaSIMSCoForm(FlaskForm):
 	# user_name = QuerySelectField('Member', query_factory=get_assigned_members, get_label='fullname', allow_blank=True)
 	user_name = QuerySelectField('Member', query_factory=lambda:User.query.order_by(User.firstname).filter(User.status == 'Active').all(), get_label='fullname', allow_blank=True)
 	badge_name = QuerySelectField('Badge', query_factory=lambda:Badge.query.order_by(Badge.name).all(), get_label='name', allow_blank=True)
+	assigner_justify = StringField('Justification for Assigning this Badge', render_kw={'style':'height: 100px'})
 	submit_badge = SubmitField('Assign')
 	
 class SkillCreatorForm(FlaskForm):

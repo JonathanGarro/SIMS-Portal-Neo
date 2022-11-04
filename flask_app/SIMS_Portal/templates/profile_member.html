@@ -121,22 +121,22 @@
 				{% endif %}
 			</div>
 			<div class='mb-5'>
-				<h3 class="mb-3 text-danger profile-section-header">Portfolio Highlights</h3>
+				<h3 class="mb-3 text-danger profile-section-header">Portfolio Highlights: <span class='text-dark'>{{ user_portfolio_size }}</span></h3>
 				<div class="row row-cols-xl-3 row-cols-lg-3 row-cols-1 g-4 mt-4">
 				{% for product in user_portfolio %}
 					<div class="col d-flex align-items-stretch">
 						<div class="card" id="portfolio-card" style="width: 18rem;">
-							<a href="/portfolio/view/{{product.Portfolio.id}}">
-							{% if '.pdf' in product.Portfolio.final_file_location %}
+							<a href="/portfolio/view/{{product.id}}">
+							{% if '.pdf' in product.final_file_location %}
 							<img src="/static/assets/portfolio/placeholder.png" class="card-img-top" alt="PDF Placeholder Thumbnail">
 							{% else %}
-							<img src="/static/assets/portfolio/{{product.Portfolio.final_file_location}}" class="card-img-top">
+							<img src="/static/assets/portfolio/{{product.final_file_location}}" class="card-img-top">
 							{% endif %}
 						  <div class="card-body d-flex flex-column">
 						  	<div class='pb-4'>
-							  <button type="button" class="btn btn-secondary btn-sm">{{product.Portfolio.type}}</button>
+							  <button type="button" class="btn btn-secondary btn-sm">{{product.type}}</button>
 							</div>
-						  	<h5 class="card-title my-3">{{product.Portfolio.title}}</h5>
+						  	<h5 class="card-title my-3">{{product.title}}</h5>
 
 						</a>
 						  </div>
