@@ -137,7 +137,7 @@ def badge_assignment_sims_co(dis_id):
 	
 	assigned_members = db.session.query(Emergency, Assignment, User).join(Assignment, Assignment.emergency_id == Emergency.id).join(User, User.id == Assignment.user_id).filter(Emergency.id == dis_id).all()
 	
-	# generate list of user IDs of users listed as SIMS Remote Coordinators for emergency
+	# generate list of user IDs of users listed as SIMS Remote Coordinators on emergency
 	sims_co_ids = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id == User.id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.id == dis_id, Assignment.role == 'SIMS Remote Coordinator').all()
 	
 	user_is_sims_co = check_sims_co(dis_id)
