@@ -4,7 +4,7 @@ from SIMS_Portal.config import Config
 from SIMS_Portal.models import Story, Emergency, User, Assignment, Portfolio
 from SIMS_Portal.stories.forms import NewStoryForm, UpdateStoryForm
 from flask_sqlalchemy import SQLAlchemy
-from SIMS_Portal.stories.utils import save_header
+from SIMS_Portal.stories.utils import save_header, check_sims_co
 from sqlalchemy.sql import func
 from flask_login import login_user, logout_user, current_user, login_required
 
@@ -57,12 +57,14 @@ def create_story(emergency_id):
 @stories.route('/story/edit/<int:emergency_id>', methods=["GET", "POST"])
 @login_required
 def edit_story(emergency_id): 
+	# check if user has permission to edit
+	user_is_sims_co = check_sims_co(emergency_id)
 	form = UpdateStoryForm()
 	story = db.session.query(Story).filter(Story.emergency_id == emergency_id).first()
-	if current_user.is_admin == 0:
+	if user_is_sims_co == False and current_user.is_admin == 0:
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
-	elif request.method == 'POST' and current_user.is_admin == 1:
+	elif request.method == 'POST' and (user_is_sims_co == True or current_user.id == 1):
 		if form.header_image.data:
 			header_file = save_header(form.header_image.data)
 		else:
