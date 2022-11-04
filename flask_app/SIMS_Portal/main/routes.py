@@ -116,6 +116,7 @@ def badge_assignment_via_SIMSCO(user_id, badge_id, assigner_id, dis_id):
 	badge_form = BadgeAssignmentViaSIMSCoForm()
 	if user_is_sims_co:
 		assigner_justify = badge_form.assigner_justify.data
+		# uses session to get assigner_justify from form
 		new_badge = user_badge.insert().values(user_id=user_id, badge_id=badge_id, assigner_id=assigner_id, assigner_justify=session.get('assigner_justify', None))
 		db.session.execute(new_badge)
 		db.session.commit()	
