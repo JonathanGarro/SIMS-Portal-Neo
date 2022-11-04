@@ -5,22 +5,21 @@
 		<div class="col col-md-4">
 
 			<h5 class="text-secondary">SIMS Member</h5>
-			<h3 class="mb-3 text-danger mb-4">{{user_info.fullname}}</h3>
+			<h3 class="mb-3 text-danger mb-4 Montserrat">{{user_info.fullname}}</h3>
 			<h5 class="text-secondary">Emergency Operation</h5>
-			<h3 class="mb-3 text-danger mb-4">{{emergency_info.Emergency.emergency_name}}</h3>
+			<h3 class="mb-3 text-danger mb-4 Montserrat">{{emergency_info.Emergency.emergency_name}}</h3>
 			<h5 class="text-secondary">Assignment Role</h5>
-			<h3 class="mb-3 text-danger mb-4">{{emergency_info.Assignment.role}}</h3>
+			<h3 class="mb-3 text-danger mb-4 Montserrat">{{emergency_info.Assignment.role}}</h3>
 
 			<p id="sidebar-guidance"><span class='fw-bold'>Thank you {{user_info.firstname}}</span> for taking the time to provide a review of your assignment for the {{emergency_info.emergency_name}} response. Your answers help the network learn from our experience and improve our future work. Your written answers will not be attributable to you, and questions with numerical values will only be aggregated once a certain threshold for the number of responses is reached.</p>
 			<p id="sidebar-guidance">The current SIMS Learning Lead will have access to your responses and may follow up with clarifying questions or to request your participation in a focus-group discussion.</p>
 			
 		</div>
 	<div class="col ps-5">
-		<h2 class="mb-3 text-danger mb-5">Assignment Review</h2>
 		<form action="" method="POST" class="mx-auto p-4 bg-light text-light rounded-3" novalidate>
 			{{ form.hidden_tag() }}
 			
-			<h3 class='text-danger mb-4'>Overall</h3>
+			<h3 class='text-danger mb-4 Montserrat'>Overall</h3>
 				<p class='text-dark mb-4'>This form will dig into specifics, but take a moment to consider the assignment as a whole. Did you find it personally and professionally fulfilling? Did you appreciate the experience or was it frustrating? Did you learn new skills or did you feel like this assignment failed to offer a chance to grow? <span class='text-danger fw-bold'>(1 = Very Negative, 5 = Very Positive)</span></p>
 			<div class="bg-secondary p-3 rounded mb-5">
 				<div class="row mb-5">
@@ -73,7 +72,7 @@
 			
 			
 			
-			<h3 class='text-danger mb-4'>Support and Resources</h3>
+			<h3 class='text-danger mb-4 Montserrat'>Support and Resources</h3>
 				<p class='text-dark mb-4'>Rank your experience with the following areas <span class='text-danger fw-bold'>(1 = Strongly Disagree, 5 = Strongly Agree)</span></p>
 			<div class="bg-secondary p-3 rounded mb-5">
 				<div class="row mb-5">

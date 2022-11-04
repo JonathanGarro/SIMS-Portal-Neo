@@ -1,4 +1,4 @@
-from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint, current_app
+from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint, current_app, session
 from SIMS_Portal.models import Assignment, User, Emergency, Alert, user_skill, user_language, user_badge, Skill, Language, NationalSociety, Badge, Story
 from SIMS_Portal import db
 from flask_sqlalchemy import SQLAlchemy
@@ -8,7 +8,7 @@ from SIMS_Portal.main.forms import MemberSearchForm, EmergencySearchForm, Produc
 from collections import defaultdict, Counter
 from datetime import date, timedelta
 from SIMS_Portal.config import Config
-from SIMS_Portal.main.utils import fetch_slack_channels
+from SIMS_Portal.main.utils import fetch_slack_channels, check_sims_co
 import os
 import tweepy
 import re
@@ -34,7 +34,6 @@ def index():
 	tweets = [{'tweet': re.sub(r"http\S+", "", t.full_text), 'created_at_year': t.created_at.year, 'created_at_month': t.created_at.month, 'created_at_day': t.created_at.day, 'headshot_url': t.user.profile_image_url, 'username': t.user.name, 'screen_name': t.user.screen_name, 'location': t.user.location, 'id': t.id_str} for t in public_tweets]
 	
 	latest_stories = db.session.query(Story, Emergency).join(Emergency, Emergency.id == Story.emergency_id).order_by(Story.id.desc()).limit(3).all()
-	print("LOADING LAYOUT VIEW")
 	return render_template('index.html', latest_stories=latest_stories, tweets=tweets)
 	
 @main.route('/about')
@@ -109,22 +108,16 @@ def badge_assignment(user_id, badge_id):
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
 
-# route for admin-level users assigning badges
+# route for sims remote coordinator users assigning badges
 @main.route('/badge_assignment/<int:user_id>/<int:badge_id>/<int:assigner_id>/<int:dis_id>')
 @login_required
 def badge_assignment_via_SIMSCO(user_id, badge_id, assigner_id, dis_id):
-	sims_co_ids = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id == User.id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.id == dis_id, Assignment.role == 'SIMS Remote Coordinator').all()
-	
-	sims_co_list = []
-	for coordinator in sims_co_ids:
-		sims_co_list.append(coordinator.User.id)
-	if assigner_id in sims_co_list:
-		user_is_sims_co = True
-	else:
-		user_is_sims_co = False
-	
+	user_is_sims_co = check_sims_co(dis_id)
+	badge_form = BadgeAssignmentViaSIMSCoForm()
 	if user_is_sims_co:
-		new_badge = user_badge.insert().values(user_id=user_id, badge_id=badge_id)
+		assigner_justify = badge_form.assigner_justify.data
+		# uses session to get assigner_justify from form
+		new_badge = user_badge.insert().values(user_id=user_id, badge_id=badge_id, assigner_id=assigner_id, assigner_justify=session.get('assigner_justify', None))
 		db.session.execute(new_badge)
 		db.session.commit()	
 		flash('Badge successfully assigned.', 'success')
@@ -146,22 +139,17 @@ def badge_assignment_sims_co(dis_id):
 
 	sims_co_ids = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id == User.id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.id == dis_id, Assignment.role == 'SIMS Remote Coordinator').all()
 	
-	sims_co_list = []
-	for coordinator in sims_co_ids:
-		sims_co_list.append(coordinator.User.id)
-	if current_user.id in sims_co_list:
-		user_is_sims_co = True
-	else:
-		user_is_sims_co = False
+	user_is_sims_co = check_sims_co(dis_id)
 	
-	if request.method == 'GET' and current_user.id in sims_co_list:
+	if request.method == 'GET' and user_is_sims_co == True:
 		query = User.query.join(Assignment, Assignment.user_id == User.id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.id == dis_id, Assignment.role == 'Remote IM Support')
 		badge_form.user_name.query = query
 		return render_template('emergency_badge_assignment.html', title='Assign Badges', user_is_sims_co=user_is_sims_co, assigned_members=assigned_members, event_name=event_name, badge_form=badge_form, assigned_badges=assigned_badges)
 	elif request.method == 'POST' and current_user.id in sims_co_list:
 		user_id = badge_form.user_name.data.id
-		print(user_id)
 		badge_id = badge_form.badge_name.data.id
+		# use flask session to pass 'assigner_justify' field data without passing through URL
+		session['assigner_justify'] = badge_form.assigner_justify.data
 		# get list of assigned badges, create column that concats user_id and badge_id to create unique identifier
 		badge_ids = db.engine.execute("SELECT user_id || badge_id as unique_code FROM user_badge")
 		list_to_check = []
@@ -175,6 +163,7 @@ def badge_assignment_sims_co(dis_id):
 			return redirect(url_for('main.badge_assignment_sims_co', dis_id=dis_id))
 	else:
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		print('User {} tried to assign a badge but was denied and given a 403 error.'.format(current_user.fullname))
 		return render_template('errors/403.html', list_of_admins=list_of_admins, user_is_sims_co=user_is_sims_co, event_name=event_name, sims_co_ids=sims_co_ids), 403
 
 @main.route('/staging') 

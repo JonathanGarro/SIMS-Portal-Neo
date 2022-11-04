@@ -62,6 +62,15 @@ $(document).ready(function () {
 	});
 });
 
+$(document).ready(function () {
+	$('#datatable-extended').DataTable({
+		language: { search: "Search:  " },
+		"paging": false,
+		"bLengthChange" : false,
+		order: [[1, 'desc']],
+	});
+});
+
 $(function(){
 	$(".typed").typed({
 		strings: ["infographics.", "mobile data collection.", "basemaps."],

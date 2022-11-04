@@ -2,7 +2,7 @@ from flask import request, render_template, url_for, flash, redirect, jsonify, B
 from SIMS_Portal import db, bcrypt, mail
 from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill, user_language, Badge, Alert, user_badge
 from SIMS_Portal.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
-from SIMS_Portal.users.utils import save_picture, send_reset_email, new_user_slack_alert
+from SIMS_Portal.users.utils import save_picture, send_reset_email, new_user_slack_alert, send_slack_dm
 from SIMS_Portal.portfolios.utils import get_full_portfolio
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
@@ -74,7 +74,8 @@ def profile():
 	except:
 		ns_association = 'None' 
 	try:
-		assignment_history = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id==User.id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(User.id==current_user.id).all()
+		assignment_history = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id==User.id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(User.id==current_user.id, Emergency.emergency_status != 'Removed', Assignment.assignment_status != 'Removed').all()
+		
 	except:
 		pass
 	deployment_history_count = len(assignment_history)
@@ -117,18 +118,18 @@ def view_profile(id):
 	except:
 		ns_association = 'None' 
 	try:
-		assignment_history = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id==User.id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(User.id==id, Emergency.emergency_status != 'Removed').all()
+		assignment_history = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id==User.id).join(Emergency, Emergency.id==Assignment.emergency_id).filter(User.id==id, Emergency.emergency_status != 'Removed', Assignment.assignment_status != 'Removed').all()
 	except:
 		pass
 	deployment_history_count = len(assignment_history)
 	# show full portfolio if user is logged in
 	if current_user.is_authenticated:
-		user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==id).filter(User.id==id, Portfolio.product_status != 'Removed').limit(3).all()
+		user_portfolio = get_full_portfolio(id)
 	# else show only products user has tagged as 'external'
 	else:
-		user_portfolio = db.session.query(User, Portfolio).join(Portfolio, Portfolio.creator_id==id).filter(User.id==id, Portfolio.product_status=='Approved', Portfolio.external == 1).limit(3).all()
+		user_portfolio = get_full_portfolio(id)
 	
-	user_portfolio_size = len(db.session.query(Portfolio).filter(Portfolio.creator_id == id, Portfolio.product_status != 'Removed').all())
+	user_portfolio_size = len(user_portfolio)
 	
 	skills_list = db.engine.execute("SELECT * FROM user JOIN user_skill ON user.id = user_skill.user_id JOIN skill ON skill.id = user_skill.skill_id WHERE user.id=:member_id", {'member_id': id})
 	
@@ -140,7 +141,7 @@ def view_profile(id):
 	
 	badges = db.engine.execute("SELECT * FROM user JOIN user_badge ON user_badge.user_id = user.id JOIN badge ON badge.id = user_badge.badge_id WHERE user.id=:member_id ORDER BY name", {'member_id': id})
 	
-	return render_template('profile_member.html', title='Member Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio, user_portfolio_size=user_portfolio_size, skills_list=skills_list, languages_list=languages_list, count_badges=count_badges, badges=badges)
+	return render_template('profile_member.html', title='Member Profile', profile_picture=profile_picture, ns_association=ns_association, user_info=user_info, assignment_history=assignment_history, deployment_history_count=deployment_history_count, user_portfolio=user_portfolio[:3], user_portfolio_size=user_portfolio_size, skills_list=skills_list, languages_list=languages_list, count_badges=count_badges, badges=badges)
 
 @users.route('/profile_edit', methods=['GET', 'POST'])
 @login_required
@@ -219,14 +220,16 @@ def update_specified_profile(id):
 			this_user.bio = form.bio.data
 			this_user.twitter = form.twitter.data
 			this_user.github = form.github.data
+			this_user.linked_in = form.linked_in.data
+			this_user.slack_id = form.slack_id.data
 			for skill in form.skills.data:
 				this_user.skills.append(Skill.query.filter(Skill.name==skill).one())
 			# this_user.roles = form.roles.data
 			for language in form.languages.data:
 				this_user.languages.append(Language.query.filter(Language.name==language).one())
 			db.session.commit()
-			flash('Your account has been updated!', 'success')
-			return redirect(url_for('users.profile'))
+			flash("This user's account has been updated!", "success")
+			return redirect(url_for('users.view_profile', id=id))
 		elif request.method == 'GET':
 			form.firstname.data = this_user.firstname
 			form.lastname.data = this_user.lastname
@@ -236,6 +239,8 @@ def update_specified_profile(id):
 			form.bio.data = this_user.bio
 			form.github.data = this_user.github
 			form.twitter.data = this_user.twitter
+			form.linked_in.data = this_user.linked_in
+			form.slack_id.data = this_user.slack_id
 		profile_picture = url_for('static', filename='assets/img/avatars/' + this_user.image_file)
 		return render_template('profile_edit.html', title='Profile', profile_picture=profile_picture, form=form, ns_association=ns_association, current_user=this_user)
 	else:
@@ -274,13 +279,22 @@ def reset_token(token):
 @users.route('/user/approve/<int:id>', methods=['GET', 'POST'])
 @login_required
 def approve_user(id):
-	if current_user.is_admin == 1:
+	approver_info = db.session.query(User).filter(User.id == current_user.id).first()
+	check_slack_id = db.session.query(User).filter(User.id == id).first()
+	print(check_slack_id.slack_id)
+	if current_user.is_admin == 1 and check_slack_id.slack_id is not None:
 		try:
 			db.session.query(User).filter(User.id==id).update({'status':'Active'})
 			db.session.commit()
+			message = "Hi {}, your SIMS registration has been approved by {} {}. You now have full access to the SIMS Portal. I recommend logging in and updating your profile to help others learn more about you.".format(check_slack_id.firstname, approver_info.firstname, approver_info.lastname)
+			user = check_slack_id.slack_id
+			send_slack_dm(message, user)
 			flash("Account approved.", 'success')
 		except:
 			flash("Error approving user. Check that the user ID exists.")
+		return redirect(url_for('main.admin_landing'))
+	elif current_user.is_admin == 1 and check_slack_id.slack_id is None:
+		flash("User needs to have a Slack ID updated on their profile.","danger")
 		return redirect(url_for('main.admin_landing'))
 	else:
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
