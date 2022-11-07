@@ -27,19 +27,26 @@
 		<div class="tab-content" id="adminContent">
 		  <div class="tab-pane fade show active" id="badge-assignment" role="tabpanel" aria-labelledby="badge-assignment-tab">
 			  <br>
-			  <form action="" method="POST" enctype="multipart/form-data" class="bg-light text-light p-4 rounded-3" novalidate>
-			  	{{ badge_form.hidden_tag() }}
-			  	<div class='row'>
-					<div class='col-md-5'>{{ badge_form.user_name.label(class="form-control-label pb-2 text-danger") }}</div>
-					<div class='col-md-5'>{{ badge_form.badge_name.label(class="form-control-label pb-2 text-danger") }}</div>
-					<div class='col'></div>
-				</div>
-				<div class='row'>
-					<div class='col-md-5'>{{ badge_form.user_name(class="form-control form-control-lg") }} </div>
-					<div class='col-md-5'>{{ badge_form.badge_name(class="form-control form-control-lg") }}</div>
-					<div class='col'>{{ badge_form.submit_badge(class="btn btn-lg btn-outline-danger w-100") }}</div>
-				</div>
-			  </form>
+<form action="" method="POST" enctype="multipart/form-data" class="bg-light text-light p-4 rounded-3" novalidate>
+					{{ badge_form.hidden_tag() }}
+					<div class='row'>
+					  <div class='col'>{{ badge_form.user_name.label(class="form-control-label pb-2 text-danger") }}</div>
+					  <div class='col'>{{ badge_form.badge_name.label(class="form-control-label pb-2 text-danger") }}</div>
+				  </div>
+				  <div class='row mb-3'>
+					  <div class='col'>{{ badge_form.user_name(class="form-control form-control-lg") }} </div>
+					  <div class='col'>{{ badge_form.badge_name(class="form-control form-control-lg") }}</div>
+				  </div>
+				  <div class='row'>
+					  <div class='col'>{{ badge_form.assigner_justify.label(class="form-control-label pb-2 text-danger") }} </div>
+				  </div>
+				  <div class='row mb-3'>
+					  <div class='col'>{{ badge_form.assigner_justify(class="form-control form-control-lg") }} </div>
+				  </div>
+				  <div class='row'>
+					  <div class='col'>{{ badge_form.submit_badge(class="btn btn-lg btn-danger w-100") }}</div>
+				  </div>
+				</form>
 				<h3 class='text-danger my-3'>Users with Badges</h3>
 				See the <a href='/badges'>badges index page</a> for a full listing and definition of available badges.
 				  <table class='table table-striped mt-4'>

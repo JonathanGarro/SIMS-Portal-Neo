@@ -22,7 +22,6 @@ def fetch_slack_channels():
 		except SlackApiError as e:
 			logger.error("Error fetching conversations: {}".format(e))
 			
-			
 	# put conversations into the JavaScript object
 	def save_conversations(conversations):
 		conversation_id = ""

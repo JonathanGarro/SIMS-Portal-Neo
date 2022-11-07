@@ -1,5 +1,6 @@
 from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
 from SIMS_Portal.models import Assignment, User, Emergency, Portfolio
+from SIMS_Portal.users.utils import send_slack_dm
 from SIMS_Portal import db, login_manager
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, current_user, logout_user, login_required
@@ -141,7 +142,7 @@ def assignment_availability(assignment_id, start, end):
 	for x in range(index):
 		index_list.append(x)
 	output = dict(list(enumerate(date_list, 1)))
-
+	
 	return render_template('/assignment_availability.html', date_list=date_list, assignment_id=assignment_id, assignment_info=assignment_info, days_left_int=days_left_int, assignment_length_int=assignment_length_int, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date,)
 
 @assignments.route('/assignment/availability/result', methods=['GET', 'POST'])
@@ -152,4 +153,12 @@ def assignment_availability_result():
 	assignment_id = request.form.get('assignment_id')
 	db.session.query(Assignment).filter(Assignment.id==assignment_id).update({'availability': response_formatted})
 	db.session.commit()
+	user_info = db.session.query(User).filter(User.id == current_user.id).first()
+	# try sending message if user has slack ID filled in
+	try:
+		message = 'Hi {}, you have successfully updated your availability! This helps the SIMS Remote Coordinator better plan coverage for incoming tasks, so thank you for your help.'.format(user_info.firstname)
+		send_slack_dm(message, user_info.slack_id)
+	# skip slack message if slack is down or user doesn't have slack ID filled in
+	except:
+		pass
 	return redirect(url_for('assignments.view_assignment', id=assignment_id))

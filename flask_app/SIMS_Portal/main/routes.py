@@ -9,6 +9,7 @@ from collections import defaultdict, Counter
 from datetime import date, timedelta
 from SIMS_Portal.config import Config
 from SIMS_Portal.main.utils import fetch_slack_channels, check_sims_co
+from SIMS_Portal.users.utils import send_slack_dm
 import os
 import tweepy
 import re
@@ -43,6 +44,19 @@ def about():
 	count_members = db.session.query(User).filter(User.status == 'Active').count()
 	return render_template('about.html', count_activations=count_activations, latest_activation=lateset_activation, count_members=count_members)
 	
+@main.route('/badges')
+def badges():
+	badges = db.engine.execute("SELECT * FROM user_badge JOIN Badge ON Badge.id = user_badge.badge_id")
+	count_active_members = db.session.query(User).filter(User.status == 'Active').count()
+	
+	# loop over each item in sqlalchemy object, append the badge name to a list, and use Counter() to summarize
+	count_list = []
+	for badge in badges:
+		count_list.append(badge[7])
+	badge_counts = Counter(count_list)
+	
+	return render_template('badges.html', badge_counts=badge_counts, count_active_members=count_active_members)
+	
 @main.route('/admin_landing', methods=['GET', 'POST'])
 @login_required
 def admin_landing():
@@ -57,6 +71,8 @@ def admin_landing():
 	elif request.method == 'POST' and badge_form.submit_badge.data: 
 		user_id = badge_form.user_name.data.id
 		badge_id = badge_form.badge_name.data.id
+		session['assigner_justify'] = badge_form.assigner_justify.data
+
 		# get list of assigned badges, create column that concats user_id and badge_id to create unique identifier
 		badge_ids = db.engine.execute("SELECT user_id || badge_id as unique_code FROM user_badge")
 		list_to_check = []
@@ -81,27 +97,33 @@ def admin_landing():
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
 		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
 
-@main.route('/badges')
-def badges():
-	badges = db.engine.execute("SELECT * FROM user_badge JOIN Badge ON Badge.id = user_badge.badge_id")
-	count_active_members = db.session.query(User).filter(User.status == 'Active').count()
-	
-	# loop over each item in sqlalchemy object, append the badge name to a list, and use Counter() to summarize
-	count_list = []
-	for badge in badges:
-		count_list.append(badge[7])
-	badge_counts = Counter(count_list)
-	
-	return render_template('badges.html', badge_counts=badge_counts, count_active_members=count_active_members)
-
 # route for admin-level users assigning badges
 @main.route('/badge_assignment/<int:user_id>/<int:badge_id>')
 @login_required
 def badge_assignment(user_id, badge_id):
 	if current_user.is_admin == 1:
-		new_badge = user_badge.insert().values(user_id=user_id, badge_id=badge_id)
+		new_badge = user_badge.insert().values(user_id=user_id, badge_id=badge_id, assigner_id=current_user.id, assigner_justify=session.get('assigner_justify', None))
 		db.session.execute(new_badge)
-		db.session.commit()	
+		db.session.commit()
+		
+		# try sending slack message alerting user to the new badge
+		try:
+			user_info = db.session.query(User).filter(User.id == user_id).first()
+			assigner_info = db.session.query(User).filter(User.id == current_user.id).first()
+			badge_info = db.session.query(Badge).filter(Badge.id == badge_id).first()
+			# if assigner provided reason, send longer message
+			if session.get('assigner_justify', None) is not None:
+				assigner_justify = session.get('assigner_justify', None)
+				message = 'Hi {}, you have been assigned a new badge on the SIMS Portal! {} has given you the {} badge with the following message: {}. Keep up the great work!'.format(user_info.firstname, assigner_info.fullname, badge_info.name, assigner_justify)
+				user = user_info.slack_id
+				send_slack_dm(message, user)
+			# else send message without assigner justify statement
+			else:
+				message = 'Hi {}, you have been assigned a new badge on the SIMS Portal! {} has given you the {} badge. Keep up the great work!'.format(user_info.firstname, assigner_info.fullname, badge_info.name)
+				user = user_info.slack_id
+				send_slack_dm(message, user)
+		except:
+			pass
 		flash('Badge successfully assigned.', 'success')
 		return redirect(url_for('main.admin_landing'))
 	else:
