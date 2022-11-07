@@ -111,17 +111,10 @@ def badge_assignment(user_id, badge_id):
 			user_info = db.session.query(User).filter(User.id == user_id).first()
 			assigner_info = db.session.query(User).filter(User.id == current_user.id).first()
 			badge_info = db.session.query(Badge).filter(Badge.id == badge_id).first()
-			# if assigner provided reason, send longer message
-			if session.get('assigner_justify', None) is not None:
-				assigner_justify = session.get('assigner_justify', None)
-				message = 'Hi {}, you have been assigned a new badge on the SIMS Portal! {} has given you the {} badge with the following message: {}. Keep up the great work!'.format(user_info.firstname, assigner_info.fullname, badge_info.name, assigner_justify)
-				user = user_info.slack_id
-				send_slack_dm(message, user)
-			# else send message without assigner justify statement
-			else:
-				message = 'Hi {}, you have been assigned a new badge on the SIMS Portal! {} has given you the {} badge. Keep up the great work!'.format(user_info.firstname, assigner_info.fullname, badge_info.name)
-				user = user_info.slack_id
-				send_slack_dm(message, user)
+			assigner_justify = session.get('assigner_justify', None)
+			message = 'Hi {}, you have been assigned a new badge on the SIMS Portal! {} has given you the {} badge with the following message: {}'.format(user_info.firstname, assigner_info.fullname, badge_info.name, assigner_justify)
+			user = user_info.slack_id
+			send_slack_dm(message, user)
 		except:
 			pass
 		flash('Badge successfully assigned.', 'success')
@@ -173,13 +166,15 @@ def badge_assignment_sims_co(dis_id):
 		badge_id = badge_form.badge_name.data.id
 		# use flask session to pass 'assigner_justify' field data without passing through URL
 		session['assigner_justify'] = badge_form.assigner_justify.data
-		# get list of assigned badges, create column that concats user_id and badge_id to create unique identifier
-		badge_ids = db.engine.execute("SELECT user_id || badge_id as unique_code FROM user_badge")
-		list_to_check = []
-		for id in badge_ids:
-			list_to_check.append(id[0])
-		# check list against the values we're trying to save, and proceed if user doesn't already have that badge
-		if (str(user_id) + str(badge_id)) not in list_to_check:
+		
+		# get all badges assigned to the user which sims co is trying to assign
+		users_badges = db.engine.execute('SELECT user.id, user_badge.user_id, user_badge.badge_id FROM user JOIN user_badge ON user_badge.user_id = user.id WHERE user.id = {}'.format(user_id))
+		users_badges_ids = []
+		for badge in users_badges:
+			users_badges_ids.append(badge.badge_id)
+		
+		# check that user does not already have the badge
+		if badge_id not in users_badges_ids:
 			return redirect(url_for('main.badge_assignment_via_SIMSCO', user_id=user_id, badge_id=badge_id, assigner_id=current_user.id, dis_id=dis_id))
 		else:
 			flash('Cannot add badge - user already has it.', 'danger')

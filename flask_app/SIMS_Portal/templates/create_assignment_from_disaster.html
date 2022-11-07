@@ -4,7 +4,7 @@
 	<div class="row my-5">
 		<div class="col-md-4">
 			<h4 class="text-secondary mb-1">Create New</h4>
-			<h2 class="text-danger mb-4">Assignment</h2>
+			<h2 class="text-danger Montserrat mb-4">Assignment</h2>
 			<ul class="timeline">
 				<li>
 					<h5 class="text-secondary">Assign Member</h5>
@@ -29,7 +29,7 @@
 			<form action="" method="POST" class="mx-auto p-4 bg-light text-light rounded-3" novalidate>
 				{{ form.hidden_tag() }}
 				<div class="row">
-					<h4 class="text-danger pb-3">Create Assignment for {{emergency_info.emergency_name}}</h4>
+					<h4 class="text-danger Montserrat pb-3">{{emergency_info.emergency_name}}</h4>
 						<div class="col-md-6">
 							<div class="form-group pb-4">
 								{{ form.user_id.label(class="form-control-label pb-2 text-danger") }}
