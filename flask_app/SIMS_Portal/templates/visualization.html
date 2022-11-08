@@ -1,9 +1,52 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 {% extends "layout.html" %}
 {% block content %}
 <div class='container'>
-{% for card in output %}
-  {{card['name']}}
-{% endfor %}
+<canvas id='availabilityThisEmergency' width='600' height='500'></canvas>
+<script>
+  var ctx = document.getElementById('availabilityThisEmergency').getContext('2d');
+  var lineChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {{ labels | safe }},
+      datasets: [{
+        label: "Aggregated Availability",
+        data: {{ values | safe }},
+        fill: true,
+        backgroundColor: "#dc3545"
+      }]
+    },
+    options: {
+      plugins: {
+        legend: true,
+      },
+      responsive: true,
+      indexAxis: 'y',
+      scales: {
+        y: {
+          ticks: {
+            stepSize: 1
+          },
+          grid: {
+            display: false
+          }
+          
+        },
+        x: {
+          ticks: {
+            stepSize: 1
+          },
+        suggestedMax: 5,
+        grid: {
+          display: true
+          }
+        }
+        
+      }
+    }
+  })
+</script>
 
 </div>
 {% endblock content %}

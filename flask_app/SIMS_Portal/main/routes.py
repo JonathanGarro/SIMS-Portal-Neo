@@ -14,6 +14,7 @@ import os
 import tweepy
 import re
 import csv
+import json
 import pandas as pd
 
 main = Blueprint('main', __name__)
@@ -72,6 +73,11 @@ def admin_landing():
 		user_id = badge_form.user_name.data.id
 		badge_id = badge_form.badge_name.data.id
 		session['assigner_justify'] = badge_form.assigner_justify.data
+
+		users_badges = db.engine.execute('SELECT user.id, user_badge.user_id, user_badge.badge_id FROM user JOIN user_badge ON user_badge.user_id = user.id WHERE user.id = {}'.format(user_id))
+		users_badges_ids = []
+		for badge in users_badges:
+			users_badges_ids.append(badge.badge_id)
 
 		# get list of assigned badges, create column that concats user_id and badge_id to create unique identifier
 		badge_ids = db.engine.execute("SELECT user_id || badge_id as unique_code FROM user_badge")
@@ -187,34 +193,66 @@ def badge_assignment_sims_co(dis_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-	import requests
-	import json
+	# get data from db
+	data = db.session.query(Assignment, Emergency).join(Emergency, Emergency.id == Assignment.emergency_id).with_entities(Assignment.availability).filter(Emergency.id == 4, Assignment.availability != None).all()
 	
-	key = current_app.config['TRELLO_KEY']
-	token = current_app.config['TRELLO_TOKEN']
-	list_id = '621dfcf650d6493f43ad1740'
+	# loop over nested data and strip out extra characters on merge
+	list_full = []
+	for x in data:
+		for y in x:
+			for z in y.split(', '):
+				list_full.append(z.replace('[','').replace(']','').replace("'",''))
 	
-	url = "https://api.trello.com/1/lists/{}/cards".format(list_id)
+	# convert list to Counter object
+	output = Counter(list_full)
 	
-	headers = {
-		"Accept": "application/json"
-	}
+	# create list of dictionaries that converts date strings to date time for better readability
+	holder_list = []
+	for key, val in output.items():
+		temp_dict = {}
+		date = datetime.strptime(key, '%Y-%m-%d')
+		temp_dict['day_of_week'] = date.strftime('%A') + ' - ' + date.strftime('%b') + ' ' + date.strftime('%d')
+		temp_dict['count'] = val
+		holder_list.append(temp_dict)
 	
-	query = {
-		'key': key,
-		'token': token
-	}
+	# package data for visualization in json format
+	output = json.dumps(holder_list)
+	values = []
+	labels = []
+	for x in holder_list:
+		values.append(x['count'])
+		labels.append(x['day_of_week'])
+
+
+
+	# import requests
+	# import json
+	# 
+	# key = current_app.config['TRELLO_KEY']
+	# token = current_app.config['TRELLO_TOKEN']
+	# list_id = '621dfcf650d6493f43ad1740'
+	# 
+	# url = "https://api.trello.com/1/lists/{}/cards".format(list_id)
+	# 
+	# headers = {
+	# 	"Accept": "application/json"
+	# }
+	# 
+	# query = {
+	# 	'key': key,
+	# 	'token': token
+	# }
+	# 
+	# response = requests.request(
+	# 	"GET",
+	# 	url,
+	# 	headers=headers,
+	# 	params=query
+	# )
+	# 
+	# output = json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": "))
 	
-	response = requests.request(
-		"GET",
-		url,
-		headers=headers,
-		params=query
-	)
-	
-	output = json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": "))
-	
-	return render_template('visualization.html', output=output)
+	return render_template('visualization.html', output=output, values=values, labels=labels)
 
 @main.route('/learning')
 @login_required

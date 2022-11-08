@@ -3,9 +3,13 @@ from SIMS_Portal import db
 from SIMS_Portal.config import Config
 from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, EmergencyType, Alert, Portfolio, Story, Learning
 from SIMS_Portal.emergencies.forms import NewEmergencyForm, UpdateEmergencyForm
+from SIMS_Portal.assignments.utils import aggregate_availability
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from flask_login import login_user, logout_user, current_user, login_required
+from collections import Counter
+from datetime import datetime
+import json
 
 emergencies = Blueprint('emergencies', __name__)
 
@@ -31,6 +35,15 @@ def new_emergency():
 @emergencies.route('/emergency/<int:id>', methods=['GET', 'POST'])
 @login_required
 def view_emergency(id):
+	try:
+		func_call = aggregate_availability(id)
+		values = func_call[0]
+		labels = func_call[1]
+		kill_chart = False
+	except:
+		values = []
+		labels = []
+		kill_chart = True
 	# get IDs of all this emergency's sims remote coordinators
 	sims_co_ids = db.session.query(User, Assignment, Emergency).join(Assignment, Assignment.user_id == User.id).join(Emergency, Emergency.id == Assignment.emergency_id).filter(Emergency.id == id, Assignment.role == 'SIMS Remote Coordinator').all()
 
@@ -72,7 +85,7 @@ def view_emergency(id):
 
 	deployment_history_count = len(deployments)
 	
-	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, check_for_story=check_for_story, learning_data=learning_data, learning_keys=learning_keys, learning_values=learning_values, learning_count=learning_count, avg_learning_keys=avg_learning_keys, avg_learning_values=avg_learning_values, deployment_history_count=deployment_history_count, user_is_sims_co=user_is_sims_co, pending_products=pending_products, emergency_portfolio_size=emergency_portfolio_size)
+	return render_template('emergency.html', title='Emergency View', emergency_info=emergency_info, deployments=deployments, emergency_portfolio=emergency_portfolio, check_for_story=check_for_story, learning_data=learning_data, learning_keys=learning_keys, learning_values=learning_values, learning_count=learning_count, avg_learning_keys=avg_learning_keys, avg_learning_values=avg_learning_values, deployment_history_count=deployment_history_count, user_is_sims_co=user_is_sims_co, pending_products=pending_products, emergency_portfolio_size=emergency_portfolio_size, values=values, labels=labels, kill_chart=kill_chart)
 
 @emergencies.route('/emergency/edit/<int:id>', methods=['GET', 'POST'])
 def edit_emergency(id):
