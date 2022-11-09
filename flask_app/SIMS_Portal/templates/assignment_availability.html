@@ -46,26 +46,13 @@
 
 				<br>
 
-				<div class="list-group mt-4">
-					{% if current_user.is_admin == 1 or current_user.id == assignment_info.Assignment.user_id %}
-						{% if assignment_info.Assignment.role == 'Remote IM Support' %}
-						<a href='/assignment/availability/{{assignment_info.Assignment.id}}/{{assignment_info.Assignment.start_date}}/{{assignment_info.Assignment.end_date}}' class='list-group-item list-group-item-action text-secondary'>Report Availability</a>
-						{% endif %}
-						<a href="/portfolio/new_from_assignment/{{assignment_info.Assignment.id}}/{{assignment_info.User.id}}/{{assignment_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Upload Product</a>
-						<a href="#" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
-						<a href="#" class="list-group-item list-group-item-action text-secondary">View Emergency on GO</a>
-						{% if current_user.is_admin == 1 or current_user.id == assignment_info.User.id%}
-							<a href="#" class="list-group-item list-group-item-action text-secondary">Edit Assignment</a>
-							<a href="/assignment/delete/{{assignment_info.Assignment.id}}" class="list-group-item list-group-item-action text-danger">Delete Assignment</a>
-						{% endif %}
-					{% endif %}
-				</div>
+
 
 			</div>
 		</div>
 
 		<div class="col mx-4">
-				<h4 class="text-danger Montserrat">Availability</h4>
+				<h4 class="text-danger Montserrat">Report Your Availability</h4>
 				<p>By default, you are listed as available for all days in your assignment. Uncheck any days for which you are unavailable.</p>
 				<form method="POST" action='/assignment/availability/result'>
 						<input type='hidden' name='assignment_id' value='{{assignment_id}}'><br>

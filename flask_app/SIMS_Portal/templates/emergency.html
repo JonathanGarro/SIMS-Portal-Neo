@@ -63,7 +63,7 @@
 					{% if user_is_sims_co %}
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="/badge_assignment_simsco/{{emergency_info.Emergency.id}}" class="text-secondary">Assign Badges</a>
-						<span class="badge bg-secondary rounded-pill"><a href="#" class='text-light'>?</a></span>
+						<span class="badge bg-secondary rounded-pill"><a href="/resources/sims_portal#badges" class='text-light'>?</a></span>
 					</li>
 					{% endif %}
 					{% if current_user.is_admin == 1 %}
@@ -183,8 +183,7 @@
 			<div class="card p-4 bg-light">
 				<h5 class='text-secondary mb-3'>{{emergency_info.NationalSociety.country_name}}</h5>
 
-				<img src='https://countryflagsapi.com/png/{{emergency_info.NationalSociety.iso3}}' class='img-fluid mb-3'>
-				<!-- <div class=' my-3'> -->
+				<img id='flag-image' src='https://countryflagsapi.com/png/{{emergency_info.NationalSociety.iso3}}' class='img-fluid mb-3'>
 				<ul class="list-group border-0">
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="https://go.ifrc.org/countries/{{emergency_info.NationalSociety.ns_go_id}}" class="text-secondary">{{emergency_info.NationalSociety.country_name}} on GO</a>
@@ -196,7 +195,6 @@
 						<a href="https://data.humdata.org/group/{{emergency_info.NationalSociety.iso3|lower}}" class="text-secondary">{{emergency_info.NationalSociety.country_name}} on HDX</a>
 					</li>
 				</ul>
-				<!-- </div> -->
 			</div>
 		</div>
 	
@@ -208,126 +206,195 @@
 			</div>
 			{% endif %}
 			
-			{% if emergency_info.Emergency.activation_details|length == 0 %}
-
-			{% else %}
-				<h3 class="text-dark mt-4 emergency-title">Activation Details</h3>
-				<p class="pb-3">{{emergency_info.Emergency.activation_details}}</p>
-			{% endif %}
-			<div class='mb-5'>
-				{% if deployment_history_count == 0 %}
-				<h3 class="mb-3 text-dark emergency-title">Member Support<span class='text-dark'>: {{ deployment_history_count }}</span></h3>
-					No deployments yet.
-				{% else %}
-				<h3 class="mb-3 text-dark emergency-title">Member Support: <span class='text-danger'>{{ deployment_history_count }}</span></h3>
-				<table class="table">
-				  <thead class="">
-					<tr>
-					  <th>Member</th>
-					  <th>National Society</th>
-					  <th>Assignment</th>
-					  <th>Start Date</th>
-				
-					</tr>
-				  </thead>
-				  <tbody>
-					  {% for deployment in deployments %}
-					  <tr>
-						<td class="fw-bold"><a href="/profile/view/{{deployment.Assignment.user_id}}" class="link-danger">{{deployment.User.firstname}} {{deployment.User.lastname}}</a></td>
-						<td>{{deployment.NationalSociety.ns_name}}</td>
-						<td><a href='/assignment/{{deployment.Assignment.id}}'>{{deployment.Assignment.role}}</a></td>
-						<td>{{deployment.Assignment.start_date}}</td>  
-					  </tr>
-					  {% endfor %}
-				  </tbody>
-				</table>
+			<ul class="nav nav-tabs mb-5" id="emergencyNav" role="tablist">
+				<li class="nav-item" role="presentation">
+				<button class="nav-link active text-danger" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true"><h5>Overview</h5></button>
+				</li>
+				{% if values|length > 0 %}
+				<li class="nav-item" role="presentation">
+				<button class="nav-link text-danger" id="availability-tab" data-bs-toggle="tab" data-bs-target="#availability" type="button" role="tab" aria-controls="availability" aria-selected="false"><h5>Availability</h5></button>
+				</li>
 				{% endif %}
-			</div>
-			<h3 class="mb-1 text-dark mb-4 emergency-title">Response Products: <span class='text-danger'>{{ emergency_portfolio_size }}</span></h3>
-			<div class="row row-cols-3 row-cols-md-3 g-4 mb-5">
-			{% for product in emergency_portfolio %}
-				<div class="col d-flex align-items-stretch">
-					<a href="/portfolio/view/{{product.Portfolio.id}}">
-					<div class="card" id='portfolio-card' style="width: 18rem;">
-						{% if '.pdf' in product.Portfolio.final_file_location %}
-						<img src="/static/assets/portfolio/placeholder.png" class="card-img-top" alt="PDF Placeholder Thumbnail">
-						{% else %}
-					    <img src="/static/assets/portfolio/{{product.Portfolio.final_file_location}}" class="card-img-top" alt="...">
-					    {% endif %}
-					    <div class="card-body d-flex flex-column">
-					  		<div class='pb-4'><button type="button" class="btn btn-secondary btn-sm">{{product.Portfolio.type}}</button></div>
-							  <h5 class="card-title mt-auto text-danger">{{product.Portfolio.title}}</h5>
-					</a>
-				</div>
-			</div>
-		</div>
-			{% endfor %}
-	</div>
-			{% if emergency_portfolio_size > 3 %}
-			<div class='mb-5'>
-				<a href='/portfolio/emergency_more/{{emergency_info.Emergency.id}}'><button type="button" class="btn btn-danger">View All Products Posted for this Operation</button></a>
-			</div>
-			{% endif %}
-			
-			<h3 class="text-dark my-4 emergency-title">Assignment Reviews</h3>
-			{% if learning_count == 0 %}
-			No assignment reviews have been submitted for this response. See the Learning section of the SIMS Portal for aggregated data related to past operational learning.
-			{% elif learning_count > 2 %}
-			
-			<p>There have been <span class='text-danger fw-bold'>{{learning_count}}</span> assignment reviews completed, which is over the specified threshold to display this data. </p>
-			<canvas id='barChartLearningAssignment' width='600' height='500'></canvas>
+				<li class="nav-item" role="presentation">
+				<button class="nav-link text-danger" id="learning-tab" data-bs-toggle="tab" data-bs-target="#learning" type="button" role="tab" aria-controls="learning" aria-selected="false"><h5>Learning</h5></button>
+				</li>
+			</ul>
+			<div class="tab-content" id="emergencyContent">
+			  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+			  {% if emergency_info.Emergency.activation_details|length == 0 %}
+			  
+				  {% else %}
+					  <h3 class="text-dark mt-4 emergency-title">Activation Details</h3>
+					  <p class="pb-3">{{emergency_info.Emergency.activation_details}}</p>
+				  {% endif %}
+				  <div class='mb-5'>
+					  {% if deployment_history_count == 0 %}
+					  <h3 class="mb-3 text-dark emergency-title">Member Support<span class='text-dark'>: {{ deployment_history_count }}</span></h3>
+						  No deployments yet.
+					  {% else %}
+					  <h3 class="mb-3 text-dark emergency-title">Member Support: <span class='text-danger'>{{ deployment_history_count }}</span></h3>
+					  <table class="table">
+						<thead class="">
+						  <tr>
+							<th>Member</th>
+							<th>National Society</th>
+							<th>Assignment</th>
+							<th>Start Date</th>
+					  
+						  </tr>
+						</thead>
+						<tbody>
+							{% for deployment in deployments %}
+							<tr>
+							  <td class="fw-bold"><a href="/profile/view/{{deployment.Assignment.user_id}}" class="link-danger">{{deployment.User.firstname}} {{deployment.User.lastname}}</a></td>
+							  <td>{{deployment.NationalSociety.ns_name}}</td>
+							  <td><a href='/assignment/{{deployment.Assignment.id}}'>{{deployment.Assignment.role}}</a></td>
+							  <td>{{deployment.Assignment.start_date}}</td>  
+							</tr>
+							{% endfor %}
+						</tbody>
+					  </table>
+					  {% endif %}
+				  </div>
+				  <h3 class="mb-1 text-dark mb-4 emergency-title">Response Products: <span class='text-danger'>{{ emergency_portfolio_size }}</span></h3>
+				  <div class="row row-cols-3 row-cols-md-3 g-4 mb-5">
+				  {% for product in emergency_portfolio %}
+					  <div class="col d-flex align-items-stretch">
+						  <a href="/portfolio/view/{{product.Portfolio.id}}">
+						  <div class="card" id='portfolio-card' style="width: 18rem;">
+							  {% if '.pdf' in product.Portfolio.final_file_location %}
+							  <img src="/static/assets/portfolio/placeholder.png" class="card-img-top" alt="PDF Placeholder Thumbnail">
+							  {% else %}
+							  <img src="/static/assets/portfolio/{{product.Portfolio.final_file_location}}" class="card-img-top" alt="...">
+							  {% endif %}
+							  <div class="card-body d-flex flex-column">
+									<div class='pb-4'><button type="button" class="btn btn-secondary btn-sm">{{product.Portfolio.type}}</button></div>
+									<h5 class="card-title mt-auto text-danger">{{product.Portfolio.title}}</h5>
+						  </a>
+					  </div>
+				  </div>
+			  </div>
+				  {% endfor %}
+			  </div>
+				  {% if emergency_portfolio_size > 3 %}
+				  <div class='mb-5'>
+					  <a href='/portfolio/emergency_more/{{emergency_info.Emergency.id}}'><button type="button" class="btn btn-danger">View All Products Posted for this Operation</button></a>
+				  </div>
+				  {% endif %}
+			  </div>
+
+			  <div class="tab-pane fade" id="availability" role="tabpanel" aria-labelledby="availability-tab">
+			  <canvas id='availabilityThisEmergency' width='600' height='800'></canvas>
 			  <script>
-				  var ctx = document.getElementById('barChartLearningAssignment').getContext('2d');
-				  var lineChart = new Chart(ctx, {
-					  type: 'bar',
-					  data: {
-						  labels: {{ learning_keys | safe }},
-						  datasets: [{
-							  label: "Average Scores for this Emergency",
-							  data: {{ learning_values | safe }},
-							  fill: true,
-							  backgroundColor: "#dc3545"
-						  },
-					  {
-							label: "Average Score for All Emergencies",
-							data: {{ avg_learning_values | safe }},
-							fill: true,
-							backgroundColor: "#ABABAB"
-						}]
+				var ctx = document.getElementById('availabilityThisEmergency').getContext('2d');
+				var lineChart = new Chart(ctx, {
+				  type: 'bar',
+				  data: {
+					labels: {{ labels | safe }},
+					datasets: [{
+					  label: "Aggregated Availability",
+					  data: {{ values | safe }},
+					  fill: true,
+					  backgroundColor: "#dc3545"
+					}]
+				  },
+				  options: {
+					plugins: {
+					  legend: true,
+					},
+					responsive: true,
+					indexAxis: 'y',
+					scales: {
+					  y: {
+						ticks: {
+						  stepSize: 1
+						},
+						grid: {
+						  display: false
+						}
+						
 					  },
-					  options: {
-						  plugins: {
-							  legend: true,
-						  },
-						  responsive: true,
-						  indexAxis: 'y',
-						  scales: {
-							  y: {
-								  ticks: {
-									  stepSize: 1
-								  },
-								  grid: {
-									  display: false
-								  }
-								  
-							  },
-							  x: {
-								  ticks: {
-										stepSize: 1
-									},
-								suggestedMax: 5,
-								grid: {
-									display: true
-								  }
-							  }
-							  
-						  }
+					  x: {
+						ticks: {
+						  stepSize: 1
+						},
+					  suggestedMax: 5,
+					  grid: {
+						display: true
+						}
 					  }
-				  })
+					  
+					}
+				  }
+				})
 			  </script>
-			{% else %}  
-			<p>There have been <span class='text-danger fw-bold'>{{learning_count}}</span> assignment reviews completed, which is under the specified threshold to display this data. This is done to protect the identities of people who have provided their feedback.</p>
-			{% endif %}
+
+			  </div>
+			  <div class="tab-pane fade" id="learning" role="tabpanel" aria-labelledby="learning-tab">
+				 <h3 class="text-dark my-4 emergency-title">Assignment Reviews</h3>
+				 {% if learning_count == 0 %}
+				 No assignment reviews have been submitted for this response. See the Learning section of the SIMS Portal for aggregated data related to past operational learning.
+				 {% elif learning_count > 2 %}
+				 
+				 <p>There have been <span class='text-danger fw-bold'>{{learning_count}}</span> assignment reviews completed, which is over the specified threshold to display this data. </p>
+				 <canvas id='barChartLearningAssignment' width='600' height='500'></canvas>
+				   <script>
+					   var ctx = document.getElementById('barChartLearningAssignment').getContext('2d');
+					   var lineChart = new Chart(ctx, {
+						   type: 'bar',
+						   data: {
+							   labels: {{ learning_keys | safe }},
+							   datasets: [{
+								   label: "Average Scores for this Emergency",
+								   data: {{ learning_values | safe }},
+								   fill: true,
+								   backgroundColor: "#dc3545"
+							   },
+						   {
+								 label: "Average Score for All Emergencies",
+								 data: {{ avg_learning_values | safe }},
+								 fill: true,
+								 backgroundColor: "#ABABAB"
+							 }]
+						   },
+						   options: {
+							   plugins: {
+								   legend: true,
+							   },
+							   responsive: true,
+							   indexAxis: 'y',
+							   scales: {
+								   y: {
+									   ticks: {
+										   stepSize: 1
+									   },
+									   grid: {
+										   display: false
+									   }
+									   
+								   },
+								   x: {
+									   ticks: {
+											 stepSize: 1
+										 },
+									 suggestedMax: 5,
+									 grid: {
+										 display: true
+									   }
+								   }
+								   
+							   }
+						   }
+					   })
+				   </script>
+				 {% else %}  
+				 <p>There have been <span class='text-danger fw-bold'>{{learning_count}}</span> assignment reviews completed, which is under the specified threshold to display this data. This is done to protect the identities of people who have provided their feedback.</p>
+				 {% endif %}
+			  </div>
+			</div>
+			
+			
+			
 			
 			{% if response_length %}
 			<div class='row mt-5'>
