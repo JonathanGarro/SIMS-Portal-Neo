@@ -1,4 +1,4 @@
-from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
+from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint, current_app
 from SIMS_Portal.models import Assignment, User, Emergency, Portfolio
 from SIMS_Portal.users.utils import send_slack_dm
 from SIMS_Portal import db, login_manager
@@ -32,6 +32,11 @@ def new_assignment_from_disaster(dis_id):
 		assignment = Assignment(user_id=form.user_id.data.id, emergency_id=dis_id, start_date=form.start_date.data, end_date=form.end_date.data, role=form.role.data, assignment_details=form.assignment_details.data, remote=form.remote.data)
 		db.session.add(assignment)
 		db.session.commit()
+		this_user = db.session.query(User).filter(User.id == form.user_id.data.id).first()
+		message = 'Hi {}, you have been assigned to the {} response operation in the SIMS Portal. Be sure to use the <{}/assignment/{}|Report Availability feature on your assignment> to help the SIMS Remote Coordinator better plan for coverage of important tasks! '.format(this_user.firstname, emergency_info.emergency_name, current_app.config['ROOT_URL'], str(assignment.id))
+		send_slack_dm(message, this_user.slack_id)
+		# skip slack message if slack is down or user doesn't have slack ID filled in
+
 		flash('New assignment successfully created.', 'success')
 		return redirect(url_for('main.dashboard'))
 	return render_template('create_assignment_from_disaster.html', title='New Assignment', form=form, emergency_info=emergency_info)
@@ -143,7 +148,7 @@ def assignment_availability(assignment_id, start, end):
 		index_list.append(x)
 	output = dict(list(enumerate(date_list, 1)))
 	
-	return render_template('/assignment_availability.html', date_list=date_list, assignment_id=assignment_id, assignment_info=assignment_info, days_left_int=days_left_int, assignment_length_int=assignment_length_int, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date,)
+	return render_template('/assignment_availability.html', date_list=date_list, assignment_id=assignment_id, assignment_info=assignment_info, days_left_int=days_left_int, assignment_length_int=assignment_length_int, formatted_start_date=formatted_start_date, formatted_end_date=formatted_end_date)
 
 @assignments.route('/assignment/availability/result', methods=['GET', 'POST'])
 @login_required

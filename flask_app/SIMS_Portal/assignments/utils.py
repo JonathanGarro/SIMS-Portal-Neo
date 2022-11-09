@@ -7,7 +7,7 @@ import json
 def aggregate_availability(dis_id):
 	"""Takes in a disaster ID and returns all reported availability as aggregated list then structures the data for front end visualization"""
 	# get data from db
-	data = db.session.query(Assignment, Emergency).join(Emergency, Emergency.id == Assignment.emergency_id).with_entities(Assignment.availability).filter(Emergency.id == dis_id, Assignment.availability != None).all()
+	data = db.session.query(Assignment, Emergency).join(Emergency, Emergency.id == Assignment.emergency_id).with_entities(Assignment.availability).filter(Emergency.id == dis_id, Assignment.availability != None, Assignment.assignment_status != 'Removed').all()
 	
 	# loop over nested data and strip out extra characters on merge
 	list_full = []

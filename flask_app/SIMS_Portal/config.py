@@ -21,3 +21,4 @@ class Config:
 	DATA_FOLDER = '/SIMS_Portal/static/data/'
 	SLACK_BOT_TOKEN_NEW_USER = os.environ.get('SLACK_BOT_TOKEN_NEW_USER')
 	SIMS_PORTAL_SLACK_BOT = os.environ.get('SIMS_PORTAL_SLACK_BOT')
+	ROOT_URL = 'http://127.0.0.1:5000'
