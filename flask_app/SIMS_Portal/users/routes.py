@@ -1,4 +1,4 @@
-from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint
+from flask import request, render_template, url_for, flash, redirect, jsonify, Blueprint, current_app
 from SIMS_Portal import db, bcrypt, mail
 from SIMS_Portal.models import User, Assignment, Emergency, NationalSociety, Portfolio, EmergencyType, Skill, Language, user_skill, user_language, Badge, Alert, user_badge
 from SIMS_Portal.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
@@ -37,9 +37,12 @@ def register():
 			user = User(firstname=form.firstname.data, lastname=form.lastname.data, ns_id=form.ns_id.data.ns_go_id, email=form.email.data, password=hashed_password)
 			db.session.add(user)
 			db.session.commit()
-			new_user_slack_alert("A new user has registered on the SIMS Portal. Please review {}'s registration.".format(user.firstname))
+			new_user_slack_alert("A new user has registered on the SIMS Portal. Please review {}'s registration in the <{}/admin_landing|admin area>.".format(user.firstname, current_app.config['ROOT_URL']))
 			flash('Your account has been created.', 'success')
 			return redirect(url_for('users.login'))
+		else:
+			flash('Please correct the errors in the registration form.', 'danger')
+			return redirect(url_for('users.register'))
 		return render_template('register.html', title='Register for SIMS', form=form)
 	
 @users.route('/login', methods=['GET', 'POST'])

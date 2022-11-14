@@ -36,6 +36,17 @@
 	}
 </style>
 	<div class="container mb-5">
+		<div class="mt-4" id="hideMe">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+				   {% if messages %}
+					   {% for category, message in messages %}
+						   <div class="alert alert-{{ category }}">
+							   {{ message }} 
+						   </div>
+					   {% endfor %}
+				   {% endif %}
+			{% endwith %}
+		</div>
 		<div class="row mt-5">
 			<div class="col-md-6">
 			<h2 class="text-danger pb-4">Registration Process</h2>
