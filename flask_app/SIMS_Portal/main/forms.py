@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_sqlalchemy import SQLAlchemy
-from wtforms import StringField, SubmitField, BooleanField, IntegerField, DateField, DateTimeField, SelectField, SelectMultipleField, HiddenField
+from wtforms import StringField, SubmitField, BooleanField, IntegerField, DateField, DateTimeField, SelectField, SelectMultipleField, HiddenField, FileField
 from wtforms_sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from flask_wtf.file import FileField, FileAllowed
 from SIMS_Portal import db
 from SIMS_Portal.models import User, Emergency, Portfolio, Skill, Language, EmergencyType, NationalSociety, Badge, Assignment
 
@@ -42,3 +43,8 @@ class SkillCreatorForm(FlaskForm):
 	name = StringField('Skill Name')
 	category = SelectField('Skill Category', choices=['Geospatial', 'Mobile Data Collection', "Graphic Design", 'Data Visualization', 'Web Development', 'Coding', 'Data Management', 'Information Analysis'])
 	submit_skill = SubmitField('Add Skill')
+
+class NewBadgeUploadForm(FlaskForm):
+	name = StringField('Badge Name')
+	file = FileField('Attach File', validators=[FileAllowed(['png'])])
+	upload_badge = SubmitField('Upload New Badge')

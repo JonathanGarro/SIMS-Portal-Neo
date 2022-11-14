@@ -23,6 +23,9 @@
 			<li class="nav-item" role="presentation">
 			<button class="nav-link text-dark fw-bold" id="skill-list-tab" data-bs-toggle="tab" data-bs-target="#skill-list" type="button" role="tab" aria-controls="skill-list" aria-selected="false">Add to Skill List</button>
 			</li>
+			<li class="nav-item" role="presentation">
+			<button class="nav-link text-dark fw-bold" id="upload-badge-tab" data-bs-toggle="tab" data-bs-target="#upload-badge" type="button" role="tab" aria-controls="upload-badge" aria-selected="false">Upload New Badge</button>
+			</li>
 		</ul>
 		<div class="tab-content" id="adminContent">
 		  <div class="tab-pane fade show active" id="badge-assignment" role="tabpanel" aria-labelledby="badge-assignment-tab">
@@ -104,7 +107,7 @@
 				<div class="tab-pane fade" id="skill-list" role="tabpanel" aria-labelledby="skill-list-tab-tab">
 					<br>					
 					<form action="" method="POST" enctype="multipart/form-data" class="bg-light text-light p-4 rounded-3" novalidate>
-						  {{ badge_form.hidden_tag() }}
+						  {{ skill_form.hidden_tag() }}
 						  <div class='row'>
 							<div class='col-md-5'>{{ skill_form.name.label(class="form-control-label pb-2 text-danger") }}</div>
 							<div class='col-md-5'>{{ skill_form.category.label(class="form-control-label pb-2 text-danger") }}</div>
@@ -134,6 +137,44 @@
 						  </tbody>
 					  </table>
 				</div>
+				
+				<div class="tab-pane fade" id="upload-badge" role="tabpanel" aria-labelledby="upload-badge-tab">
+					<br>
+					<form action="" method="POST" enctype="multipart/form-data" class="bg-light text-light p-4 rounded-3" novalidate>
+					{{ badge_upload_form.hidden_tag() }}
+					<div class='row'>
+						<div class='col'>
+							<div>{{ badge_upload_form.name.label(class="form-control-label pb-2 text-danger") }}</div>
+						</div>
+						<div class='col'>
+							<div>{{ badge_upload_form.file.label(class="form-control-label pb-2 text-danger") }}</div>
+						</div>
+					</div>
+					
+					<div class='row'>
+						<div class='col'>
+							<div>{{ badge_upload_form.name(class="form-control form-control-lg") }}</div>
+						</div>
+						<div class='col'>
+							<div><input class="form-control form-control-lg" id="{{ badge_upload_form.file }}" type="file"></div>
+						</div>
+					</div>
+					<div class='col'>{{ badge_upload_form.upload_badge(class="btn btn-lg btn-danger w-100") }}</div>
+				
+					</form>
+				<div class='row my-5'>
+					<div class='col'>
+						<h3 class='text-danger'>New Badge Guidelines</h3>
+						<p>In order to keep a unified style across all of the badges that get posted to the portal, you must create new ones using this Adobe Illustrator template. Save the file using <span class='fw-bold'>File > Export > Save for Web (Legacy)</span>, making sure to export it as a transparent PNG at 500x500.</p>
+						<iframe width="560" height="315" src="https://www.youtube.com/embed/8QhBh9-c6MQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					</div>
+					<div class='col'>
+						<img src='/static/assets/img/badges_preview.png'>
+					</div>
+				</div>
+				</div>
+				</div>
+				
 				
 			</div>
 			<div class='my-5'>

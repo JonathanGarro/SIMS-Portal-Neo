@@ -71,3 +71,16 @@ def check_sims_co(emergency_id):
 		user_is_sims_co = False
 		
 	return user_is_sims_co
+
+def save_new_badge(file):
+	filename, file_ext = os.path.splitext(file.filename)
+	# save user-defined file name as the 'name' of the badge
+	# name = filename
+	# remove spaces for badge_url
+	filename = filename.replace(" ", "-")
+	file_merged = filename + file_ext
+	file_path = os.path.join(current_app.root_path, 'static/assets/img/badges', file_merged)
+	file_path_extension = '/static/assets/img/badges/' + file_merged
+	file.save(file_path)
+	
+	return file_path_extension

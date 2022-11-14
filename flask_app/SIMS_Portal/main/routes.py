@@ -4,11 +4,11 @@ from SIMS_Portal import db
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
-from SIMS_Portal.main.forms import MemberSearchForm, EmergencySearchForm, ProductSearchForm, BadgeAssignmentForm, SkillCreatorForm, BadgeAssignmentViaSIMSCoForm
+from SIMS_Portal.main.forms import MemberSearchForm, EmergencySearchForm, ProductSearchForm, BadgeAssignmentForm, SkillCreatorForm, BadgeAssignmentViaSIMSCoForm, NewBadgeUploadForm
 from collections import defaultdict, Counter
 from datetime import date, timedelta
 from SIMS_Portal.config import Config
-from SIMS_Portal.main.utils import fetch_slack_channels, check_sims_co
+from SIMS_Portal.main.utils import fetch_slack_channels, check_sims_co, save_new_badge
 from SIMS_Portal.users.utils import send_slack_dm
 import os
 import tweepy
@@ -57,19 +57,35 @@ def badges():
 	badge_counts = Counter(count_list)
 	
 	return render_template('badges.html', badge_counts=badge_counts, count_active_members=count_active_members)
-	
+
+@main.route('/badges/create', methods=['GET', 'POST'])
+@login_required
+def create_badge():
+	form = NewBadgeUploadForm()
+	if current_user.is_admin == 1 and form.validate_on_submit() and form.file.data:
+		file = save_new_badge(form.file.data)
+		badge = Badge(name = form.name.data, badge_url = file)
+		db.session.execute(badge)
+		db.session.commit()
+		flash('New badge successfully created!', 'success')
+		return redirect(url_for('main.admin_landing'))
+	else:
+		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()
+		return render_template('errors/403.html', list_of_admins=list_of_admins), 403
+
 @main.route('/admin_landing', methods=['GET', 'POST'])
 @login_required
 def admin_landing():
 	badge_form = BadgeAssignmentForm()
 	skill_form = SkillCreatorForm()
+	badge_upload_form = NewBadgeUploadForm()
 	if request.method == 'GET' and current_user.is_admin == 1:
 		pending_users = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.status=='Pending').all()
 		all_users = db.session.query(User, NationalSociety).join(NationalSociety, NationalSociety.ns_go_id == User.ns_id).filter(User.status == 'Active').order_by(User.firstname).all()
 		assigned_badges = db.engine.execute("SELECT u.id, u.firstname, u.lastname, GROUP_CONCAT(b.name, ', ') as badges FROM user u JOIN user_badge ub ON ub.user_id = u.id JOIN badge b ON b.id = ub.badge_id WHERE u.status = 'Active' GROUP BY u.id ORDER BY u.firstname")
 		all_skills = db.session.query(Skill.name, Skill.category).order_by(Skill.category, Skill.name).all()
-		return render_template('admin_landing.html', pending_users=pending_users, all_users=all_users, badge_form=badge_form, assigned_badges=assigned_badges, skill_form=skill_form, all_skills=all_skills)
-	elif request.method == 'POST' and badge_form.submit_badge.data: 
+		return render_template('admin_landing.html', pending_users=pending_users, all_users=all_users, badge_form=badge_form, assigned_badges=assigned_badges, skill_form=skill_form, all_skills=all_skills, badge_upload_form=badge_upload_form)
+	elif request.method == 'POST' and badge_form.submit_badge.data and current_user.is_admin == 1: 
 		user_id = badge_form.user_name.data.id
 		badge_id = badge_form.badge_name.data.id
 		session['assigner_justify'] = badge_form.assigner_justify.data
@@ -90,7 +106,7 @@ def admin_landing():
 		else:
 			flash('Cannot add badge - user already has it.', 'danger')
 			return redirect(url_for('main.admin_landing'))
-	elif request.method == 'POST' and skill_form.submit_skill.data: 
+	elif request.method == 'POST' and skill_form.submit_skill.data and current_user.is_admin == 1: 
 		new_skill = Skill(
 			name = skill_form.name.data,
 			category = skill_form.category.data
@@ -98,6 +114,16 @@ def admin_landing():
 		db.session.add(new_skill)
 		db.session.commit()
 		flash("New Skill Created.", "success")
+		return redirect(url_for('main.admin_landing'))
+	elif request.method == 'POST' and badge_upload_form.name.data and current_user.is_admin == 1:
+		file = save_new_badge(badge_upload_form.file.data)
+		badge = Badge(
+			name = badge_upload_form.name.data, 
+			badge_url = file
+		)
+		db.session.add(badge)
+		db.session.commit()
+		flash('New badge successfully created!', 'success')
 		return redirect(url_for('main.admin_landing'))
 	else:
 		list_of_admins = db.session.query(User).filter(User.is_admin==1).all()

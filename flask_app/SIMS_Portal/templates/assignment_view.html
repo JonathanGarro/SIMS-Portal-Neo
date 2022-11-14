@@ -50,6 +50,7 @@
 					{% if current_user.is_admin == 1 or current_user.id == assignment_info.Assignment.user_id %}
 						{% if assignment_info.Assignment.role == 'Remote IM Support' %}
 						<a href='/assignment/availability/{{assignment_info.Assignment.id}}/{{assignment_info.Assignment.start_date}}/{{assignment_info.Assignment.end_date}}' class='list-group-item list-group-item-action text-secondary'>Report Availability</a>
+						<a href="/portfolio/new_from_assignment/{{assignment_info.Assignment.id}}/{{assignment_info.User.id}}/{{assignment_info.Emergency.id}}" class="list-group-item list-group-item-action text-secondary">Upload Product</a>
 						<a href="/learning/assignment/new/{{assignment_info.Assignment.user_id}}/{{assignment_info.Assignment.id}}" class="list-group-item list-group-item-action text-secondary">Create Learning Review</a>
 						{% endif %}
 						{% if current_user.is_admin == 1 or current_user.id == assignment_info.User.id %}
