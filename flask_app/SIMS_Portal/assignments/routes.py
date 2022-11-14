@@ -164,7 +164,7 @@ def assignment_availability_result():
 	user_info = db.session.query(User).filter(User.id == current_user.id).first()
 	# try sending message if user has slack ID filled in
 	try:
-		message = 'Hi {}, you have successfully updated your availability! This helps the SIMS Remote Coordinator better plan coverage for incoming tasks, so thank you for your help.'.format(user_info.firstname)
+		message = 'Hi {}, you have successfully updated your availability!'.format(user_info.firstname)
 		send_slack_dm(message, user_info.slack_id)
 	# skip slack message if slack is down or user doesn't have slack ID filled in
 	except:

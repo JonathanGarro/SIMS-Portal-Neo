@@ -3,6 +3,7 @@ from SIMS_Portal import db
 from SIMS_Portal.config import Config
 from SIMS_Portal.models import Learning, User, Emergency, Assignment
 from SIMS_Portal.learnings.forms import NewAssignmentLearningForm
+from SIMS_Portal.users.utils import send_slack_dm
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from flask_login import login_user, logout_user, current_user, login_required
@@ -36,6 +37,13 @@ def create_new_assignment_learning(user_id, assignment_id):
 			)
 			db.session.add(learning)
 			db.session.commit()
+			user_info = db.session.query(User).filter(User.id == current_user.id).first()
+			try:
+				message = 'Hi {}, you have successfully shared your assignment review! The information you shared is not attributable to you, and only the SIMS Learning Focal Point has direct access to the data. Your responses will be aggregated once enough people have also contributed their own reviews, and will help the network learn and improve from our work.'.format(user_info.firstname)
+				send_slack_dm(message, user_info.slack_id)
+			# skip slack message if slack is down or user doesn't have slack ID filled in
+			except:
+				pass
 			flash('New learning record successfully created. Thanks for your contribution!', 'success')
 			redirect_url = '/assignment/{}'.format(assignment_id)
 			return redirect(redirect_url)

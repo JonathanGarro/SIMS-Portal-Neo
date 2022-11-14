@@ -2,51 +2,8 @@
 
 {% extends "layout.html" %}
 {% block content %}
+ <iframe style="padding-top: 0; width:100%; height:100%" src='http://staging.dissolvingdata.com'></iframe>
 <div class='container'>
-<canvas id='availabilityThisEmergency' width='600' height='500'></canvas>
-<script>
-  var ctx = document.getElementById('availabilityThisEmergency').getContext('2d');
-  var lineChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: {{ labels | safe }},
-      datasets: [{
-        label: "Aggregated Availability",
-        data: {{ values | safe }},
-        fill: true,
-        backgroundColor: "#dc3545"
-      }]
-    },
-    options: {
-      plugins: {
-        legend: true,
-      },
-      responsive: true,
-      indexAxis: 'y',
-      scales: {
-        y: {
-          ticks: {
-            stepSize: 1
-          },
-          grid: {
-            display: false
-          }
-          
-        },
-        x: {
-          ticks: {
-            stepSize: 1
-          },
-        suggestedMax: 5,
-        grid: {
-          display: true
-          }
-        }
-        
-      }
-    }
-  })
-</script>
 
 </div>
 {% endblock content %}
