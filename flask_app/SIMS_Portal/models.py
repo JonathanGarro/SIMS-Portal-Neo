@@ -61,7 +61,7 @@ class Badge(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String)
 	badge_url = db.Column(db.String)
-	limited_edition = db.Column(db.Boolean, default=False)
+	# limited_edition = db.Column(db.Boolean, default=False)
 
 class NationalSociety(db.Model):
 	__tablename__ = 'nationalsociety'
