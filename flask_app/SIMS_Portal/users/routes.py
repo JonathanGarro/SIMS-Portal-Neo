@@ -15,7 +15,6 @@ users = Blueprint('users', __name__)
 @users.route('/members')
 def members():
 	members = db.engine.execute("SELECT user.id AS user_id, user.ns_id AS user_ns_id, user.firstname, user.lastname, nationalsociety.ns_go_id, user.image_file, user.job_title, nationalsociety.ns_name FROM user LEFT OUTER JOIN nationalsociety ON nationalsociety.ns_go_id = user.ns_id WHERE status = 'Active'")
-
 	return render_template('members.html', members=members)
 
 @users.route('/members/all') 
@@ -284,7 +283,6 @@ def reset_token(token):
 def approve_user(id):
 	approver_info = db.session.query(User).filter(User.id == current_user.id).first()
 	check_slack_id = db.session.query(User).filter(User.id == id).first()
-	print(check_slack_id.slack_id)
 	if current_user.is_admin == 1 and check_slack_id.slack_id is not None:
 		try:
 			db.session.query(User).filter(User.id==id).update({'status':'Active'})
