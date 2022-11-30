@@ -35,6 +35,7 @@ def new_emergency():
 @emergencies.route('/emergency/<int:id>', methods=['GET', 'POST'])
 @login_required
 def view_emergency(id):
+	# aggregate reported availability if data exists, otherwise return hide chart variable for jinja filtering
 	try:
 		func_call = aggregate_availability(id)
 		values = func_call[0]
@@ -124,6 +125,24 @@ def edit_emergency(id):
 		form.dropbox_url.data = emergency_info.dropbox_url
 		form.trello_url.data = emergency_info.trello_url
 	return render_template('emergency_edit.html', form=form, emergency_info=emergency_info)
+
+@emergencies.route('/emergency/gantt/<int:id>', methods=['GET', 'POST'])
+@login_required
+def emergency_gantt(id):
+	emergency_info = db.session.query(Emergency).filter(Emergency.id == id).first()
+	assignments = db.session.query(Assignment, Emergency, User).join(Emergency, Emergency.id == Assignment.emergency_id).join(User, User.id == Assignment.user_id).filter(Emergency.id == id).with_entities(Assignment.start_date, Assignment.end_date, User.fullname).all()
+	start_end_dates = []
+	for dates in assignments:
+		start_end_dates.append([dates.start_date.strftime('%Y-%m-%d'), dates.end_date.strftime('%Y-%m-%d')])
+	member_labels = []
+	for member in assignments:
+		member_labels.append(member.fullname)
+	if start_end_dates:
+		min_date = min(start_end_dates)
+		min_date = min_date[0]
+	else: 
+		min_date = '2000-01-01'
+	return render_template('emergency_gantt.html', start_end_dates=start_end_dates, member_labels=member_labels, min_date=min_date, emergency_info=emergency_info)
 
 @emergencies.route('/emergency/closeout/<int:id>')
 @login_required

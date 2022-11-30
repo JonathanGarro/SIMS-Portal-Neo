@@ -219,66 +219,17 @@ def badge_assignment_sims_co(dis_id):
 @main.route('/staging') 
 @login_required
 def staging(): 
-	# get data from db
-	data = db.session.query(Assignment, Emergency).join(Emergency, Emergency.id == Assignment.emergency_id).with_entities(Assignment.availability).filter(Emergency.id == 4, Assignment.availability != None).all()
-	
-	# loop over nested data and strip out extra characters on merge
-	list_full = []
-	for x in data:
-		for y in x:
-			for z in y.split(', '):
-				list_full.append(z.replace('[','').replace(']','').replace("'",''))
-	
-	# convert list to Counter object
-	output = Counter(list_full)
-	
-	# create list of dictionaries that converts date strings to date time for better readability
-	holder_list = []
-	for key, val in output.items():
-		temp_dict = {}
-		date = datetime.strptime(key, '%Y-%m-%d')
-		temp_dict['day_of_week'] = date.strftime('%A') + ' - ' + date.strftime('%b') + ' ' + date.strftime('%d')
-		temp_dict['count'] = val
-		holder_list.append(temp_dict)
-	
-	# package data for visualization in json format
-	output = json.dumps(holder_list)
-	values = []
-	labels = []
-	for x in holder_list:
-		values.append(x['count'])
-		labels.append(x['day_of_week'])
+	assignments = db.session.query(Assignment, Emergency, User).join(Emergency, Emergency.id == Assignment.emergency_id).join(User, User.id == Assignment.user_id).filter(Emergency.id == 60).with_entities(Assignment.start_date, Assignment.end_date, User.fullname).all()
+	start_end_dates = []
+	for dates in assignments:
+		start_end_dates.append([dates.start_date.strftime('%Y-%m-%d'), dates.end_date.strftime('%Y-%m-%d')])
+	member_labels = []
+	for member in assignments:
+		member_labels.append(member.fullname)
+	min_date = min(start_end_dates)
+	min_date = min_date[0]
 
-
-
-	# import requests
-	# import json
-	# 
-	# key = current_app.config['TRELLO_KEY']
-	# token = current_app.config['TRELLO_TOKEN']
-	# list_id = '621dfcf650d6493f43ad1740'
-	# 
-	# url = "https://api.trello.com/1/lists/{}/cards".format(list_id)
-	# 
-	# headers = {
-	# 	"Accept": "application/json"
-	# }
-	# 
-	# query = {
-	# 	'key': key,
-	# 	'token': token
-	# }
-	# 
-	# response = requests.request(
-	# 	"GET",
-	# 	url,
-	# 	headers=headers,
-	# 	params=query
-	# )
-	# 
-	# output = json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": "))
-	
-	return render_template('visualization.html', output=output, values=values, labels=labels)
+	return render_template('visualization.html', start_end_dates=start_end_dates, member_labels=member_labels, min_date=min_date)
 
 @main.route('/learning')
 @login_required

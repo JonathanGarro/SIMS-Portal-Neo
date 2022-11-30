@@ -229,10 +229,9 @@
 				  {% endif %}
 				  <div class='mb-5'>
 					  {% if deployment_history_count == 0 %}
-					  <h3 class="mb-3 text-dark emergency-title">Member Support<span class='text-dark'>: {{ deployment_history_count }}</span></h3>
-						  No deployments yet.
-					  {% else %}
 					  <h3 class="mb-3 text-dark emergency-title">Member Support: <span class='text-danger'>{{ deployment_history_count }}</span></h3>
+					  {% else %}
+					  <h3 class="text-dark emergency-title mb-3">Member Support: <span class='text-danger'>{{ deployment_history_count }}</span></h3>
 					  <table class="table">
 						<thead class="">
 						  <tr>
@@ -254,6 +253,7 @@
 							{% endfor %}
 						</tbody>
 					  </table>
+					  <p class='mt-4'><a href='/emergency/gantt/{{emergency_info.Emergency.id}}'><button type="button" class='btn btn-danger text-light'>View as Gantt Chart</button></a></p>
 					  {% endif %}
 				  </div>
 				  <h3 class="mb-1 text-dark mb-4 emergency-title">Response Products: <span class='text-danger'>{{ emergency_portfolio_size }}</span></h3>
