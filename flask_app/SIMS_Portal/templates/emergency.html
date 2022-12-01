@@ -17,7 +17,7 @@
 	<div class="row my-5">
 		<div class="col col-md-4">
 			<div class="card p-4 bg-light">
-				<h5 class="text-secondary py-1">Response Operation</h5>
+				<h5 class="text-secondary py-1 Montserrat">Response Operation</h5>
 				<h1 class="text-danger mb-5 emergency-title">{{ emergency_info.Emergency.emergency_name}}</h1>
 
 				{% if  emergency_info.Emergency.emergency_status == 'Active' %}
@@ -49,7 +49,7 @@
 			<br>
 			<!-- Main sidebar buttons -->
 			<div class="card p-4 bg-light">
-				<h5 class="text-secondary py-2">Available Actions</h5>
+				<h5 class="text-secondary py-2 Montserrat">Available Actions</h5>
 				<ul class="list-group border-0">
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="/assignment/new/{{emergency_info.Emergency.id}}" class="text-secondary">Log New Assignment</a>
@@ -84,7 +84,7 @@
 				<br>
 				<ul class='list-group  border-0'>
 					{% if current_user.is_admin == 1 or user_is_sims_co %}
-					<h5 class="text-secondary pt-3 pb-2">Record Management</h5>
+					<h5 class="text-secondary pt-3 pb-2 Montserrat">Record Management</h5>
 						{% if check_for_story %}
 						<li class="list-group-item d-flex justify-content-between align-items-center">
 							<a href="/story/edit/{{emergency_info.Emergency.id}}" class="text-secondary">Edit Response Story</a>
@@ -150,7 +150,7 @@
 			<!-- End main sidebar buttons -->
 			<br>
 			<div class="card p-4 bg-light">
-				<h5 class="text-secondary py-2">Response Tools</h5>
+				<h5 class="text-secondary py-2 Montserrat">Response Tools</h5>
 				<div class="row mt-3 justify-content-center">
 					{% if emergency_info.Emergency.slack_channel == None or emergency_info.Emergency.slack_channel == '' %}
 					<div class="col" align="center"><img src="/static/assets/img/icons/slack.png" height="50px"></div>
@@ -181,7 +181,7 @@
 			</div>
 			<br>
 			<div class="card p-4 bg-light">
-				<h5 class='text-secondary mb-3'>{{emergency_info.NationalSociety.country_name}}</h5>
+				<h5 class='text-secondary mb-3 Montserrat'>{{emergency_info.NationalSociety.country_name}}</h5>
 
 				<img id='flag-image' src='https://countryflagsapi.com/png/{{emergency_info.NationalSociety.iso3}}' class='img-fluid mb-3'>
 				<ul class="list-group border-0">
@@ -257,7 +257,7 @@
 					  {% endif %}
 				  </div>
 				  <h3 class="mb-1 text-dark mb-4 emergency-title">Response Products: <span class='text-danger'>{{ emergency_portfolio_size }}</span></h3>
-				  <div class="row row-cols-3 row-cols-md-3 g-4 mb-5">
+				  <div class="row row-cols-3 row-cols-md-3 g-4 mb-4">
 				  {% for product in emergency_portfolio %}
 					  <div class="col d-flex align-items-stretch">
 						  <a href="/portfolio/view/{{product.Portfolio.id}}">

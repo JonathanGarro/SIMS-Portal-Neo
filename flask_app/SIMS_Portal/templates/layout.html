@@ -24,7 +24,7 @@
 	 <div class="container">
 		 <img src='/static/assets/img/SIMS-Logo-Dark.png' height='50px'>&nbsp &nbsp
 		{% if current_user.is_authenticated %}
-			<a class="navbar-brand" href="/dashboard" style="font-family: 'Montserrat';">Surge Information Management Support</a>
+			<a class="navbar-brand" href="/dashboard" style="font-family: 'Montserrat';"></a>
 		{% else %}
 			<a class="navbar-brand" href="/" style="font-family: 'Montserrat';">Surge Information Management Support</a>
 		{% endif %}
@@ -51,16 +51,33 @@
 
 				{% endif %}
 				
-				
-
-				<li class="nav-item ps-2"><a class="nav-link text-light" href="/logout" style="font-family: 'Montserrat';"> Logout </a></li>
+				<li class="nav-item ps-2"><a class="nav-link Montserrat text-light" href="/logout"> Logout </a></li>
 			{% else %}
-				<li class="nav-item px-2"><a class="nav-link text-light" href="/about" style="font-family: 'Montserrat';"> About </a></li>	
-				<li class="nav-item px-2"><a class="nav-link text-light" href="#" style="font-family: 'Montserrat';"> Resources </a></li>
-				<li class="nav-item px-2"><a class="nav-link text-light" href="/portfolio" style="font-family: 'Montserrat';"> Portfolio </a></li>
-				<li class="nav-item px-2"><a class="nav-link text-light" href="/members" style="font-family: 'Montserrat';"> Members </a></li>
-				<li class="nav-item px-2"><a class="nav-link text-light" href="/login" style="font-family: 'Montserrat';"> Login </a></li>
-				
+				{% if '/about' in request.path %}
+				<li class="nav-item px-2"><a class="nav-link text-light Montserrat" href="/about" style="text-decoration: underline; text-decoration-thickness: 3px;"> About </a></li>
+				{% else %}
+				<li class="nav-item px-2"><a class="nav-link text-light Montserrat" href="/about"> About </a></li>	
+				{% endif %}
+				{% if '/resources' in request.path %}
+				<li class="nav-item px-2"><a class="nav-link text-light Montserrat" href="/resources" style="text-decoration: underline; text-decoration-thickness: 3px;"> Resources </a></li>
+				{% else %}
+				<li class="nav-item px-2"><a class="nav-link text-light Montserrat" href="#"> Resources </a></li>
+				{% endif %}
+				{% if '/portfolio' in request.path %}
+				<li class="nav-item px-2"><a class="nav-link text-light Montserrat" href="/portfolio" style="text-decoration: underline; text-decoration-thickness: 3px;"> Portfolio </a></li>
+				{% else %}
+				<li class="nav-item px-2"><a class="nav-link text-light Montserrat" href="/portfolio"> Portfolio </a></li>
+				{% endif %}
+				{% if '/members' in request.path %}
+				<li class="nav-item px-2"><a class="nav-link text-light Montserrat" href="/members" style="text-decoration: underline; text-decoration-thickness: 3px;"> Members </a></li>
+				{% else %}
+				<li class="nav-item px-2"><a class="nav-link text-light Montserrat" href="/members"> Members </a></li>
+				{% endif %}
+				{% if '/login' in request.path %}
+				<li class="nav-item px-2"><a class="nav-link text-light Montserrat" href="/login" style="text-decoration: underline; text-decoration-thickness: 3px;"> Login </a></li>
+				{% else %}
+				<li class="nav-item px-2"><a class="nav-link text-light Montserrat" href="/login"> Login </a></li>
+				{% endif %}
 			{% endif %}
 		</ul>
 	  </div> 

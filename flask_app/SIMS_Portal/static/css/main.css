@@ -80,7 +80,7 @@ li {
 	border: none;
 }
 
-#portfolio-card:hover {
+.portfolio-card:hover {
   /* transform: scale(1.1); */
   background: lightgray !important;
   border-width: 1px;
@@ -162,6 +162,10 @@ li {
 	color: #ffffff
 }
 
+h2 {
+	margin-bottom:0;
+}
+
 h2.header {
 	bottom: 0;
 	position: absolute;
@@ -173,6 +177,10 @@ h2.header {
 	font-size: 4em;
 	font-family: 'Montserrat';
 	width: 75%;
+}
+
+#active-disaster-dashboard {
+	margin-top:0;
 }
 
 #navbar_top {
@@ -322,3 +330,8 @@ h2.header {
   width: 100%;
 }
 
+.absolute-image {
+	max-width: 100%;
+	height: auto;
+	position: absolute
+}

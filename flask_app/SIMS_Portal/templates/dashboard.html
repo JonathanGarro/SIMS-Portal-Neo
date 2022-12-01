@@ -14,7 +14,7 @@
 				   {% endif %}
 			{% endwith %}
 		</div>
-		<div class="row mb-5">
+		<div class="row mb-3">
 			{% if pending_user_check|length == 1 and current_user.is_admin == 1 %}
 			<div class="alert alert-warning alert-dismissible fade show" role="alert">
 			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -28,14 +28,41 @@
 			  There are {{pending_user_check|length}} new user accounts pending approval. Go to the Admin Portal to approve or reject their requests.
 			</div>
 			{% endif %}
+		</div>
+		<div class="row">
+			{% if count_active_emergencies > 0 %}
+			<h3 class="Montserrat">Active Operations: <span class='text-danger'>{{count_active_emergencies}}</span></h3>
+			<div class="row row-cols-1 row-cols-md-2 g-4" id='active-disaster-dashboard'>
+				{% for emergency in active_emergencies %}  
+				<a href='/emergency/{{emergency.Emergency.id}}'>
+				<div class="col d-flex align-items-stretch">  
+					<div class='card bg-light portfolio-card'>
+						<div class="card-body d-flex flex-column">
+						<div class='row align-items-center'>
+						  <div class='col-3 p-4'>
+							  <img class="img-fluid" src="/static/assets/img/emergency_types/{{emergency.EmergencyType.emergency_type_name}}.png" />
+						  </div>
+						  <div class='col p-4'>
+							  <h2 class="Montserrat text-danger">{{emergency.Emergency.emergency_name}}</h2>
+						  </div>
+						</div>
+					</div>
+					</div>
+				</div>
+				</a>
+				{% endfor %}
+			</div>
+
+			{% endif %}
 			
+		</div>
 			<div class='mb-5'>
 			{% if count_active_assignments == 0 %}
-				<h3 class="mt-5" style="font-family: 'Montserrat'">No Active Assignments</h3>
+				<h3 class="mt-5 Montserrat">No Active Assignments</h3>
 				<h5 class="text-secondary mb-5">It's a good time to work on your skills to be ready for the next SIMS activation! Check out the learning and development section to find useful resources.</h5>
-				<hr>
+				
 			{% else %}
-			<h3 class="mt-3" style="font-family: 'Montserrat'">Active Assignments <span class="badge rounded-pill bg-danger" id="smallbadge">{{count_active_assignments}}</span></h3>
+			<h3 class="mt-3 Montserrat">Active Assignments <span class="badge rounded-pill bg-danger" id="smallbadge">{{count_active_assignments}}</span></h3>
 			<h5 class="text-secondary mb-3">Members Currently Supporting Operations</h5>
 			<table class='table table-striped table-hover'>
 				<thead>
@@ -225,67 +252,7 @@
 		
 
 		
-		<div class='row my-5 align-items-top'>
-			<div class="col-lg-4 d-flex align-items-stretch">
-				<div class="card text-white bg-danger mb-4 w-100">
-					  <div class="card-header">Announcements and Reminders</div>
-					  <div class="card-body">
-						<h5 class="card-title fw-bold">Weekly SIMS Calls</h5>
-							<p class="card-text mb-4">Calls take place Thursdays at 15:00 UTC on Zoom. <a href="https://britishredcross.zoom.us/j/207753634?pwd=dFUyRnNEOC9PazFkVVJ1VWx3MGM2UT09" class="fw-bold text-white"><u>Click to join.</u></a></p>
-						<h5 class="card-title fw-bold">Mobile Data Training</h5>
-							<p class="card-text mb-2">A mobile data collection training will be held online starting at 09:00 UTC on 28 February, 2022.</p>
-					  </div>
-				</div>
-			</div>
-			<div class='col-lg-4 d-flex align-items-stretch'>
-					<div class="card text-dark bg-light bg-secondary mb-4 w-100">
-					  <div class="card-header">Newest SIMS Members</div>
-					  <div class="card-body text-dark">
-						<table class="table table-sm">
-						  <thead class="">
-							<tr>
-								  <th scope="col">Name</th>
-								  <th scope="col">Affiliation</th>
-							</tr>
-						  </thead>
-						  <tbody>
-						{% for member in most_recent_members %}
-							<tr>
-								<td class="fw-bold"><a href="/profile/view/{{member.User.id}}" class="link-danger">{{member.User.firstname}} {{member.User.lastname}}</a></td>
-								<td>{{member.NationalSociety.ns_name}}</td>
-							</tr>
-						{% endfor %}
-						  </tbody>
-						</table>
-							
-					  </div>
-				</div>
-			</div>
-			<div class='col-4 d-flex align-items-stretch'>
-					<div class="card text-dark bg-light bg-secondary mb-4 w-100">
-					  <div class="card-header">Latest SIMS Emergencies</div>
-					  <div class="card-body text-dark">
-						<table class="table table-sm">
-						  <thead class="text-dark">
-							<tr>
-								  <th scope="col">Event</th>
-								  <th scope="col">GO</th>
-							</tr>
-						  </thead>
-						  <tbody>
-						{% for emergency in most_recent_emergencies %}
-							<tr>
-								<td class="fw-bold"><a href="/emergency/{{emergency.id}}" class="link-danger">{{emergency.emergency_name}}</a></td>
-								<td><a href="https://go.ifrc.org/emergencies/{{emergency.emergency_go_id}}" class="link-secondary">{{emergency.emergency_go_id}}</a></td>
-							</tr>
-						{% endfor %}
-						  </tbody>
-						</table>
-							
-					  </div>
-				</div>
-			</div>
-		</div>
+
 	</div>
 {% endblock content %}
 
