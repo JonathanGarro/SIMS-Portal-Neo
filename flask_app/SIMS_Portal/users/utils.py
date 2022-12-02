@@ -34,16 +34,11 @@ If you did not make this request, then simply ignore this email and no changes w
 
 # send slack alert when new user signs up
 def new_user_slack_alert(message):
-	# print('NEW USER ALERT')
-	# key = current_app.config['SIMS_PORTAL_SLACK_BOT']
-	# payload = '{"text": "%s"}' % message
-	# response = requests.post('https://hooks.slack.com/services/{}'.format(key), data=payload)
 	client = WebClient(token = current_app.config['SIMS_PORTAL_SLACK_BOT'])
 	try:
 		result = client.chat_postMessage(
 			channel = 'C046A8T9ZJB',
 			text = message
-			# You could also use a blocks[] array to send richer content
 		)
 	except:
 		pass

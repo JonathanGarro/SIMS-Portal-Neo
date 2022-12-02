@@ -61,7 +61,7 @@ class Badge(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String)
 	badge_url = db.Column(db.String)
-	# limited_edition = db.Column(db.Boolean, default=False)
+	limited_edition = db.Column(db.Boolean, default=False)
 
 class NationalSociety(db.Model):
 	__tablename__ = 'nationalsociety'
@@ -71,6 +71,7 @@ class NationalSociety(db.Model):
 	ns_name = db.Column(db.String(120), nullable=False)
 	country_name = db.Column(db.String(120), nullable=False)
 	ns_go_id = db.Column(db.Integer)
+	iso2 = db.Column(db.String(2))
 	iso3 = db.Column(db.String(3))
 	
 	users = db.relationship('User', backref='national_society', lazy=True)
@@ -187,6 +188,23 @@ class Learning(db.Model):
 	created_at = db.Column(db.DateTime, server_default=func.now())
 	updated_at = db.Column(db.DateTime, onupdate=func.now())
 
+class Review(db.Model):
+	__tablename__ = 'review'
+	
+	id = db.Column(db.Integer, primary_key=True)
+	category = db.Column(db.String, nullable=False)
+	type = db.Column(db.String, nullable=False)
+	title = db.Column(db.String, nullable=False)
+	description = db.Column(db.Text, nullable=False)
+	recommended_action = db.Column(db.Text)
+	follow_up = db.Column(db.Text)
+	status = db.Column(db.String, nullable=False)
+	
+	emergency_id = db.Column(db.Integer, db.ForeignKey('emergency.id'), nullable=False)
+	
+	created_at = db.Column(db.DateTime, server_default=func.now())
+	updated_at = db.Column(db.DateTime, onupdate=func.now())
+
 class WorkingGroup(db.Model):
 	__tablename__ = 'workinggroup'
 	
@@ -210,6 +228,9 @@ class Story(db.Model):
 	entry = db.Column(db.Text)
 	
 	emergency_id = db.Column(db.Integer, db.ForeignKey('emergency.id'), default=0)
+	
+	created_at = db.Column(db.DateTime, server_default=func.now())
+	updated_at = db.Column(db.DateTime, onupdate=func.now())
 
 class Emergency(db.Model):
 	__tablename__ = 'emergency'
@@ -230,6 +251,7 @@ class Emergency(db.Model):
 	emergency_type_id = db.Column(db.Integer, db.ForeignKey('emergencytype.id'))
 	
 	emergency_products = db.relationship('Portfolio', backref='emergency_response', lazy=True)
+	reviews = db.relationship('Review', backref='related_operation', lazy=True)
 	assigned_to = db.relationship('Assignment', backref='assigned_emergency', lazy=True)
 	story_id = db.relationship('Story', backref='associated_story', lazy=True)
 	
@@ -284,6 +306,7 @@ class Portfolio(db.Model):
 	collaborator_ids = db.Column(db.String(200))
 	approver_id = db.Column(db.Integer)
 	approver_message = db.Column(db.Text)
+	km_article = db.Column(db.Integer)
 	
 	assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
 	creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

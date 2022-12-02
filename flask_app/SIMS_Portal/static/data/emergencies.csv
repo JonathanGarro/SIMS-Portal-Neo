@@ -1,12 +1,12 @@
 id,emergency_name,emergency_status,emergency_glide,emergency_go_id,emergency_location_id,emergency_review_id,activation_details,slack_channel,dropbox_url,trello_url,emergency_type_id,created_at,updated_at
-4,Ukraine and Impacted Countries Crisis,Active,OT-2022-000157-UKR,5854,1,NULL,"After Russian forces invaded in late February, SIMS was activated to provide remote and deployed support. ",C0353KEK13L,https://www.dropbox.com/sh/4x1i0e6zbxx36ej/AAC56JtnSkeT878jbucWBvcka?dl=0,https://trello.com/invite/b/XNU5ZFKI/1feb44d1c647393ad4673a9a011003e8/simsukraine2022,6,2022-10-12 15:03:21,2022-10-06 19:49:34
+4,Ukraine and Impacted Countries Crisis,Active,OT-2022-000157-UKR,5854,1,NULL,"After Russian forces invaded in late February, SIMS was activated to provide remote and deployed support. ",C0353KEK13L,https://www.dropbox.com/sh/4x1i0e6zbxx36ej/AAC56JtnSkeT878jbucWBvcka?dl=0,https://trello.com/invite/b/XNU5ZFKI/1feb44d1c647393ad4673a9a011003e8/simsukraine2022,6,2022-10-12 15:03:21,2022-11-30 21:04:21
 7,Iraq Cholera Outbreak,Closed,EP-2022-000245-IRQ,6037,87,NULL,"Iraq RC requested some support, and IFRC Geneva approved activation of SIMS.",C0353KEK13L,,,1,2022-07-01 17:47:51,2022-07-01 17:49:08
-8,Democratic Republic of Congo Hunger Crisis,Closed,12341234,6068,187,NULL,We were requested to provide support remotely for the preparation for the lean season in 2022.,,,,20,2022-07-12 16:17:47,NULL
+8,Democratic Republic of Congo Hunger Crisis,Closed,12341234,6068,187,NULL,We were requested to provide support remotely for the preparation for the lean season in 2022.,,,,21,2022-07-12 16:17:47,2022-12-01 19:53:46
 9,Tunisia Population Movement,Closed,,792,173,NULL,,,,,5,2022-10-03 13:26:27,2022-10-03 15:30:46
 10,Democratic Republic of Congo Population Movement,Closed,,0,187,NULL,Testing remote support for information management.,,,,5,2022-10-03 15:25:34,NULL
 11,Sierra Leone Cholera Outbreak,Closed,,550,152,NULL,One FACT IM deployment to support the operation.,,,,1,2022-10-03 15:28:42,2022-10-03 15:31:03
 12,Philippines Typhoon Haiyan,Closed,TC-2013-000139-PHL,178,136,NULL,"Typhoon Haiyan represented the largest SIMS activation to date. The team produced more than 500 maps, templates for factsheets, and summarized all ERU data via new reporting processes. ",,,,4,2022-10-03 15:54:36,2022-10-03 16:14:57
-13,Nigeria Floods,Closed,FL-2012-000138-NGA,483,128,NULL,SIMS provided satellite imagery. ,,,,12,2022-10-03 16:11:50,NULL
+13,Nigeria Floods,Closed,FL-2012-000138-NGA,483,128,NULL,SIMS provided satellite imagery. ,NULL,NULL,NULL,12,2022-10-03 16:11:50,2022-11-30 22:08:29
 14,Cameroon Cholera Outbreak,Closed,EP-2014-000121-CMR,386,41,NULL,Supported the operation with malnutrition maps.,,,,1,2022-10-05 20:44:11,2022-10-07 18:44:42
 15,Iraq Population Movement,Closed,OT-2014-000074-IRQ,389,87,NULL,Deployed two rounds of support. Supported with graphics for logistics team and satellite imagery analysis.,,,,5,2022-10-05 20:46:04,NULL
 16,Bosnia and Herzegovina Floods,Closed,FF-2014-000059-BIH,289,197,NULL,"Supported the cash program with maps for one month, provided imagery analysis and displacement mapping.",,,,12,2022-10-05 20:47:53,2022-10-07 18:44:33
@@ -53,3 +53,4 @@ id,emergency_name,emergency_status,emergency_glide,emergency_go_id,emergency_loc
 57,Haiti Earthquake (2021),Closed,EQ-2021-000116-HTI,5499,80,NULL,,,,,2,2022-10-06 19:37:56,NULL
 58,Philippines Typhoon Rai,Closed,TC-2021-000202-PHL,5744,136,NULL,,,,,4,2022-10-06 19:39:13,NULL
 59,Madagascar Tropical Cyclone Batsirai,Closed,ST-2022-000138-MDG,5807,109,NULL,,,,,4,2022-10-06 19:48:56,NULL
+60,Pakistan Monsoon Floods,Active,FL-2022-000270-PAK,6061,131,NULL,SIMS was activated in September 2022 to support the response.,C040S62DHUP,,https://trello.com/b/9AtNx8uj/sims-pakistan-monsoon-floods-2022,12,2022-11-17 15:56:41,2022-12-01 15:06:05

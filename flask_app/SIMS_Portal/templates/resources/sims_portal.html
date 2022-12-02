@@ -12,7 +12,7 @@
 					<a href="#data-model" class="list-group-item list-group-item-action text-secondary">Data Model Overview</a>
 					<a href="#emergencies" class="list-group-item list-group-item-action text-secondary">Emergencies</a>
 					<a href="#assignments" class="list-group-item list-group-item-action text-secondary">Assignments</a>
-					<a href="#learnings" class="list-group-item list-group-item-action text-secondary">Learnings</a>
+					<a href="#knowledge-management" class="list-group-item list-group-item-action text-secondary">Knowledge Management</a>
 					<a href="#members" class="list-group-item list-group-item-action text-secondary">Members</a>
 					<a href="#products" class="list-group-item list-group-item-action text-secondary">Products</a>
 					<a href="#badges" class="list-group-item list-group-item-action text-secondary">Badges</a>
@@ -26,6 +26,7 @@
 				<li>Emergency</li>
 				<li>Assignment</li>
 				<li>Learning</li>
+				<li>Review</li>
 				<li>Members</li>
 				<li>Products</li>
 				<li>Badges</li>
@@ -91,10 +92,25 @@
 				<li><span class='fw-bold'>Status: </span> The end date is what filters which assignments are currently active. This status field is only used to maintain a record of assignments that have been deleted. When deleted, the status is changed to "Removed". The row in the database is maintained to avoid conflicts, as there are other elements that link to the assignment record (including products produced). Only administrators can toggle this.</li>
 			</ul>
 			
-			<h3 class='my-4 text-danger Montserrat' id='learnings'>Learnings</h3>
-			<p>The portal is designed to help the SIMS network learn from our collective experience supporting responses. Learning records are connected to assignments with a <span class='fw-bold'>one-to-one</span> relationship, meaning that each assignment can have only one associated learning record.</p>
+			<h3 class='my-4 text-danger Montserrat' id='knowledge-management'>Knowledge Management</h3>
+			<p>The portal is designed to help the SIMS network learn from our collective experience supporting responses. This happens at two levels: the operational and the individual.</p>
+			<h4 class='my-4 text-dark Montserrat' id='op-learning'>Operational Knowledge Management ("Reviews")</h4>
+			<p>Operational learning refers to the review of how the SIMS activation went. These are only conducted by SIMS Remote Coordinators, and typically only at the end of the operation (though reviews can be created at any point in the system). These review records are intended to capture observations made by the SIMS Remote Coordinator(s), broken down into specific and (ideally) actionable pieces.</p>
 			
-			<p>As members cycle out of their deployment or remote support assignment, they have the option to fill out a learning survey. In order to ensure anonymity, a minimum number of responses must be submitted before the aggregated data is shown.</p>
+			<p>Each review record is meant to reflect something that the SIMS Remote Coordinator(s) either found to be a success that should be part of our collective strategy in future operations, an area for improvement, or just a general observation. If they have a recommendation for integrating the learning into our systems and processes, there is also the option to provide that. Once the record has been created, SIMS Governance members can access them and document follow-up actions to be taken, as well as update the status of the record:
+				<ul>
+					<li><span class='fw-bold'>Open</span>: The default status assigned to new records.</li>
+					<li><span class='fw-bold'>Processed</span>: The SIMS Governance team has reviewed the record and integrated the feedback into the broader knowledge management process.</li>
+					<li><span class='fw-bold'>Dropped</span>: The SIMS Governance team has reviewed the record and deemed the feedback to be either irrelevant or not within our abilities to address.</li>
+				</ul>
+			
+			<h4 class='my-4 text-dark Montserrat' id='individual-learning'>Individual Knowledge Management ("Learnings")</h4>
+			
+			<p>As members cycle out of their deployment or remote support assignment, they have the option to fill out a learning survey. These learning records are intended to be a general pulse-check for the SIMS Network to monitor the remote supporters' level of satisfaction with their involvement. These questions are mostly quantitative in order to reduce the burden of analysis. Specific pieces of feedback about the operation should be funneled into Operational Knowledge Management Reviews (see above) through coordination with the SIMS Remote Coordinator(s).</p>
+				
+			<p>In order to ensure anonymity, a minimum number of responses must be submitted before the aggregated data is shown. Once that threshold has been reached, the data will appear under "Learning" on the emergency's page. The graph compares the average scores for each question for that specific operation, compared against the average scores for that question across all SIMS responses in order to help viewers understand if this operation is over- or under-performing.</p>
+			
+			<img class='img-fluid' src='/static/assets/img/assignment-review-example.png'>
 			
 			<h3 class='my-4 text-danger Montserrat' id='members'>Members</h3>
 			<p>The portal is designed to help the SIMS network learn from our collective experience supporting responses. Learning records are connected to assignments with a <span class='fw-bold'>one-to-one</span> relationship, meaning that each assignment can have only one associated learning record.</p>

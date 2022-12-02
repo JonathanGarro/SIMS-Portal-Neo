@@ -60,6 +60,7 @@ def create_app(config_class=Config):
 	from SIMS_Portal.users.routes import users
 	from SIMS_Portal.stories.routes import stories
 	from SIMS_Portal.learnings.routes import learnings
+	from SIMS_Portal.reviews.routes import reviews
 	from SIMS_Portal.errors.handlers import errors
 	
 	app.register_blueprint(main)
@@ -69,15 +70,17 @@ def create_app(config_class=Config):
 	app.register_blueprint(users)
 	app.register_blueprint(stories)
 	app.register_blueprint(learnings)
+	app.register_blueprint(reviews)
 	app.register_blueprint(errors)
 	
-	from SIMS_Portal.models import User, Assignment, Emergency, Portfolio, NationalSociety, Story, Learning
+	from SIMS_Portal.models import User, Assignment, Emergency, Portfolio, NationalSociety, Story, Learning, Review
 	admin.add_view(AdminView(User, db.session))
 	admin.add_view(AdminView(Assignment, db.session))
 	admin.add_view(AdminView(Emergency, db.session))
 	admin.add_view(AdminView(Portfolio, db.session))
 	admin.add_view(AdminView(Story, db.session))
 	admin.add_view(AdminView(Learning, db.session))
+	admin.add_view(AdminView(Review, db.session))
 	admin.add_view(AdminView(NationalSociety, db.session))
 	
 	return app

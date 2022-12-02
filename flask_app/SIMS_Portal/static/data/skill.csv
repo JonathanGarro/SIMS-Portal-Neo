@@ -21,4 +21,7 @@ id,name,category
 20,JavaScript,Coding
 21,Scenario Planning,Information Analysis
 22,Carto,Geospatial
-23,Cloud Servers,Data Management
+23,Cloud Server Setup,Data Management
+24,Data Cleaning,Data Management
+25,Assessment Planning,Mobile Data Collection
+26,Web App Hosting and Deployment,Web Development

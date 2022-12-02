@@ -1,40 +1,22 @@
-id,title,type,description,product_status,final_file_location,asset_file_location,external,assignment_id,creator_id,emergency_id,created_at,updated_at
-1,Activity Map,Map,A map showing where teams have been deployed.,Removed,89ae6d4763eac5e6.png,NULL,0,NULL,1,4,2022-05-04 15:03:21,2022-06-30 01:45:07
-2,Venezuela Population Movement,Infographic,A 3W map for donors and ICRC partners.,Approved,a67c066fbde84b6d.png,NULL,1,NULL,1,3,2022-05-04 15:03:21,NULL
-3,Python Seaborn Visualization,Report - Analysis,Visualizing the distribution of cash over time.,Approved,06d126f95f5d2d22.png,NULL,1,NULL,1,2,2022-05-04 15:03:21,NULL
-4,Activities Dashboard,Dashboard,A live view of activities in response to the earthquake. Built with Klipfolio.,Removed,29472dadde615fb8.png,NULL,1,NULL,1,5,2022-05-04 15:03:21,NULL
-5,SIMS Response Cycle Infographic,Infographic,An Illustrator-based file showing the various stages of an IM response to an emergency.,Approved,d04b9af01e515abb.png,NULL,1,NULL,4,1,2022-05-04 15:03:21,NULL
-6,A Mockup of a Logo,Other,A logo example.,Removed,5f66a824aa7fec51.png,NULL,1,NULL,1,5,2022-05-04 15:03:21,NULL
-7,Test1,Map,Test,Removed,38f296e3396ff3b6.png,NULL,1,NULL,1,5,2022-05-04 15:03:21,NULL
-8,Test2,Infographic,Test2,Removed,f8acf29b2429cd00.png,NULL,0,NULL,1,5,2022-05-04 15:03:21,NULL
-9,Tets,Infographic,sdfasdf,Removed,4ad51445abb74edb.png,NULL,1,NULL,1,1,2022-05-04 15:03:21,2022-06-30 11:50:04
-10,COVID Learning Event Brochure,Report - Analysis,A PDF of the report,Removed,55c00a3bbc25e5b7.png,NULL,0,1,1,4,2022-06-29 18:43:44,2022-06-30 01:45:18
-11,Testt,Dashboard,asdf,Removed,291f622a427ab89b.png,NULL,0,1,1,4,2022-06-29 18:58:38,2022-06-30 01:46:31
-12,A New Map,Map,A map of stuff that's happened,Removed,d2e1c9a06244834e.png,google.com,0,1,1,4,2022-06-29 19:15:00,2022-06-30 01:46:00
-13,easdf,Infographic,asdf,Removed,b427a2c22bb34e52.png,asdf,0,5,4,2,2022-06-30 19:22:34,2022-06-30 19:23:06
-14,Test,Dashboard,asdf,Removed,28cca8ef0d6e4170.png,asdf,0,5,4,2,2022-06-30 19:25:12,2022-06-30 19:25:23
-15,Wildfire Extent Map,Map,Map of the wildfires across the Alberta region. Produced in QGIS and finished in Illustrator. Used for helping operations teams understand where to prioritize the response.,Approved,5598eef8e9efa6c9.png,,1,6,1,1,2022-06-30 20:03:20,NULL
-16,Response Report,Report - Analysis,This was a report showing what we did for the cash program's information management needs.,Approved,3d4d064b55fd0a78.png,,0,1,1,4,2022-07-01 11:48:30,NULL
-17,Flood Dashboard,Dashboard,A dashboard showing flood data in real time.,Approved,3bc9700485283186.png,,1,5,4,2,2022-07-01 12:34:22,NULL
-18,A New Dashboard,Dashboard,Dashboard showing damage,Approved,acd2889c1b06b8c0.png,,0,1,1,4,2022-07-01 12:41:54,NULL
-19,Map of Affected Area in San Jose,Map,Map requested by HEOps showing the extent of the damage near the city.,Approved,b026b2e830ebc7a5.png,,0,8,1,5,2022-07-01 14:12:13,NULL
-20,Another map,Map,Another map,Removed,bf70fd0c469e45b5.png,,0,8,1,5,2022-07-01 14:14:41,2022-07-01 14:15:51
-21,A map of the affected area,Map,A map of the area where the disaster struck.,Removed,a32677016d43087e.png,,1,9,6,7,2022-07-01 17:52:44,2022-07-01 17:53:28
-22,Blah,Map,asdf,Removed,fce082c182a5459f.pdf,,0,8,1,5,2022-07-01 21:59:22,2022-07-02 12:21:04
-23,asdf,Map,,Removed,8c47e0b1b45c7a18.pdf,,0,8,1,5,2022-07-01 21:59:48,2022-07-02 12:20:56
-24,Test,Map,Test,Removed,0527ae62b75efd72.png,,0,5,4,2,2022-07-03 00:43:05,2022-07-03 00:43:31
-25,Thing,Infographic,Test,Removed,18adc7d90dec5041.png,NULL,0,NULL,1,1,2022-07-13 19:39:18,2022-07-13 20:02:38
-26,Mobile Data Form,Mobile Data Collection,An XLS form.,Approved,70c789ece18e675d.png,,1,1,1,4,2022-07-17 16:41:17,NULL
-27,Mobile Data Script,Mobile Data Collection,A script to automatically parse new registrations and map them on a simple dashboard.,Approved,547dc2ed5898bbb8.png,,0,17,1,9,2022-10-03 18:08:39,NULL
-28,Mobile Data Cleaning Script,Mobile Data Collection,A script written in Python to clean up messy data as it comes in from enumerators.,Rejected,e7b2be25e07fe1a8.png,,0,25,1,4,2022-10-11 19:24:20,2022-10-17 22:09:25
-29,CEA Infographic,Infographic,An infographic to help migrants find services.,Approved,5987f14de39c95dc.png,,1,25,1,4,2022-10-14 17:27:53,2022-10-17 22:09:42
-30,Test,Map,asdf,Personal,b81c9e1a2ed1efe3.png,,0,25,1,4,2022-10-20 14:20:44,NULL
-31,Test Upload,Map,asdf,Rejected,d08a414b094d198f.png,,1,25,1,4,2022-10-20 14:20:56,2022-10-20 14:21:13
-32,Test Map,Map,asdf,Rejected,2001edd8a799246a.png,,1,28,3,4,2022-10-20 14:21:56,2022-10-20 15:01:54
-33,Test Map,Map,asdf,Rejected,0d7d06ea5a17c93b.png,NULL,1,28,3,4,2022-10-20 15:05:42,2022-10-20 15:08:51
-34,Status Test,Infographic,asdf,Personal,aaed47ce34dd198f.png,,0,25,1,4,2022-10-20 19:55:28,NULL
-35,Testtest,Infographic,asdf,Personal,16ba58a4d00b1e05.png,,0,25,1,4,2022-10-20 20:08:42,NULL
-36,Testtesttest,Report - Analysis,asdf,Personal,fb4b5b1eeeec809a.png,,0,29,4,4,2022-10-20 20:31:39,NULL
-37,Another product with a really long title,Dashboard,asdf,Personal,7bfd0a1a38d94862.png,,0,29,4,4,2022-10-21 15:55:11,NULL
-38,Testtesttest,Infographic,asdf,Approved,6584f18389b978bb.png,,1,29,4,4,2022-10-21 16:06:25,2022-10-21 17:34:55
-39,PDF Test,Infographic,asdf,Approved,f17c2d41cd681203.pdf,,1,29,4,4,2022-10-21 16:58:56,2022-10-21 17:34:56
+id,title,type,description,product_status,final_file_location,asset_file_location,external,collaborator_ids,approver_id,approver_message,assignment_id,creator_id,emergency_id,created_at,updated_at
+1,Humanitarian Service Points in Romania,Map,"A map showing where HSPs are located, overlaid with branch maps.",Approved,df7c93b2baa97df4.png,,1,"4,6,1",NULL,NULL,28,3,4,2022-10-26 14:12:54,2022-10-27 14:58:05
+2,Ukraine Operational Stat Overview,Infographic,A comms-focused product that highlights the overall reach statistics for the regional operation.,Personal,ddfc479a92196f9c.png,,0,"11,4",NULL,NULL,25,1,4,2022-10-26 14:14:27,2022-10-31 17:34:05
+3,Surge Deployments Infographic,Infographic,Graphic showing the breakdown of profile types that have deployed to various countries as part of the response.,Approved,93b8ad52fb3c431c.png,,1,NULL,NULL,NULL,25,1,4,2022-10-26 14:58:23,2022-10-26 17:23:43
+4,Country Plans Overview,Infographic,Simple graphic showing the varied plans that each country is carrying out in response to the emergency.,Personal,07fe657f0a4bb6db.png,,0,4,NULL,NULL,25,1,4,2022-10-26 14:59:17,2022-10-26 15:01:59
+5,Hungarian Red Cross Basemap,Map,Map showing the location of key points of interest within Hungary to support the operational manager in that country.,Approved,c66b319e397fceb7.png,,1,NULL,NULL,NULL,25,1,4,2022-10-26 15:01:21,2022-10-26 17:23:42
+6,Slovak Red Cross Dashboard,Dashboard,Rejected Product Example,Personal,cb513a7b6d27d5cd.png,,1,NULL,NULL,NULL,25,1,4,2022-10-26 17:05:23,2022-10-26 17:25:47
+7,CVA Process Map,Infographic,A flowchart outlining how users will enroll in a CVA program.,Removed,29cd133660c1b083.png,,0,NULL,NULL,NULL,25,1,4,2022-10-26 18:49:15,2022-10-26 18:51:02
+8,CVA Process Map,Infographic,A flowchart outlining how users will enroll in a CVA program.,Removed,96f1c062975218d4.png,,0,NULL,NULL,NULL,25,1,4,2022-10-26 18:49:39,2022-10-26 18:50:55
+9,CVA Process Map,Infographic,Map,Removed,bafda0a6fff8bc3a.png,,0,NULL,NULL,NULL,25,1,4,2022-10-26 18:51:22,2022-10-26 18:52:22
+10,CVA Map,Infographic,map,Removed,1b51b8e0a884a51b.png,,0,NULL,NULL,NULL,25,1,4,2022-10-26 18:52:38,2022-10-26 18:54:28
+11,CVA Map,Infographic,asdf,Removed,7440c77c41df58bd.png,,0,NULL,NULL,NULL,25,1,4,2022-10-26 18:54:43,2022-10-26 18:55:35
+12,CVA Map,Infographic,asdf,Removed,0d97790f36664ebf.png,,0,NULL,NULL,NULL,25,1,4,2022-10-26 18:55:54,2022-10-26 19:02:19
+13,CVA Map,Infographic,asdf,Approved,2347e748ed825b9c.png,,1,NULL,NULL,NULL,25,1,4,2022-10-26 19:02:42,2022-10-28 14:49:01
+14,Test,Map,asdf,Removed,af1b4c284dabb747.png,,0,NULL,NULL,NULL,25,1,4,2022-10-27 19:46:09,2022-10-27 19:48:12
+15,Test,Map,asdf,Removed,2134cdff14e58d5a.png,,0,NULL,NULL,NULL,25,1,4,2022-10-27 19:47:28,2022-10-27 19:48:04
+16,Test2,Map,asdf,Removed,16ab8f0e90a7c189.png,,1,NULL,NULL,NULL,25,1,4,2022-10-27 19:50:19,2022-10-30 18:16:45
+17,Test Icon,Infographic,asdf,Approved,8c97bee783bfc899.png,,1,NULL,NULL,NULL,25,1,4,2022-10-28 14:48:26,2022-10-28 14:49:08
+18,asdf,Dashboard,asdf,Personal,ecfa15a7ea240d5a.png,,1,1,NULL,NULL,29,4,4,2022-10-28 14:51:33,2022-10-28 15:32:13
+19,Testest,Report - Analysis,asdf,Personal,8888562bfa843e0a.png,,0,1,NULL,NULL,29,4,4,2022-10-31 15:39:18,2022-10-31 15:39:35
+20,Glady's Product,Map,,Personal,c8b5a2081faf7448.png,,0,1,NULL,NULL,32,11,4,2022-10-31 17:27:21,2022-10-31 17:29:55
+21,Data Processing Script,Other,This does stuff.,Removed,ba78218ec8cbcaae.png,,1,NULL,NULL,NULL,37,1,4,2022-11-14 18:09:54,2022-11-15 15:40:44

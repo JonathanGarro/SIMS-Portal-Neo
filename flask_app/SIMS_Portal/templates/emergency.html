@@ -66,10 +66,10 @@
 						<span class="badge bg-secondary rounded-pill"><a href="/resources/sims_portal#badges" class='text-light'>?</a></span>
 					</li>
 					{% endif %}
-					{% if current_user.is_admin == 1 %}
+					{% if user_is_sims_co %}
 					<li class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="#" class="text-secondary">Review Operation</a>
-						<span class="badge bg-secondary rounded-pill"><a href="#" class='text-light'>?</a></span>
+						<a href="/operation_review/new/{{emergency_info.Emergency.id}}" class="text-secondary">Review Operation</a>
+						<span class="badge bg-secondary rounded-pill"><a href="/resources/sims_portal#op-learning" class='text-light'>?</a></span>
 					</li>
 					{% endif %}
 					{% if check_for_story %}
@@ -331,7 +331,7 @@
 
 			  </div>
 			  <div class="tab-pane fade" id="learning" role="tabpanel" aria-labelledby="learning-tab">
-				 <h3 class="text-dark my-4 emergency-title">Assignment Reviews</h3>
+				 <h3 class="text-dark my-4 emergency-title">Assignment Reviews &nbsp<span style='font-size: .9rem'><a href='/resources/sims_portal#individual-learning'>What's This?</a></span></h3>
 				 {% if learning_count == 0 %}
 				 No assignment reviews have been submitted for this response. See the Learning section of the SIMS Portal for aggregated data related to past operational learning.
 				 {% elif learning_count > 2 %}
@@ -391,6 +391,29 @@
 				 <p>There have been <span class='text-danger fw-bold'>{{learning_count}}</span> assignment reviews completed, which is under the specified threshold to display this data. This is done to protect the identities of people who have provided their feedback.</p>
 				 {% endif %}
 			  </div>
+				 <h3 class="text-dark my-4 emergency-title">Operational Reviews &nbsp<span style='font-size: .9rem'><a href='/resources/sims_portal#op-learning'>What's This?</a></span></h3>
+				   {% if existing_reviews %}
+				   <table class='table table-striped mt-4'>
+					   <thead>
+						   <tr>
+							   <th>Title</th>
+							   <th>Category</th>
+							   <th>Type</th>
+						   </tr>
+					   </thead>
+					   <tbody>
+						   {% for review in existing_reviews %}
+							   <tr>
+								   <td><a href='/operation_review/view/{{review.id}}'>{{review.title}}</a></td>
+								   <td>{{review.category}}</td>
+								   <td>{{review.type}}</td>
+							   </tr>
+						   {% endfor %}
+					   </tbody>
+				   </table>
+				   {% else %}
+				   <p>There are no operational reviews completed yet for this emergency. The SIMS Remote Coordinator(s) for this operation are the only users that can complete them - reach out to them if you'd like to add to the learning for this response!</p>
+				   {% endif %}
 			</div>
 			
 			
