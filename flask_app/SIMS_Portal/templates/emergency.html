@@ -42,8 +42,6 @@
 				</div>
 				
 				{% endif %}
-
-
 				
 			</div>
 			<br>
@@ -99,7 +97,7 @@
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="#" class="text-secondary" data-toggle="modal" data-target="#confirm-closeout">Closeout Emergency</a>
-						<span class="badge bg-secondary rounded-pill"><a href="#" class='text-light'>?</a></span>
+						<span class="badge bg-secondary rounded-pill"><a href="/resources/sims_portal#close-out" class='text-light'>?</a></span>
 					</li>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="#" class="text-danger" data-toggle="modal" data-target="#confirm-delete">Delete Emergency</a>
@@ -183,7 +181,7 @@
 			<div class="card p-4 bg-light">
 				<h5 class='text-secondary mb-3 Montserrat'>{{emergency_info.NationalSociety.country_name}}</h5>
 
-				<img id='flag-image' src='https://countryflagsapi.com/png/{{emergency_info.NationalSociety.iso3}}' class='img-fluid mb-3'>
+				<img id='flag-image' src='https://flagcdn.com/h240/{{emergency_info.NationalSociety.iso2|lower}}.png' class='img-fluid mb-3'>
 				<ul class="list-group border-0">
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<a href="https://go.ifrc.org/countries/{{emergency_info.NationalSociety.ns_go_id}}" class="text-secondary">{{emergency_info.NationalSociety.country_name}} on GO</a>
@@ -390,7 +388,6 @@
 				 {% else %}  
 				 <p>There have been <span class='text-danger fw-bold'>{{learning_count}}</span> assignment reviews completed, which is under the specified threshold to display this data. This is done to protect the identities of people who have provided their feedback.</p>
 				 {% endif %}
-			  </div>
 				 <h3 class="text-dark my-4 emergency-title">Operational Reviews &nbsp<span style='font-size: .9rem'><a href='/resources/sims_portal#op-learning'>What's This?</a></span></h3>
 				   {% if existing_reviews %}
 				   <table class='table table-striped mt-4'>
@@ -414,10 +411,8 @@
 				   {% else %}
 				   <p>There are no operational reviews completed yet for this emergency. The SIMS Remote Coordinator(s) for this operation are the only users that can complete them - reach out to them if you'd like to add to the learning for this response!</p>
 				   {% endif %}
+			  </div>
 			</div>
-			
-			
-			
 			
 			{% if response_length %}
 			<div class='row mt-5'>
